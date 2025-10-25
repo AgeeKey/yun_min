@@ -1,0 +1,59 @@
+# Yun Min Trading Agent Configuration
+# This is the default configuration file. Override with environment variables.
+
+# Exchange Configuration
+exchange:
+  name: binance
+  testnet: true  # ALWAYS start with testnet!
+  enable_rate_limit: true
+
+# Trading Configuration
+trading:
+  mode: dry_run  # Options: dry_run, paper, live
+  symbol: BTC/USDT
+  timeframe: 5m
+  initial_capital: 10000.0
+
+# Risk Management (CRITICAL - DO NOT DISABLE)
+risk:
+  max_position_size: 0.1  # 10% of capital per position
+  max_leverage: 3.0
+  max_daily_drawdown: 0.05  # 5% max daily loss
+  stop_loss_pct: 0.02  # 2% stop loss
+  take_profit_pct: 0.03  # 3% take profit
+  enable_circuit_breaker: true
+
+# Strategy Configuration
+strategy:
+  name: ema_crossover
+  fast_ema: 9
+  slow_ema: 21
+  rsi_period: 14
+  rsi_overbought: 70.0
+  rsi_oversold: 30.0
+
+# Machine Learning
+ml:
+  enabled: false  # Enable after testing rule-based strategy
+  model_type: xgboost
+  retrain_interval: 86400  # 24 hours
+  feature_lookback: 100
+
+# LLM Integration
+llm:
+  enabled: false
+  provider: openai
+  explain_trades: true
+
+# Database
+database:
+  db_url: sqlite:///data/yunmin.db
+  redis_url: redis://localhost:6379/0
+
+# Notifications
+notification:
+  telegram_enabled: false
+
+# General
+log_level: INFO
+data_dir: ./data
