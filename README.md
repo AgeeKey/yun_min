@@ -7,6 +7,8 @@
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+📊 **[Полный отчет о проекте](YUN_MIN_COMPLETE_REPORT.md)** | 📚 **[Архитектура](ARCHITECTURE.md)** | 🚀 **[Быстрый старт](QUICKSTART.md)**
+
 </div>
 
 ## 🎯 Overview
@@ -267,7 +269,10 @@ Key metrics tracked:
 - [x] Risk management system
 - [x] EMA crossover strategy
 - [x] Order execution (dry-run/paper/live)
-- [ ] Backtesting engine
+- [x] Binance connector
+- [x] Order tracking system
+- [x] Backtesting engine
+- [x] Production deployment guides
 - [ ] ML model integration
 - [ ] LLM assistant integration
 - [ ] Web dashboard UI
@@ -275,6 +280,25 @@ Key metrics tracked:
 - [ ] Database persistence
 - [ ] Multi-strategy support
 - [ ] Portfolio management
+
+## 📚 Documentation
+
+### Main Documentation
+- 📖 [README.md](README.md) - Quick start and overview
+- 📊 [YUN_MIN_COMPLETE_REPORT.md](YUN_MIN_COMPLETE_REPORT.md) - Comprehensive project report
+- 🏗️ [ARCHITECTURE.md](ARCHITECTURE.md) - System architecture
+- 🚀 [QUICKSTART.md](QUICKSTART.md) - 5-minute setup guide
+- 🔗 [INTEGRATION_GUIDE.md](INTEGRATION_GUIDE.md) - Integration patterns
+- 🤝 [CONTRIBUTING.md](CONTRIBUTING.md) - Contribution guidelines
+
+### Production Documentation (docs/)
+- 🚨 [ALERT_RULES.md](docs/ALERT_RULES.md) - Alert configuration
+- 🔒 [RUNBOOK_LIVE_SAFETY.md](docs/RUNBOOK_LIVE_SAFETY.md) - Live trading safety
+- 🚀 [PHASE4_DEPLOYMENT_GUIDE.md](docs/PHASE4_DEPLOYMENT_GUIDE.md) - Deployment guide
+- 🆘 [PHASE4_INCIDENT_RESPONSE.md](docs/PHASE4_INCIDENT_RESPONSE.md) - Incident response
+- 📊 [PHASE4_MONITORING_DASHBOARD.md](docs/PHASE4_MONITORING_DASHBOARD.md) - Monitoring setup
+- 📈 [PHASE4_SCALE_UP_ROADMAP.md](docs/PHASE4_SCALE_UP_ROADMAP.md) - Scaling roadmap
+- 📜 [ATTRIBUTION.md](docs/ATTRIBUTION.md) - License attribution
 
 ## ⚠️ Disclaimer
 
