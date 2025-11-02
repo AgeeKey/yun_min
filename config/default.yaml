@@ -50,6 +50,13 @@ database:
   db_url: sqlite:///data/yunmin.db
   redis_url: redis://localhost:6379/0
 
+# External Dependencies (relative to yun_min folder)
+external_paths:
+  jesse: ../jesse
+  hummingbot: ../hummingbot
+  freqtrade: ../freqtrade
+  gateway: ../gateway
+
 # Notifications
 notification:
   telegram_enabled: false
