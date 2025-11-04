@@ -19,9 +19,9 @@ from pathlib import Path
 from datetime import datetime
 from loguru import logger
 
-# Данные
+# Данные - АКТУАЛЬНЫЕ 2025!
 data_dir = Path("data/binance_historical")
-csv_file = data_dir / "BTCUSDT_historical_2024-10-28_to_7days.csv"
+csv_file = data_dir / "BTCUSDT_historical_2025-10-01_to_30days.csv"
 df_1m = load_binance_historical_data(str(csv_file))
 df_5m = resample_to_timeframe(df_1m, '5T')
 

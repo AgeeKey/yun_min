@@ -224,6 +224,9 @@ def resample_to_timeframe(df: pd.DataFrame, timeframe: str = '5T') -> pd.DataFra
     
     resampled = df.resample(timeframe).agg(ohlc_dict).dropna()
     
+    # Reset index to make timestamp a column again
+    resampled = resampled.reset_index()
+    
     logger.success(f"✅ Resampled to {len(resampled)} candles")
     
     return resampled

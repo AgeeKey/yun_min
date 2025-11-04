@@ -1,0 +1,2012 @@
+{
+  "total_return": -42.117775829513334,
+  "final_capital": 5788.222417048666,
+  "total_trades": 222,
+  "winning_trades": 60,
+  "losing_trades": 162,
+  "win_rate": 27.027027027027028,
+  "avg_win": 0.7046044631517062,
+  "avg_loss": -0.35630764930340303,
+  "profit_factor": 0.7522865084728145,
+  "max_drawdown": 16.784051934113908,
+  "trades": [
+    {
+      "entry_time": "2025-10-01 09:55:00",
+      "entry_price": 114786.45454499999,
+      "exit_price": 116353.89395000001,
+      "position_type": "LONG",
+      "pnl": 122.89738106223899,
+      "pnl_pct": 1.3655264562471,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-01 15:05:00",
+      "entry_price": 116865.36348,
+      "exit_price": 117041.45000000001,
+      "position_type": "LONG",
+      "pnl": 13.70280354340194,
+      "pnl_pct": 0.15067468645673326,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-01 16:50:00",
+      "entry_price": 117796.97905499999,
+      "exit_price": 117627.89663000002,
+      "position_type": "LONG",
+      "pnl": -13.047882059554986,
+      "pnl_pct": -0.14353714870822448,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-01 18:35:00",
+      "entry_price": 116941.49000500001,
+      "exit_price": 117167.85465,
+      "position_type": "SHORT",
+      "pnl": -17.541688617379084,
+      "pnl_pct": -0.19357085752054387,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-01 23:00:00",
+      "entry_price": 117800.21066999999,
+      "exit_price": 117688.26643,
+      "position_type": "LONG",
+      "pnl": -8.581145929632068,
+      "pnl_pct": -0.09502889626706856,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-02 00:35:00",
+      "entry_price": 118418.18950499999,
+      "exit_price": 118775.34262,
+      "position_type": "LONG",
+      "pnl": 27.162597725799916,
+      "pnl_pct": 0.3016032557945231,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-02 03:45:00",
+      "entry_price": 118994.0673,
+      "exit_price": 118716.17222000001,
+      "position_type": "LONG",
+      "pnl": -21.051672125881932,
+      "pnl_pct": -0.23353692020575845,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-02 13:15:00",
+      "entry_price": 118939.45000499999,
+      "exit_price": 118972.40404000001,
+      "position_type": "LONG",
+      "pnl": 2.487807536356132,
+      "pnl_pct": 0.02770656413715693,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-02 14:10:00",
+      "entry_price": 119601.91106999999,
+      "exit_price": 119387.266505,
+      "position_type": "LONG",
+      "pnl": -16.089472935424812,
+      "pnl_pct": -0.17946583217583745,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-02 15:25:00",
+      "entry_price": 118786.05726,
+      "exit_price": 119487.83406,
+      "position_type": "SHORT",
+      "pnl": -52.78475934954024,
+      "pnl_pct": -0.5907905491500041,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-02 19:50:00",
+      "entry_price": 120931.425495,
+      "exit_price": 120573.90289000001,
+      "position_type": "LONG",
+      "pnl": -26.226180098661853,
+      "pnl_pct": -0.2956407761973938,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-02 23:00:00",
+      "entry_price": 120190.89449,
+      "exit_price": 120410.445135,
+      "position_type": "SHORT",
+      "pnl": -16.132192508076724,
+      "pnl_pct": -0.18266828442504232,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-03 02:10:00",
+      "entry_price": 119836.04200500001,
+      "exit_price": 120192.57625499999,
+      "position_type": "SHORT",
+      "pnl": -26.184544952315193,
+      "pnl_pct": -0.2975183793078768,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-03 08:30:00",
+      "entry_price": 119599.02057500002,
+      "exit_price": 119836.00806,
+      "position_type": "SHORT",
+      "pnl": -17.361164817268662,
+      "pnl_pct": -0.1981516937685641,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-03 12:55:00",
+      "entry_price": 120105.74708500001,
+      "exit_price": 120418.249035,
+      "position_type": "SHORT",
+      "pnl": -22.714867391984733,
+      "pnl_pct": -0.26018900642517134,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-03 14:05:00",
+      "entry_price": 120589.96484999999,
+      "exit_price": 120168.71558500001,
+      "position_type": "LONG",
+      "pnl": -30.370068837917387,
+      "pnl_pct": -0.34932364855065856,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-03 14:35:00",
+      "entry_price": 119923.21839500002,
+      "exit_price": 120740.34,
+      "position_type": "SHORT",
+      "pnl": -58.9454299864764,
+      "pnl_pct": -0.6813706435967757,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-03 16:50:00",
+      "entry_price": 120896.07783,
+      "exit_price": 122796.08124500001,
+      "position_type": "LONG",
+      "pnl": 134.87998269266845,
+      "pnl_pct": 1.5716005424689914,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-04 05:40:00",
+      "entry_price": 122307.91339499998,
+      "exit_price": 122411.39368500002,
+      "position_type": "LONG",
+      "pnl": 7.3507327008566925,
+      "pnl_pct": 0.0846063734779292,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-04 12:10:00",
+      "entry_price": 122055.9415,
+      "exit_price": 122161.04999999999,
+      "position_type": "SHORT",
+      "pnl": -7.474030485604833,
+      "pnl_pct": -0.08611502128307907,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-04 14:20:00",
+      "entry_price": 122316.117495,
+      "exit_price": 122278.90996,
+      "position_type": "LONG",
+      "pnl": -2.6333164967197598,
+      "pnl_pct": -0.030419159602180026,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-04 16:05:00",
+      "entry_price": 121750.30439500001,
+      "exit_price": 121920.539805,
+      "position_type": "SHORT",
+      "pnl": -12.07909090605189,
+      "pnl_pct": -0.13982339579840136,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-04 21:55:00",
+      "entry_price": 122203.281105,
+      "exit_price": 122129.57466500001,
+      "position_type": "LONG",
+      "pnl": -5.194528564401075,
+      "pnl_pct": -0.06031461621448947,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-05 03:45:00",
+      "entry_price": 122915.33695499999,
+      "exit_price": 123919.0095,
+      "position_type": "LONG",
+      "pnl": 70.16024584014622,
+      "pnl_pct": 0.8165559887513946,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-05 05:40:00",
+      "entry_price": 125347.752555,
+      "exit_price": 125167.37500500001,
+      "position_type": "LONG",
+      "pnl": -12.432862540274641,
+      "pnl_pct": -0.1439017025222245,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-05 10:40:00",
+      "entry_price": 124333.232285,
+      "exit_price": 122878.06833,
+      "position_type": "SHORT",
+      "pnl": 100.8054917336253,
+      "pnl_pct": 1.1703741053433283,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-05 16:05:00",
+      "entry_price": 122974.491995,
+      "exit_price": 123173.556,
+      "position_type": "SHORT",
+      "pnl": -14.064299624294609,
+      "pnl_pct": -0.16187422429692705,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-05 17:45:00",
+      "entry_price": 123327.17276999999,
+      "exit_price": 123028.764845,
+      "position_type": "LONG",
+      "pnl": -20.954369798522784,
+      "pnl_pct": -0.241964457870538,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-05 20:25:00",
+      "entry_price": 122763.14772000001,
+      "exit_price": 122802.39051,
+      "position_type": "SHORT",
+      "pnl": -2.7573056315516835,
+      "pnl_pct": -0.03196626245646199,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-05 21:05:00",
+      "entry_price": 123088.65357,
+      "exit_price": 122498.72,
+      "position_type": "LONG",
+      "pnl": -41.25441073500847,
+      "pnl_pct": -0.47927534576897546,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-05 23:55:00",
+      "entry_price": 123109.26387,
+      "exit_price": 123420.568845,
+      "position_type": "LONG",
+      "pnl": 21.633127593445693,
+      "pnl_pct": 0.2528688461079061,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-06 00:35:00",
+      "entry_price": 124398.60822,
+      "exit_price": 123460.788725,
+      "position_type": "LONG",
+      "pnl": -64.52578975470571,
+      "pnl_pct": -0.7538826265173699,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-06 05:45:00",
+      "entry_price": 123518.46987,
+      "exit_price": 123782.76044999999,
+      "position_type": "SHORT",
+      "pnl": -18.156739265592147,
+      "pnl_pct": -0.2139684698799663,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-06 08:25:00",
+      "entry_price": 123378.28000000001,
+      "exit_price": 123821.87999999999,
+      "position_type": "SHORT",
+      "pnl": -30.39617826581393,
+      "pnl_pct": -0.3595446459457667,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-06 12:40:00",
+      "entry_price": 124428.092955,
+      "exit_price": 124278.09986500001,
+      "position_type": "LONG",
+      "pnl": -10.139696635051475,
+      "pnl_pct": -0.12054600085708515,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-06 14:20:00",
+      "entry_price": 125093.845665,
+      "exit_price": 124591.09329,
+      "position_type": "LONG",
+      "pnl": -33.70824184199824,
+      "pnl_pct": -0.40190016729229183,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-06 17:35:00",
+      "entry_price": 125517.96762,
+      "exit_price": 125159.398995,
+      "position_type": "LONG",
+      "pnl": -23.830155061494104,
+      "pnl_pct": -0.2856711527432871,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-06 19:30:00",
+      "entry_price": 125982.36970499999,
+      "exit_price": 125609.164,
+      "position_type": "LONG",
+      "pnl": -24.60354142091208,
+      "pnl_pct": -0.29623645425457806,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-06 21:55:00",
+      "entry_price": 124835.90082500002,
+      "exit_price": 125160.398925,
+      "position_type": "SHORT",
+      "pnl": -21.492601464470205,
+      "pnl_pct": -0.2599397271581971,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-07 05:50:00",
+      "entry_price": 124680.73921499998,
+      "exit_price": 124296.80051,
+      "position_type": "LONG",
+      "pnl": -25.355744050163512,
+      "pnl_pct": -0.30793746284894347,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-07 12:15:00",
+      "entry_price": 124524.52114499999,
+      "exit_price": 124389.68404500002,
+      "position_type": "LONG",
+      "pnl": -8.87523093736456,
+      "pnl_pct": -0.10828156475540021,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-07 13:20:00",
+      "entry_price": 124966.95224999999,
+      "exit_price": 124615.28119000001,
+      "position_type": "LONG",
+      "pnl": -23.001723391480777,
+      "pnl_pct": -0.2814112480685699,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-07 16:00:00",
+      "entry_price": 123730.3039,
+      "exit_price": 121789.314225,
+      "position_type": "SHORT",
+      "pnl": 127.66781279384938,
+      "pnl_pct": 1.5687261841438056,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-08 00:15:00",
+      "entry_price": 121477.22100500001,
+      "exit_price": 121846.20265499999,
+      "position_type": "SHORT",
+      "pnl": -25.02461696993343,
+      "pnl_pct": -0.3037455474757569,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-08 04:20:00",
+      "entry_price": 121497.47087500001,
+      "exit_price": 121517.18823,
+      "position_type": "SHORT",
+      "pnl": -1.3309578490644567,
+      "pnl_pct": -0.016228613532434672,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-08 05:25:00",
+      "entry_price": 121960.95,
+      "exit_price": 121329.5049,
+      "position_type": "LONG",
+      "pnl": -42.37909064100681,
+      "pnl_pct": -0.5177436712324701,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-08 07:35:00",
+      "entry_price": 121845.18214499998,
+      "exit_price": 121347.15607000001,
+      "position_type": "LONG",
+      "pnl": -33.24054090573696,
+      "pnl_pct": -0.4087367807512522,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-08 09:30:00",
+      "entry_price": 122442.1905,
+      "exit_price": 122385.13682000001,
+      "position_type": "LONG",
+      "pnl": -3.768709470796122,
+      "pnl_pct": -0.04659642217033246,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-08 14:00:00",
+      "entry_price": 121837.29088000002,
+      "exit_price": 123143.06076,
+      "position_type": "SHORT",
+      "pnl": -86.48917465652046,
+      "pnl_pct": -1.0717325299739773,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-08 18:10:00",
+      "entry_price": 123383.650995,
+      "exit_price": 123808.83461500001,
+      "position_type": "LONG",
+      "pnl": 27.491003112366883,
+      "pnl_pct": 0.34460288423240193,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-08 21:30:00",
+      "entry_price": 122795.26165500001,
+      "exit_price": 123341.08972499998,
+      "position_type": "SHORT",
+      "pnl": -35.50662763898694,
+      "pnl_pct": -0.44450255054100357,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-08 23:20:00",
+      "entry_price": 123020.59893000001,
+      "exit_price": 123493.16572499998,
+      "position_type": "SHORT",
+      "pnl": -30.50649527142375,
+      "pnl_pct": -0.3841363146580618,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-09 03:10:00",
+      "entry_price": 122983.08769500001,
+      "exit_price": 121879.459275,
+      "position_type": "SHORT",
+      "pnl": 70.89142685351706,
+      "pnl_pct": 0.8973822666877774,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-09 09:10:00",
+      "entry_price": 121707.285915,
+      "exit_price": 121655.667435,
+      "position_type": "SHORT",
+      "pnl": 3.3715193695882872,
+      "pnl_pct": 0.042411988412965534,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-09 13:05:00",
+      "entry_price": 122576.69772,
+      "exit_price": 123258.54989500002,
+      "position_type": "LONG",
+      "pnl": 44.1573609931652,
+      "pnl_pct": 0.5562657402939389,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-09 15:50:00",
+      "entry_price": 122694.622,
+      "exit_price": 121278.72905999998,
+      "position_type": "SHORT",
+      "pnl": 91.89963993433274,
+      "pnl_pct": 1.1539975566329383,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-09 22:30:00",
+      "entry_price": 121197.958695,
+      "exit_price": 121514.862175,
+      "position_type": "LONG",
+      "pnl": 21.001872705155243,
+      "pnl_pct": 0.26147592204709463,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-10 03:20:00",
+      "entry_price": 121504.68726500002,
+      "exit_price": 121433.14623,
+      "position_type": "SHORT",
+      "pnl": 4.731814443976004,
+      "pnl_pct": 0.05887923882638912,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-10 13:50:00",
+      "entry_price": 121950.03454499999,
+      "exit_price": 121367.29599500001,
+      "position_type": "LONG",
+      "pnl": -38.35355527747781,
+      "pnl_pct": -0.4778502541423614,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-10 16:20:00",
+      "entry_price": 120432.92341500001,
+      "exit_price": 119218.99970999999,
+      "position_type": "SHORT",
+      "pnl": 80.40892485204591,
+      "pnl_pct": 1.007966651126587,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-10 21:15:00",
+      "entry_price": 115348.297,
+      "exit_price": 104027.24762999998,
+      "position_type": "SHORT",
+      "pnl": 788.649681980294,
+      "pnl_pct": 9.814665378198018,
+      "exit_reason": "TAKE_PROFIT"
+    },
+    {
+      "entry_time": "2025-10-11 03:20:00",
+      "entry_price": 113229.16629,
+      "exit_price": 112016.133915,
+      "position_type": "LONG",
+      "pnl": -93.5406837138986,
+      "pnl_pct": -1.0713073448701405,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-11 05:20:00",
+      "entry_price": 112813.008315,
+      "exit_price": 112010.476745,
+      "position_type": "LONG",
+      "pnl": -61.40389160434181,
+      "pnl_pct": -0.7113821198342113,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-11 08:20:00",
+      "entry_price": 111366.298995,
+      "exit_price": 110885.69514,
+      "position_type": "SHORT",
+      "pnl": 36.94470928442146,
+      "pnl_pct": 0.43155232717357894,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-11 11:00:00",
+      "entry_price": 112253.51870999999,
+      "exit_price": 111858.95254500001,
+      "position_type": "LONG",
+      "pnl": -30.153967787638756,
+      "pnl_pct": -0.3514955874294856,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-11 17:05:00",
+      "entry_price": 111475.244495,
+      "exit_price": 111977.290665,
+      "position_type": "SHORT",
+      "pnl": -38.444146523865285,
+      "pnl_pct": -0.4503656146028952,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-11 21:20:00",
+      "entry_price": 111514.71475,
+      "exit_price": 110837.21091,
+      "position_type": "SHORT",
+      "pnl": 51.5576710203006,
+      "pnl_pct": 0.6075465838915263,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-12 01:20:00",
+      "entry_price": 109687.45883500001,
+      "exit_price": 110014.01951999999,
+      "position_type": "SHORT",
+      "pnl": -25.357885690331273,
+      "pnl_pct": -0.29771925475200556,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-12 04:05:00",
+      "entry_price": 111163.28386499999,
+      "exit_price": 110774.585,
+      "position_type": "LONG",
+      "pnl": -29.648796661721384,
+      "pnl_pct": -0.34966479172388565,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-12 10:35:00",
+      "entry_price": 112054.409205,
+      "exit_price": 111480.05209000001,
+      "position_type": "LONG",
+      "pnl": -43.24698307749412,
+      "pnl_pct": -0.5125698480541033,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-12 12:30:00",
+      "entry_price": 112069.46673,
+      "exit_price": 111757.17346,
+      "position_type": "LONG",
+      "pnl": -23.36070481245765,
+      "pnl_pct": -0.2786604408071093,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-12 14:45:00",
+      "entry_price": 111355.6943,
+      "exit_price": 112156.02999,
+      "position_type": "SHORT",
+      "pnl": -59.99243809917008,
+      "pnl_pct": -0.7187200394474955,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-12 16:35:00",
+      "entry_price": 112869.60659999998,
+      "exit_price": 113418.21252500001,
+      "position_type": "LONG",
+      "pnl": 40.23569654798262,
+      "pnl_pct": 0.4860528370088475,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-12 21:05:00",
+      "entry_price": 115288.50544499999,
+      "exit_price": 114806.53801500001,
+      "position_type": "LONG",
+      "pnl": -34.69560558529158,
+      "pnl_pct": -0.41805332469151013,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-13 00:35:00",
+      "entry_price": 115719.45081,
+      "exit_price": 114950.496,
+      "position_type": "LONG",
+      "pnl": -54.84239211334996,
+      "pnl_pct": -0.6644991871440387,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-13 05:05:00",
+      "entry_price": 114848.996775,
+      "exit_price": 114757.87026,
+      "position_type": "SHORT",
+      "pnl": 6.497553588982379,
+      "pnl_pct": 0.07934463300409689,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-13 07:50:00",
+      "entry_price": 115092.53751,
+      "exit_price": 115191.56540500002,
+      "position_type": "LONG",
+      "pnl": 7.03835472716203,
+      "pnl_pct": 0.08604197730145353,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-13 09:55:00",
+      "entry_price": 114743.93933000001,
+      "exit_price": 115184.60351999999,
+      "position_type": "SHORT",
+      "pnl": -31.382879222174218,
+      "pnl_pct": -0.38404136425248986,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-13 12:05:00",
+      "entry_price": 114392.77500000001,
+      "exit_price": 114306.38462999999,
+      "position_type": "SHORT",
+      "pnl": 6.138908735362958,
+      "pnl_pct": 0.07552082725506293,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-13 14:25:00",
+      "entry_price": 115193.26784999999,
+      "exit_price": 114261.32076,
+      "position_type": "LONG",
+      "pnl": -65.69042527614211,
+      "pnl_pct": -0.8090291276513926,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-13 16:40:00",
+      "entry_price": 115013.548035,
+      "exit_price": 114334.82399,
+      "position_type": "LONG",
+      "pnl": -47.48138532868593,
+      "pnl_pct": -0.5901252996676979,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-13 20:10:00",
+      "entry_price": 115098.07027499999,
+      "exit_price": 115592.34491500001,
+      "position_type": "LONG",
+      "pnl": 34.306972959272265,
+      "pnl_pct": 0.42943781665414876,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-14 00:20:00",
+      "entry_price": 115395.57335,
+      "exit_price": 115271.596995,
+      "position_type": "SHORT",
+      "pnl": 8.600545957756822,
+      "pnl_pct": 0.10743597124300447,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-14 03:35:00",
+      "entry_price": 114741.42059000001,
+      "exit_price": 113466.70499999999,
+      "position_type": "SHORT",
+      "pnl": 88.86031542498971,
+      "pnl_pct": 1.1109463203832044,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-14 05:05:00",
+      "entry_price": 112954.04472500001,
+      "exit_price": 113366.524935,
+      "position_type": "SHORT",
+      "pnl": -29.448722975134345,
+      "pnl_pct": -0.36517524538781376,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-14 11:00:00",
+      "entry_price": 111250.33700500001,
+      "exit_price": 110849.77719,
+      "position_type": "SHORT",
+      "pnl": 28.887837666927858,
+      "pnl_pct": 0.3600526755995466,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-14 13:45:00",
+      "entry_price": 110400.27225000001,
+      "exit_price": 111010.127325,
+      "position_type": "SHORT",
+      "pnl": -44.384571894425456,
+      "pnl_pct": -0.5524035969938333,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-14 15:05:00",
+      "entry_price": 111725.97507,
+      "exit_price": 111265.32950500002,
+      "position_type": "LONG",
+      "pnl": -32.90297891707954,
+      "pnl_pct": -0.4122994359291783,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-14 16:35:00",
+      "entry_price": 112193.578755,
+      "exit_price": 112316.61360000001,
+      "position_type": "LONG",
+      "pnl": 8.70330776185461,
+      "pnl_pct": 0.10966300065059058,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-14 20:40:00",
+      "entry_price": 112048.697625,
+      "exit_price": 112931.40748499999,
+      "position_type": "SHORT",
+      "pnl": -62.471468145801936,
+      "pnl_pct": -0.7877912717506146,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-14 22:35:00",
+      "entry_price": 113484.50389499999,
+      "exit_price": 113023.40003,
+      "position_type": "LONG",
+      "pnl": -31.933862041399586,
+      "pnl_pct": -0.40631438581836066,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-15 03:00:00",
+      "entry_price": 113625.74448,
+      "exit_price": 112562.780455,
+      "position_type": "LONG",
+      "pnl": -73.12338825685202,
+      "pnl_pct": -0.9354957627468774,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-15 06:45:00",
+      "entry_price": 111961.94102500001,
+      "exit_price": 112445.00440499999,
+      "position_type": "SHORT",
+      "pnl": -33.38034209371977,
+      "pnl_pct": -0.43145320238072193,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-15 09:00:00",
+      "entry_price": 112977.88071,
+      "exit_price": 112953.93478000001,
+      "position_type": "LONG",
+      "pnl": -1.6304913734960966,
+      "pnl_pct": -0.021195237376998882,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-15 12:10:00",
+      "entry_price": 111816.58374000002,
+      "exit_price": 112048.57629,
+      "position_type": "SHORT",
+      "pnl": -15.92878631340034,
+      "pnl_pct": -0.20747597739116974,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-15 12:55:00",
+      "entry_price": 111414.02512,
+      "exit_price": 111767.105625,
+      "position_type": "SHORT",
+      "pnl": -24.2410997668919,
+      "pnl_pct": -0.31690849030873863,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-15 13:55:00",
+      "entry_price": 110987.61843,
+      "exit_price": 111444.6945,
+      "position_type": "SHORT",
+      "pnl": -31.3549435541953,
+      "pnl_pct": -0.4118261806728233,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-15 14:45:00",
+      "entry_price": 112087.785885,
+      "exit_price": 111008.477995,
+      "position_type": "LONG",
+      "pnl": -72.908722888158,
+      "pnl_pct": -0.9629130252491214,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-15 17:35:00",
+      "entry_price": 110348.91794,
+      "exit_price": 110740.67266499999,
+      "position_type": "SHORT",
+      "pnl": -26.59947243103227,
+      "pnl_pct": -0.3550145595564429,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-15 21:35:00",
+      "entry_price": 111005.00973,
+      "exit_price": 111231.077745,
+      "position_type": "SHORT",
+      "pnl": -15.182637108397952,
+      "pnl_pct": -0.20365568684680757,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-16 01:05:00",
+      "entry_price": 110404.660055,
+      "exit_price": 110969.69712,
+      "position_type": "SHORT",
+      "pnl": -38.01533148536269,
+      "pnl_pct": -0.5117873328159461,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-16 05:35:00",
+      "entry_price": 110942.84083,
+      "exit_price": 111466.84556999999,
+      "position_type": "SHORT",
+      "pnl": -34.85877264645086,
+      "pnl_pct": -0.4723195621094043,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-16 07:20:00",
+      "entry_price": 111724.66441499999,
+      "exit_price": 110742.850875,
+      "position_type": "LONG",
+      "pnl": -64.4641728856994,
+      "pnl_pct": -0.8787795829514,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-16 09:45:00",
+      "entry_price": 109692.996065,
+      "exit_price": 111687.866025,
+      "position_type": "SHORT",
+      "pnl": -132.11144473660548,
+      "pnl_pct": -1.8185937403131105,
+      "exit_reason": "TRAILING_STOP"
+    },
+    {
+      "entry_time": "2025-10-16 12:45:00",
+      "entry_price": 111897.93100499999,
+      "exit_price": 111423.32047,
+      "position_type": "LONG",
+      "pnl": -30.251735925871397,
+      "pnl_pct": -0.4241459433050447,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-16 14:40:00",
+      "entry_price": 110857.20367,
+      "exit_price": 111407.68600499998,
+      "position_type": "SHORT",
+      "pnl": -35.21840406641021,
+      "pnl_pct": -0.49656884422112607,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-16 16:50:00",
+      "entry_price": 109186.07965,
+      "exit_price": 108697.891785,
+      "position_type": "SHORT",
+      "pnl": 31.512056323581294,
+      "pnl_pct": 0.4471154808057072,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-16 21:10:00",
+      "entry_price": 107406.719775,
+      "exit_price": 108185.035485,
+      "position_type": "SHORT",
+      "pnl": -51.18561662545505,
+      "pnl_pct": -0.7246434037185411,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-17 01:35:00",
+      "entry_price": 108708.91729499999,
+      "exit_price": 108685.620005,
+      "position_type": "LONG",
+      "pnl": -1.5011764609297313,
+      "pnl_pct": -0.021430891392990852,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-17 08:00:00",
+      "entry_price": 108499.1233,
+      "exit_price": 105196.50196499999,
+      "position_type": "SHORT",
+      "pnl": 212.7932208199208,
+      "pnl_pct": 3.0439152267325444,
+      "exit_reason": "TAKE_PROFIT"
+    },
+    {
+      "entry_time": "2025-10-17 08:30:00",
+      "entry_price": 104697.625,
+      "exit_price": 105500.72399999999,
+      "position_type": "SHORT",
+      "pnl": -54.99777067102183,
+      "pnl_pct": -0.7670651554894272,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-17 10:40:00",
+      "entry_price": 104159.903995,
+      "exit_price": 104462.63521499999,
+      "position_type": "SHORT",
+      "pnl": -20.65712993729624,
+      "pnl_pct": -0.29064084008230173,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-17 12:20:00",
+      "entry_price": 105868.908,
+      "exit_price": 105751.527785,
+      "position_type": "LONG",
+      "pnl": -7.845428650383247,
+      "pnl_pct": -0.1108731706196473,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-17 13:30:00",
+      "entry_price": 104864.36159000001,
+      "exit_price": 105933.470265,
+      "position_type": "SHORT",
+      "pnl": -71.9395610053372,
+      "pnl_pct": -1.0195157428030657,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-17 16:35:00",
+      "entry_price": 106856.93176499999,
+      "exit_price": 106613.136765,
+      "position_type": "LONG",
+      "pnl": -15.922046947389376,
+      "pnl_pct": -0.22815085177266572,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-17 20:15:00",
+      "entry_price": 106292.817005,
+      "exit_price": 106861.404,
+      "position_type": "SHORT",
+      "pnl": -37.18724297137141,
+      "pnl_pct": -0.5349251351323621,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-17 21:45:00",
+      "entry_price": 107081.43396,
+      "exit_price": 107173.816285,
+      "position_type": "LONG",
+      "pnl": 5.957876186504777,
+      "pnl_pct": 0.08627296215934861,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-18 00:25:00",
+      "entry_price": 106845.68043500002,
+      "exit_price": 106797.41201999999,
+      "position_type": "SHORT",
+      "pnl": 3.116576190182738,
+      "pnl_pct": 0.04517582255409194,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-18 03:20:00",
+      "entry_price": 106571.72748,
+      "exit_price": 106970.51852999999,
+      "position_type": "SHORT",
+      "pnl": -25.779214385889127,
+      "pnl_pct": -0.3741996676133688,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-18 07:50:00",
+      "entry_price": 106916.321445,
+      "exit_price": 106921.81235000001,
+      "position_type": "LONG",
+      "pnl": 0.3519772286875374,
+      "pnl_pct": 0.005135703254472645,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-18 12:35:00",
+      "entry_price": 107262.2043,
+      "exit_price": 106984.011235,
+      "position_type": "LONG",
+      "pnl": -17.74401443647194,
+      "pnl_pct": -0.2593579600713086,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-18 14:30:00",
+      "entry_price": 106772.36711,
+      "exit_price": 106979.48301,
+      "position_type": "SHORT",
+      "pnl": -13.216263731633905,
+      "pnl_pct": -0.19397893444341544,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-18 17:15:00",
+      "entry_price": 106507.59956000002,
+      "exit_price": 106820.92377,
+      "position_type": "SHORT",
+      "pnl": -19.972115099806253,
+      "pnl_pct": -0.2941801442285524,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-18 20:50:00",
+      "entry_price": 107019.032775,
+      "exit_price": 107042.87179,
+      "position_type": "LONG",
+      "pnl": 1.5055699861567933,
+      "pnl_pct": 0.02227549098684612,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-19 01:25:00",
+      "entry_price": 106899.44354000001,
+      "exit_price": 107003.464995,
+      "position_type": "SHORT",
+      "pnl": -6.566377345406625,
+      "pnl_pct": -0.09730776097171309,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-19 03:15:00",
+      "entry_price": 106748.92883500001,
+      "exit_price": 107174.02023,
+      "position_type": "SHORT",
+      "pnl": -26.799897545453685,
+      "pnl_pct": -0.3982160754578041,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-19 04:10:00",
+      "entry_price": 107402.34433499999,
+      "exit_price": 106986.36006,
+      "position_type": "LONG",
+      "pnl": -25.925754189675143,
+      "pnl_pct": -0.38731396188381045,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-19 07:00:00",
+      "entry_price": 106827.76939500001,
+      "exit_price": 106849.18789499998,
+      "position_type": "SHORT",
+      "pnl": -1.3349744909904244,
+      "pnl_pct": -0.020049562132833543,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-19 08:30:00",
+      "entry_price": 107201.58400499998,
+      "exit_price": 106566.699995,
+      "position_type": "LONG",
+      "pnl": -39.355028689637216,
+      "pnl_pct": -0.5922337956968696,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-19 09:40:00",
+      "entry_price": 106287.66958,
+      "exit_price": 107006.91672,
+      "position_type": "SHORT",
+      "pnl": -44.64748290803829,
+      "pnl_pct": -0.6766985698737457,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-19 11:25:00",
+      "entry_price": 107982.92448,
+      "exit_price": 107784.10099,
+      "position_type": "LONG",
+      "pnl": -12.052339703620161,
+      "pnl_pct": -0.1841249354538645,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-19 15:30:00",
+      "entry_price": 108464.194995,
+      "exit_price": 108379.55311500002,
+      "position_type": "LONG",
+      "pnl": -5.090428842744479,
+      "pnl_pct": -0.0780367014238043,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-19 18:00:00",
+      "entry_price": 108959.00227499999,
+      "exit_price": 109096.41450500001,
+      "position_type": "LONG",
+      "pnl": 8.205970147208271,
+      "pnl_pct": 0.12611370068643213,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-19 23:05:00",
+      "entry_price": 109115.31039,
+      "exit_price": 108803.49104000001,
+      "position_type": "LONG",
+      "pnl": -18.582136558053964,
+      "pnl_pct": -0.2857704834321469,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-20 01:00:00",
+      "entry_price": 108012.74661,
+      "exit_price": 108069.44772,
+      "position_type": "SHORT",
+      "pnl": -3.398545442047795,
+      "pnl_pct": -0.05249483211895755,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-20 04:50:00",
+      "entry_price": 108388.09696499999,
+      "exit_price": 110267.528655,
+      "position_type": "LONG",
+      "pnl": 112.00392487620903,
+      "pnl_pct": 1.7339834747785141,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-20 10:05:00",
+      "entry_price": 110738.59300500002,
+      "exit_price": 111021.733125,
+      "position_type": "SHORT",
+      "pnl": -16.74321315025357,
+      "pnl_pct": -0.2556833280220543,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-20 13:45:00",
+      "entry_price": 110557.68350500001,
+      "exit_price": 111108.76662,
+      "position_type": "SHORT",
+      "pnl": -32.50714265392806,
+      "pnl_pct": -0.4984575449928487,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-20 15:55:00",
+      "entry_price": 111330.687525,
+      "exit_price": 111088.977725,
+      "position_type": "LONG",
+      "pnl": -14.069847401116307,
+      "pnl_pct": -0.2171097703368799,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-20 18:00:00",
+      "entry_price": 110797.663455,
+      "exit_price": 110345.155005,
+      "position_type": "SHORT",
+      "pnl": 26.36777951931608,
+      "pnl_pct": 0.4084097406835595,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-21 00:40:00",
+      "entry_price": 110344.750025,
+      "exit_price": 110554.30953,
+      "position_type": "SHORT",
+      "pnl": -12.28424831964475,
+      "pnl_pct": -0.18991343489610435,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-21 02:50:00",
+      "entry_price": 109808.25840500002,
+      "exit_price": 109616.87104499999,
+      "position_type": "SHORT",
+      "pnl": 11.234239695848544,
+      "pnl_pct": 0.17429231897489764,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-21 12:10:00",
+      "entry_price": 107951.11858499999,
+      "exit_price": 108418.693535,
+      "position_type": "LONG",
+      "pnl": 27.911920165449352,
+      "pnl_pct": 0.4331358082518097,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-21 12:55:00",
+      "entry_price": 109417.431375,
+      "exit_price": 108739.0033,
+      "position_type": "LONG",
+      "pnl": -40.039765357273566,
+      "pnl_pct": -0.6200365576805273,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-21 15:40:00",
+      "entry_price": 109799.77244999999,
+      "exit_price": 113281.38097500001,
+      "position_type": "LONG",
+      "pnl": 203.2535048787455,
+      "pnl_pct": 3.1708704374459917,
+      "exit_reason": "TAKE_PROFIT"
+    },
+    {
+      "entry_time": "2025-10-21 19:00:00",
+      "entry_price": 112509.59706000001,
+      "exit_price": 112109.47672499999,
+      "position_type": "SHORT",
+      "pnl": 23.404970330898337,
+      "pnl_pct": 0.35563218201434793,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-21 21:10:00",
+      "entry_price": 111255.37448500001,
+      "exit_price": 111150.757605,
+      "position_type": "SHORT",
+      "pnl": 6.197222353554019,
+      "pnl_pct": 0.09403310220676697,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-21 23:15:00",
+      "entry_price": 109960.44227500001,
+      "exit_price": 109333.07922,
+      "position_type": "SHORT",
+      "pnl": 37.56511816463105,
+      "pnl_pct": 0.5705352234133771,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-22 03:55:00",
+      "entry_price": 107871.73715,
+      "exit_price": 108270.12801,
+      "position_type": "SHORT",
+      "pnl": -24.39788032506921,
+      "pnl_pct": -0.369319036223567,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-22 06:20:00",
+      "entry_price": 107921.00250500001,
+      "exit_price": 108288.187035,
+      "position_type": "SHORT",
+      "pnl": -22.36126493367614,
+      "pnl_pct": -0.3402345433021458,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-22 07:30:00",
+      "entry_price": 107623.86115,
+      "exit_price": 108021.86394,
+      "position_type": "SHORT",
+      "pnl": -24.18674555328782,
+      "pnl_pct": -0.3698090606926703,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-22 11:15:00",
+      "entry_price": 107810.157955,
+      "exit_price": 108134.36016,
+      "position_type": "SHORT",
+      "pnl": -19.56688995258147,
+      "pnl_pct": -0.300715824139054,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-22 14:15:00",
+      "entry_price": 108837.75168,
+      "exit_price": 108108.04893500001,
+      "position_type": "LONG",
+      "pnl": -43.42793827033889,
+      "pnl_pct": -0.6704500357058347,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-22 15:20:00",
+      "entry_price": 109001.97374999999,
+      "exit_price": 107963.98100500001,
+      "position_type": "LONG",
+      "pnl": -61.19975861766914,
+      "pnl_pct": -0.9522696785111943,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-22 21:50:00",
+      "entry_price": 107250.857745,
+      "exit_price": 107323.284825,
+      "position_type": "SHORT",
+      "pnl": -4.295031775497391,
+      "pnl_pct": -0.06753053683933875,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-23 00:25:00",
+      "entry_price": 107849.98804499999,
+      "exit_price": 107543.24148,
+      "position_type": "LONG",
+      "pnl": -18.045901269761742,
+      "pnl_pct": -0.2844196560059007,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-23 01:55:00",
+      "entry_price": 108365.505675,
+      "exit_price": 108095.925,
+      "position_type": "LONG",
+      "pnl": -15.715210935739828,
+      "pnl_pct": -0.2487698214674438,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-23 03:40:00",
+      "entry_price": 108644.284995,
+      "exit_price": 108373.52613000001,
+      "position_type": "LONG",
+      "pnl": -15.679841167132643,
+      "pnl_pct": -0.24921592977710919,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-23 05:30:00",
+      "entry_price": 108947.156355,
+      "exit_price": 108679.91286000001,
+      "position_type": "LONG",
+      "pnl": -15.370878690005615,
+      "pnl_pct": -0.2452964390637104,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-23 07:15:00",
+      "entry_price": 109133.5395,
+      "exit_price": 109695.60476,
+      "position_type": "LONG",
+      "pnl": 32.14348131645806,
+      "pnl_pct": 0.515025227418747,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-23 12:45:00",
+      "entry_price": 109186.45946000001,
+      "exit_price": 109174.28986499998,
+      "position_type": "SHORT",
+      "pnl": 0.6975885193120858,
+      "pnl_pct": 0.0111456998058324,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-23 14:10:00",
+      "entry_price": 109634.79,
+      "exit_price": 108847.58898,
+      "position_type": "LONG",
+      "pnl": -44.863225239227,
+      "pnl_pct": -0.7180211865229945,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-23 17:05:00",
+      "entry_price": 110588.76675,
+      "exit_price": 109817.02402000001,
+      "position_type": "LONG",
+      "pnl": -43.24286556853543,
+      "pnl_pct": -0.6978491149508941,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-23 18:20:00",
+      "entry_price": 110955.51002999999,
+      "exit_price": 110505.15978,
+      "position_type": "LONG",
+      "pnl": -24.947876377450086,
+      "pnl_pct": -0.40588362838242426,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-23 21:50:00",
+      "entry_price": 109934.36532000001,
+      "exit_price": 109574.77000499998,
+      "position_type": "SHORT",
+      "pnl": 19.995834254152694,
+      "pnl_pct": 0.32710000549264795,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-24 01:20:00",
+      "entry_price": 110124.05451,
+      "exit_price": 110265.97943,
+      "position_type": "LONG",
+      "pnl": 7.8873883527864015,
+      "pnl_pct": 0.1288773108032607,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-24 05:25:00",
+      "entry_price": 110853.388995,
+      "exit_price": 110946.43903000001,
+      "position_type": "LONG",
+      "pnl": 5.13388030030496,
+      "pnl_pct": 0.08393972962270414,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-24 08:45:00",
+      "entry_price": 110888.18817000001,
+      "exit_price": 111204.52447499998,
+      "position_type": "SHORT",
+      "pnl": -17.429611947514,
+      "pnl_pct": -0.28527502362560714,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-24 12:00:00",
+      "entry_price": 110797.06375500001,
+      "exit_price": 111251.988195,
+      "position_type": "SHORT",
+      "pnl": -24.97657830888347,
+      "pnl_pct": -0.410592505416876,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-24 13:25:00",
+      "entry_price": 111612.28825499999,
+      "exit_price": 111180.60189,
+      "position_type": "LONG",
+      "pnl": -23.39825420967181,
+      "pnl_pct": -0.38677315172834315,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-24 15:05:00",
+      "entry_price": 110688.857885,
+      "exit_price": 110209.77734999999,
+      "position_type": "SHORT",
+      "pnl": 26.045560420065986,
+      "pnl_pct": 0.4328173080417501,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-24 19:45:00",
+      "entry_price": 110815.830225,
+      "exit_price": 110606.56905,
+      "position_type": "LONG",
+      "pnl": -11.387455152960085,
+      "pnl_pct": -0.1888368968360471,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-24 22:10:00",
+      "entry_price": 111063.54401999999,
+      "exit_price": 110887.398565,
+      "position_type": "LONG",
+      "pnl": -9.530550487906895,
+      "pnl_pct": -0.15859880625479686,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-25 01:15:00",
+      "entry_price": 110674.40511500002,
+      "exit_price": 110951.94824999999,
+      "position_type": "SHORT",
+      "pnl": -15.020973619463039,
+      "pnl_pct": -0.25077445386905867,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-25 02:30:00",
+      "entry_price": 111158.03124,
+      "exit_price": 110941.711395,
+      "position_type": "LONG",
+      "pnl": -11.609240796155184,
+      "pnl_pct": -0.19460568218677537,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-25 05:00:00",
+      "entry_price": 111255.589995,
+      "exit_price": 111124.33004,
+      "position_type": "LONG",
+      "pnl": -7.013169811978152,
+      "pnl_pct": -0.11798054821865614,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-25 07:45:00",
+      "entry_price": 111608.20621499998,
+      "exit_price": 111383.190545,
+      "position_type": "LONG",
+      "pnl": -11.950233351836946,
+      "pnl_pct": -0.2016121194229328,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-25 09:20:00",
+      "entry_price": 111882.21315,
+      "exit_price": 111624.50982500002,
+      "position_type": "LONG",
+      "pnl": -13.603382504958812,
+      "pnl_pct": -0.2303344899465643,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-25 13:35:00",
+      "entry_price": 111749.236695,
+      "exit_price": 111632.47584000001,
+      "position_type": "LONG",
+      "pnl": -6.14690142579114,
+      "pnl_pct": -0.10448470025675811,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-25 16:45:00",
+      "entry_price": 111388.31797999999,
+      "exit_price": 111479.95212,
+      "position_type": "SHORT",
+      "pnl": -4.826472782703492,
+      "pnl_pct": -0.08226548498242187,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-25 19:35:00",
+      "entry_price": 111655.789995,
+      "exit_price": 111556.863665,
+      "position_type": "LONG",
+      "pnl": -5.184869680256651,
+      "pnl_pct": -0.08859937313096977,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-26 01:05:00",
+      "entry_price": 111798.13113,
+      "exit_price": 111679.43235,
+      "position_type": "LONG",
+      "pnl": -6.197117820085585,
+      "pnl_pct": -0.10617241880543368,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-26 04:20:00",
+      "entry_price": 111439.642305,
+      "exit_price": 111410.78755499999,
+      "position_type": "SHORT",
+      "pnl": 1.5071542112720746,
+      "pnl_pct": 0.025892715916155194,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-26 06:45:00",
+      "entry_price": 111686.305245,
+      "exit_price": 111555.704245,
+      "position_type": "LONG",
+      "pnl": -6.795880073814886,
+      "pnl_pct": -0.116935554196643,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-26 07:25:00",
+      "entry_price": 111757.50082499998,
+      "exit_price": 111593.725225,
+      "position_type": "LONG",
+      "pnl": -8.49242155337464,
+      "pnl_pct": -0.14654551040509906,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-26 08:55:00",
+      "entry_price": 111845.965035,
+      "exit_price": 111721.05153000001,
+      "position_type": "LONG",
+      "pnl": -6.4519654362204495,
+      "pnl_pct": -0.11168351487771623,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-26 10:20:00",
+      "entry_price": 112408.55619,
+      "exit_price": 112291.10636,
+      "position_type": "LONG",
+      "pnl": -6.019167729552896,
+      "pnl_pct": -0.10448477765471577,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-26 12:40:00",
+      "entry_price": 113784.86399999999,
+      "exit_price": 113443.539855,
+      "position_type": "LONG",
+      "pnl": -17.233543717616225,
+      "pnl_pct": -0.29997324160794486,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-26 17:40:00",
+      "entry_price": 113787.48530999999,
+      "exit_price": 113481.27098,
+      "position_type": "LONG",
+      "pnl": -15.390957258933875,
+      "pnl_pct": -0.2691107279203374,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-26 19:05:00",
+      "entry_price": 113819.11111499999,
+      "exit_price": 113497.38292,
+      "position_type": "LONG",
+      "pnl": -16.098007999807482,
+      "pnl_pct": -0.2826662340342147,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-26 21:40:00",
+      "entry_price": 113357.48290500001,
+      "exit_price": 113512.477875,
+      "position_type": "SHORT",
+      "pnl": -7.7531117392572,
+      "pnl_pct": -0.13673113236810291,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-26 23:10:00",
+      "entry_price": 114831.877245,
+      "exit_price": 114418.75200500002,
+      "position_type": "LONG",
+      "pnl": -20.338044741725998,
+      "pnl_pct": -0.35976529332404317,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-27 00:20:00",
+      "entry_price": 115028.055285,
+      "exit_price": 114744.40909500001,
+      "position_type": "LONG",
+      "pnl": -13.869827747026036,
+      "pnl_pct": -0.24658870333607494,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-27 02:15:00",
+      "entry_price": 115382.17225499998,
+      "exit_price": 115127.26757000001,
+      "position_type": "LONG",
+      "pnl": -12.376244725908299,
+      "pnl_pct": -0.22092207142418932,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-27 07:25:00",
+      "entry_price": 115836.98955,
+      "exit_price": 115802.839615,
+      "position_type": "LONG",
+      "pnl": -1.6452992749633266,
+      "pnl_pct": -0.02948102772064315,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-27 09:30:00",
+      "entry_price": 114852.95479500001,
+      "exit_price": 115214.27835,
+      "position_type": "SHORT",
+      "pnl": -17.52098895663698,
+      "pnl_pct": -0.31459665591094627,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-27 13:50:00",
+      "entry_price": 114674.284175,
+      "exit_price": 115406.564445,
+      "position_type": "SHORT",
+      "pnl": -35.39961373886031,
+      "pnl_pct": -0.6385740929348189,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-27 14:35:00",
+      "entry_price": 114716.443085,
+      "exit_price": 115034.38844999998,
+      "position_type": "SHORT",
+      "pnl": -15.248299532520145,
+      "pnl_pct": -0.2771576213920735,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-27 17:20:00",
+      "entry_price": 115337.14975499999,
+      "exit_price": 115293.58437,
+      "position_type": "LONG",
+      "pnl": -2.069172911251618,
+      "pnl_pct": -0.03777220530638768,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-27 21:45:00",
+      "entry_price": 114984.41903,
+      "exit_price": 114537.92033999998,
+      "position_type": "SHORT",
+      "pnl": 21.22635484353321,
+      "pnl_pct": 0.388312341590845,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-28 02:15:00",
+      "entry_price": 114524.39358,
+      "exit_price": 114109.60665500001,
+      "position_type": "LONG",
+      "pnl": -19.831621397675388,
+      "pnl_pct": -0.3621821622746662,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-28 03:55:00",
+      "entry_price": 113605.119025,
+      "exit_price": 113965.19412,
+      "position_type": "SHORT",
+      "pnl": -17.267315331326746,
+      "pnl_pct": -0.31695323070851633,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-28 12:45:00",
+      "entry_price": 114357.74252500001,
+      "exit_price": 114548.655705,
+      "position_type": "SHORT",
+      "pnl": -9.052601981490602,
+      "pnl_pct": -0.1669438166447302,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-28 14:40:00",
+      "entry_price": 114873.52805999998,
+      "exit_price": 114716.04328499999,
+      "position_type": "LONG",
+      "pnl": -7.409423516603051,
+      "pnl_pct": -0.13709405261561522,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-28 17:55:00",
+      "entry_price": 115491.82705499999,
+      "exit_price": 115232.35500000001,
+      "position_type": "LONG",
+      "pnl": -12.105593773592483,
+      "pnl_pct": -0.2246670276299376,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-28 20:50:00",
+      "entry_price": 114047.46774000001,
+      "exit_price": 112951.997775,
+      "position_type": "SHORT",
+      "pnl": 51.55839757413724,
+      "pnl_pct": 0.9605386131828998,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-29 01:35:00",
+      "entry_price": 112671.386125,
+      "exit_price": 112685.304495,
+      "position_type": "SHORT",
+      "pnl": -0.6676142594578738,
+      "pnl_pct": -0.012353065386590773,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-29 06:00:00",
+      "entry_price": 112914.559065,
+      "exit_price": 112982.510485,
+      "position_type": "LONG",
+      "pnl": 3.2461501286522374,
+      "pnl_pct": 0.06017950259265989,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-29 07:40:00",
+      "entry_price": 113395.96965,
+      "exit_price": 113236.5534,
+      "position_type": "LONG",
+      "pnl": -7.573696335160701,
+      "pnl_pct": -0.14058370018973138,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-29 10:00:00",
+      "entry_price": 113000.981245,
+      "exit_price": 113130.28687499999,
+      "position_type": "SHORT",
+      "pnl": -6.145757536858753,
+      "pnl_pct": -0.11442876741011437,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-29 13:35:00",
+      "entry_price": 113384.11372499999,
+      "exit_price": 112940.671415,
+      "position_type": "LONG",
+      "pnl": -20.945654613528436,
+      "pnl_pct": -0.39109739048232267,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-29 15:20:00",
+      "entry_price": 112735.48406000002,
+      "exit_price": 112453.86883499999,
+      "position_type": "SHORT",
+      "pnl": 13.307286054167633,
+      "pnl_pct": 0.24980176148456454,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-29 16:40:00",
+      "entry_price": 111973.68515,
+      "exit_price": 111376.890615,
+      "position_type": "SHORT",
+      "pnl": 28.405239291181285,
+      "pnl_pct": 0.5329774885952373,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-29 18:50:00",
+      "entry_price": 109372.38645,
+      "exit_price": 111127.17581999999,
+      "position_type": "SHORT",
+      "pnl": -85.76468878510768,
+      "pnl_pct": -1.6044171906244293,
+      "exit_reason": "TRAILING_STOP"
+    },
+    {
+      "entry_time": "2025-10-30 00:15:00",
+      "entry_price": 110660.612015,
+      "exit_price": 110348.836845,
+      "position_type": "SHORT",
+      "pnl": 14.81571311678373,
+      "pnl_pct": 0.28173996539775786,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-30 05:20:00",
+      "entry_price": 110535.38466,
+      "exit_price": 109060.34292,
+      "position_type": "SHORT",
+      "pnl": 70.22594014068109,
+      "pnl_pct": 1.3344520802430258,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-30 07:55:00",
+      "entry_price": 111577.60092,
+      "exit_price": 111311.03664,
+      "position_type": "LONG",
+      "pnl": -12.70095474464205,
+      "pnl_pct": -0.2389048319752952,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-30 13:30:00",
+      "entry_price": 109381.451915,
+      "exit_price": 108402.39411,
+      "position_type": "SHORT",
+      "pnl": 47.3977907954454,
+      "pnl_pct": 0.8950857644135378,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-30 14:05:00",
+      "entry_price": 107419.2635,
+      "exit_price": 108021.76388999999,
+      "position_type": "SHORT",
+      "pnl": -29.886872643567266,
+      "pnl_pct": -0.5608867258710878,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-30 16:00:00",
+      "entry_price": 107398.53387,
+      "exit_price": 107873.899995,
+      "position_type": "SHORT",
+      "pnl": -23.42333399720512,
+      "pnl_pct": -0.44261882157107,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-30 17:55:00",
+      "entry_price": 107276.80476500001,
+      "exit_price": 107540.433345,
+      "position_type": "SHORT",
+      "pnl": -12.929588118163423,
+      "pnl_pct": -0.24574611499428323,
+      "exit_reason": "MACD_REVERSAL"
+    },
+    {
+      "entry_time": "2025-10-30 20:05:00",
+      "entry_price": 106526.71,
+      "exit_price": 106903.90524,
+      "position_type": "SHORT",
+      "pnl": -18.55491565388276,
+      "pnl_pct": -0.3540851303865353,
+      "exit_reason": "MACD_REVERSAL"
+    }
+  ]
+}

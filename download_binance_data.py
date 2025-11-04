@@ -91,6 +91,12 @@ def load_csv_to_dataframe(csv_path: Path) -> pd.DataFrame:
     
     df = pd.read_csv(csv_path, names=columns)
     
+    # ВАЖНО: Binance 2025 использует МИКРОСЕКУНДЫ (не миллисекунды!)
+    # Проверяем размер timestamp и конвертируем
+    if df['open_time'].iloc[0] > 1e12:  # Если больше миллисекунд - это микросекунды
+        df['open_time'] = df['open_time'] / 1000
+        df['close_time'] = df['close_time'] / 1000
+    
     # Конвертируем timestamp
     df['timestamp'] = pd.to_datetime(df['open_time'], unit='ms')
     
@@ -178,8 +184,8 @@ def main():
     # Скачиваем последние 7 дней BTC/USDT
     # (используй даты из прошлого, не будущего!)
     symbol = "BTCUSDT"
-    start_date = "2024-10-28"  # Неделя назад от 4 ноября
-    num_days = 7
+    start_date = "2025-10-01"  # АКТУАЛЬНО! Октябрь 2025 (30 дней до сегодня)
+    num_days = 30  # 30 дней для репрезентативной выборки
     
     df = download_multiple_days(symbol, start_date, num_days)
     

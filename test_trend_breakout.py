@@ -219,8 +219,8 @@ def main():
     logger.info("🎯 BOSS TEST: Trend Breakout MACD Strategy")
     logger.info("="*80)
     
-    # 1. Загружаем данные
-    csv_path = r"f:\AgeeKey\yun_min\data\binance_historical\BTCUSDT_historical_2024-10-28_to_7days.csv"
+    # 1. Загружаем АКТУАЛЬНЫЕ данные 2025 года!
+    csv_path = r"f:\AgeeKey\yun_min\data\binance_historical\BTCUSDT_historical_2025-10-01_to_30days.csv"
     df = load_binance_historical_data(csv_path)
     
     # 2. Ресемплируем в 5min
