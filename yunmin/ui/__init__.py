@@ -1,3 +1,5 @@
 """UI module - Web dashboard and notifications."""
 
-__all__ = []
+from yunmin.ui.live_dashboard import LiveDashboard, create_demo_dashboard
+
+__all__ = ["LiveDashboard", "create_demo_dashboard"]
