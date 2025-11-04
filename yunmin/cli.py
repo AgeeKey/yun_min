@@ -51,6 +51,17 @@ def cmd_dashboard(args):
         logger.info("Dashboard stopped by user")
 
 
+def cmd_setup_wizard(args):
+    """Run the setup wizard."""
+    from yunmin.cli_wizard import run_wizard
+    
+    logger.info("Starting Configuration Wizard...")
+    config_path = run_wizard()
+    
+    if config_path:
+        logger.info(f"Configuration saved to {config_path}")
+
+
 def cmd_run(args):
     """Run the trading bot."""
     logger.info("=" * 60)
@@ -160,6 +171,10 @@ def main():
         help='Dashboard update interval in seconds (default: 1.0)'
     )
     dashboard_parser.set_defaults(func=cmd_dashboard)
+    
+    # Setup wizard command
+    wizard_parser = subparsers.add_parser('setup-wizard', help='Interactive configuration wizard')
+    wizard_parser.set_defaults(func=cmd_setup_wizard)
     
     args = parser.parse_args()
     
