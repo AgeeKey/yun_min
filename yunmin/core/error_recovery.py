@@ -632,7 +632,7 @@ class ErrorRecoveryManager:
             result = await self.circuit_breaker.call(func, *args, **kwargs)
             return result
         except Exception as e:
-            logger.error(f"❌ {operation_name} failed (circuit: {self.circuit_breaker.state.value}): {e}")
+            logger.error(f"❌ {operation_name} failed (circuit: {self.circuit_breaker.state.value}): {type(e).__name__}")
             raise e
 
 

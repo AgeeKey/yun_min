@@ -362,9 +362,12 @@ class AlertManager:
                     # Use notify-send for Linux
                     import subprocess
                     title = f"{alert.level.value.upper()}: {alert.title}"
+                    # Use shell=False for security
                     subprocess.run([
-                        "notify-send", title, alert.message[:255]
-                    ])
+                        "notify-send", 
+                        title[:100],  # Limit length
+                        alert.message[:255]  # Limit length
+                    ], check=False)
                     logger.success(f"✅ Desktop notification sent (Linux): {alert.title}")
         
         except Exception as e:

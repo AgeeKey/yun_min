@@ -395,9 +395,17 @@ class PerformanceAnalyzer:
             logger.warning("No trades to export")
             return
         
+        # Validate filepath
+        path = Path(filepath).resolve()
+        if not str(path).endswith('.csv'):
+            path = path.with_suffix('.csv')
+        
+        # Ensure parent directory exists
+        path.parent.mkdir(parents=True, exist_ok=True)
+        
         df = pd.DataFrame([t.to_dict() for t in self.trades])
-        df.to_csv(filepath, index=False)
-        logger.success(f"✅ Exported {len(self.trades)} trades to {filepath}")
+        df.to_csv(str(path), index=False)
+        logger.success(f"✅ Exported {len(self.trades)} trades to {path}")
     
     def export_to_excel(self, filepath: str):
         """
@@ -410,8 +418,16 @@ class PerformanceAnalyzer:
             logger.warning("No trades to export")
             return
         
+        # Validate filepath
+        path = Path(filepath).resolve()
+        if not str(path).endswith('.xlsx'):
+            path = path.with_suffix('.xlsx')
+        
+        # Ensure parent directory exists
+        path.parent.mkdir(parents=True, exist_ok=True)
+        
         try:
-            with pd.ExcelWriter(filepath, engine='openpyxl') as writer:
+            with pd.ExcelWriter(str(path), engine='openpyxl') as writer:
                 # Trades sheet
                 trades_df = pd.DataFrame([t.to_dict() for t in self.trades])
                 trades_df.to_excel(writer, sheet_name='Trades', index=False)
@@ -451,7 +467,7 @@ class PerformanceAnalyzer:
                 ])
                 day_df.to_excel(writer, sheet_name='Attribution_Day', index=False)
             
-            logger.success(f"✅ Exported comprehensive report to {filepath}")
+            logger.success(f"✅ Exported comprehensive report to {path}")
         
         except ImportError:
             logger.error("❌ openpyxl not installed. Install with: pip install openpyxl")
