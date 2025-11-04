@@ -25,6 +25,7 @@ class AlertChannel(Enum):
     TELEGRAM = "telegram"
     EMAIL = "email"
     WEBHOOK = "webhook"
+    DESKTOP = "desktop"
     LOG = "log"
 
 
@@ -47,11 +48,19 @@ class AlertConfig:
     webhook_url: Optional[str] = None
     webhook_headers: Dict[str, str] = field(default_factory=dict)
     
+    # Desktop notifications
+    desktop_enabled: bool = True
+    
     # Alert settings
     enabled_channels: List[AlertChannel] = field(default_factory=lambda: [AlertChannel.LOG])
     min_alert_level: AlertLevel = AlertLevel.WARNING
     rate_limit_seconds: int = 60  # Don't spam same alert
     retry_attempts: int = 3
+    
+    # Smart alert rules
+    throttle_enabled: bool = True
+    group_similar_alerts: bool = True
+    alert_digest_interval: int = 3600  # Send digest every hour for non-critical alerts
 
 
 @dataclass
@@ -84,6 +93,8 @@ class AlertManager:
         self.alert_history: List[Alert] = []
         self.last_alert_time: Dict[str, datetime] = {}
         self._session: Optional[aiohttp.ClientSession] = None
+        self.alert_groups: Dict[str, List[Alert]] = {}  # For grouping similar alerts
+        self.digest_pending: List[Alert] = []  # Alerts waiting for digest
     
     async def send_alert(
         self,
@@ -137,6 +148,8 @@ class AlertManager:
                 tasks.append(self._send_email(alert))
             elif channel == AlertChannel.WEBHOOK:
                 tasks.append(self._send_webhook(alert))
+            elif channel == AlertChannel.DESKTOP:
+                tasks.append(self._send_desktop(alert))
             elif channel == AlertChannel.LOG:
                 self._send_log(alert)
         
@@ -286,6 +299,77 @@ class AlertManager:
         except Exception as e:
             logger.error(f"❌ Webhook error: {e}")
     
+    async def _send_desktop(self, alert: Alert):
+        """Send alert via Desktop notification"""
+        if not self.config.desktop_enabled:
+            return
+        
+        try:
+            # Try plyer first (cross-platform)
+            try:
+                from plyer import notification
+                
+                # Format title with emoji
+                emoji = {
+                    AlertLevel.INFO: "ℹ️",
+                    AlertLevel.WARNING: "⚠️",
+                    AlertLevel.ERROR: "❌",
+                    AlertLevel.CRITICAL: "🚨"
+                }
+                
+                title = f"{emoji.get(alert.level, '📢')} {alert.title}"
+                
+                notification.notify(
+                    title=title,
+                    message=alert.message[:255],  # Limit message length
+                    app_name="YunMin Trading Bot",
+                    timeout=10  # seconds
+                )
+                
+                logger.success(f"✅ Desktop notification sent: {alert.title}")
+                return
+            
+            except ImportError:
+                # Fallback to platform-specific implementations
+                import platform
+                system = platform.system()
+                
+                if system == "Windows":
+                    try:
+                        from win10toast import ToastNotifier
+                        toaster = ToastNotifier()
+                        toaster.show_toast(
+                            f"{alert.level.value.upper()}: {alert.title}",
+                            alert.message[:255],
+                            duration=10,
+                            threaded=True
+                        )
+                        logger.success(f"✅ Desktop notification sent (Windows): {alert.title}")
+                    except ImportError:
+                        logger.warning("❌ win10toast not installed. Install with: pip install win10toast")
+                
+                elif system == "Darwin":  # macOS
+                    # Use osascript for macOS notifications
+                    import subprocess
+                    title = f"{alert.level.value.upper()}: {alert.title}"
+                    subprocess.run([
+                        "osascript", "-e",
+                        f'display notification "{alert.message[:255]}" with title "{title}"'
+                    ])
+                    logger.success(f"✅ Desktop notification sent (macOS): {alert.title}")
+                
+                elif system == "Linux":
+                    # Use notify-send for Linux
+                    import subprocess
+                    title = f"{alert.level.value.upper()}: {alert.title}"
+                    subprocess.run([
+                        "notify-send", title, alert.message[:255]
+                    ])
+                    logger.success(f"✅ Desktop notification sent (Linux): {alert.title}")
+        
+        except Exception as e:
+            logger.error(f"❌ Desktop notification error: {e}")
+    
     def _send_log(self, alert: Alert):
         """Send alert to logs"""
         log_func = {
@@ -328,9 +412,9 @@ class AlertManager:
         self.last_alert_time.clear()
 
 
-# Trading-specific alert helpers
+# Trading-specific alert helpers with smart templates
 class TradingAlerts:
-    """Pre-configured alerts for trading scenarios"""
+    """Pre-configured alerts for trading scenarios with smart templates"""
     
     @staticmethod
     async def position_opened(manager: AlertManager, symbol: str, side: str, amount: float, price: float):
@@ -345,20 +429,58 @@ class TradingAlerts:
         )
     
     @staticmethod
-    async def position_closed(manager: AlertManager, symbol: str, pnl: float, pnl_pct: float):
-        """Alert when position is closed"""
+    async def position_closed(manager: AlertManager, symbol: str, pnl: float, pnl_pct: float, duration_hours: float = 0):
+        """
+        Alert when position is closed
+        Template: "✅ TRADE CLOSED: +$125.50 (2.3%) in 4h 15m"
+        """
         level = AlertLevel.INFO if pnl > 0 else AlertLevel.WARNING
-        emoji = "💰" if pnl > 0 else "📉"
+        emoji = "✅" if pnl > 0 else "📉"
+        
+        # Format duration
+        duration_str = ""
+        if duration_hours > 0:
+            hours = int(duration_hours)
+            minutes = int((duration_hours - hours) * 60)
+            duration_str = f" in {hours}h {minutes}m"
         
         await manager.send_alert(
             level,
-            f"{emoji} Position Closed",
-            f"{symbol}: P&L ${pnl:,.2f} ({pnl_pct:+.2f}%)",
+            f"{emoji} TRADE CLOSED",
+            f"{symbol}: {'+' if pnl > 0 else ''}{pnl:,.2f} ({pnl_pct:+.1f}%){duration_str}",
             metadata={
                 "symbol": symbol,
                 "pnl": pnl,
-                "pnl_pct": pnl_pct
+                "pnl_pct": pnl_pct,
+                "duration_hours": duration_hours
             }
+        )
+    
+    @staticmethod
+    async def stop_loss_hit(manager: AlertManager, symbol: str, price: float, loss_pct: float):
+        """
+        Critical alert when stop-loss is hit
+        Template: "🚨 STOP-LOSS HIT: BTC/USDT @ $109,500 (-3.2%)"
+        """
+        await manager.send_critical(
+            "🚨 STOP-LOSS HIT",
+            f"{symbol} @ ${price:,.2f} ({loss_pct:+.1f}%)",
+            symbol=symbol,
+            price=price,
+            loss_pct=loss_pct
+        )
+    
+    @staticmethod
+    async def drawdown_warning(manager: AlertManager, current_dd_pct: float, max_dd_pct: float):
+        """
+        Warning alert for drawdown
+        Template: "⚠️ DRAWDOWN WARNING: Portfolio down 5.1% today"
+        """
+        await manager.send_warning(
+            "⚠️ DRAWDOWN WARNING",
+            f"Portfolio down {abs(current_dd_pct):.1f}% (max: {abs(max_dd_pct):.1f}%)",
+            current_drawdown=current_dd_pct,
+            max_drawdown=max_dd_pct
         )
     
     @staticmethod
@@ -382,6 +504,16 @@ class TradingAlerts:
         )
     
     @staticmethod
+    async def connection_restored(manager: AlertManager, exchange: str, downtime_seconds: int):
+        """Alert when connection is restored"""
+        await manager.send_info(
+            "✅ Connection Restored",
+            f"Reconnected to {exchange} after {downtime_seconds}s downtime",
+            exchange=exchange,
+            downtime=downtime_seconds
+        )
+    
+    @staticmethod
     async def daily_summary(
         manager: AlertManager,
         trades: int,
@@ -399,6 +531,29 @@ class TradingAlerts:
             win_rate=win_rate,
             largest_win=largest_win,
             largest_loss=largest_loss
+        )
+    
+    @staticmethod
+    async def api_error(manager: AlertManager, exchange: str, error_code: int, error_msg: str):
+        """Alert for API errors"""
+        await manager.send_error(
+            f"API Error: {exchange}",
+            f"Error {error_code}: {error_msg}",
+            exchange=exchange,
+            error_code=error_code,
+            error_msg=error_msg
+        )
+    
+    @staticmethod
+    async def strategy_signal(manager: AlertManager, symbol: str, signal_type: str, confidence: float, reason: str):
+        """Alert for new strategy signals"""
+        await manager.send_info(
+            f"📈 Strategy Signal: {signal_type}",
+            f"{symbol} - Confidence: {confidence:.1f}% | {reason}",
+            symbol=symbol,
+            signal_type=signal_type,
+            confidence=confidence,
+            reason=reason
         )
 
 
