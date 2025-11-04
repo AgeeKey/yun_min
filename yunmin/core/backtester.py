@@ -20,6 +20,8 @@ from datetime import datetime
 import itertools
 import json
 
+from yunmin.strategy.base import SignalType
+
 logger = logging.getLogger(__name__)
 
 
@@ -143,7 +145,7 @@ class AdvancedBacktester:
             current_price = data.iloc[i]['close']
             
             # Execute trades based on signals
-            if position is None and signal.type.value in ['buy', 'sell']:
+            if position is None and signal.type in [SignalType.BUY, SignalType.SELL]:
                 # Open position
                 position_size = capital * 0.95  # Use 95% of capital
                 position = {
@@ -154,7 +156,7 @@ class AdvancedBacktester:
                     'signal': signal
                 }
                 
-            elif position is not None and signal.type.value == 'hold':
+            elif position is not None and signal.type == SignalType.HOLD:
                 # Close position
                 exit_price = current_price * (1 - slippage)
                 

@@ -159,13 +159,19 @@ class RegimeDetector:
         
         # Calculate True Range
         tr1 = high - low
-        tr2 = np.abs(high - np.roll(close, 1))
-        tr3 = np.abs(low - np.roll(close, 1))
+        # Use proper shift for previous close
+        prev_close = np.concatenate([[close[0]], close[:-1]])
+        tr2 = np.abs(high - prev_close)
+        tr3 = np.abs(low - prev_close)
         tr = np.maximum(tr1, np.maximum(tr2, tr3))
         
-        # Calculate +DM and -DM
-        high_diff = np.diff(high, prepend=high[0])
-        low_diff = -np.diff(low, prepend=low[0])
+        # Calculate +DM and -DM (directional movement)
+        # Use proper shift for previous high/low
+        prev_high = np.concatenate([[high[0]], high[:-1]])
+        prev_low = np.concatenate([[low[0]], low[:-1]])
+        
+        high_diff = high - prev_high
+        low_diff = prev_low - low
         
         plus_dm = np.where((high_diff > low_diff) & (high_diff > 0), high_diff, 0)
         minus_dm = np.where((low_diff > high_diff) & (low_diff > 0), low_diff, 0)

@@ -58,7 +58,8 @@ class PositionOptimizer:
         volatility_threshold_high: float = 0.03,
         volatility_threshold_low: float = 0.015,
         streak_threshold: int = 3,
-        performance_adjustment_pct: float = 0.25
+        performance_adjustment_pct: float = 0.25,
+        reward_risk_ratio: float = 2.0
     ):
         """
         Initialize position optimizer.
@@ -74,6 +75,7 @@ class PositionOptimizer:
             volatility_threshold_low: Low volatility threshold (1.5% default)
             streak_threshold: Number of wins/losses to trigger adjustment
             performance_adjustment_pct: % to adjust size after streaks (0.25 = 25%)
+            reward_risk_ratio: Expected reward/risk ratio for Kelly (2.0 = 2:1 default)
         """
         self.initial_capital = initial_capital
         self.current_capital = initial_capital
@@ -86,6 +88,7 @@ class PositionOptimizer:
         self.volatility_threshold_low = volatility_threshold_low
         self.streak_threshold = streak_threshold
         self.performance_adjustment_pct = performance_adjustment_pct
+        self.reward_risk_ratio = reward_risk_ratio
         
         # Performance tracking
         self.trade_history: List[Dict[str, Any]] = []
@@ -184,10 +187,12 @@ class PositionOptimizer:
         low = df['low'].values
         close = df['close'].values
         
-        # True Range
+        # True Range components
         tr1 = high - low
-        tr2 = np.abs(high - np.roll(close, 1))
-        tr3 = np.abs(low - np.roll(close, 1))
+        # Use shift for previous close (proper handling of first element)
+        prev_close = np.concatenate([[close[0]], close[:-1]])
+        tr2 = np.abs(high - prev_close)
+        tr3 = np.abs(low - prev_close)
         
         tr = np.maximum(tr1, np.maximum(tr2, tr3))
         
@@ -269,7 +274,7 @@ class PositionOptimizer:
         
         win_prob = signal_confidence
         loss_prob = 1 - win_prob
-        win_loss_ratio = 2.0  # Assume 2:1 reward/risk
+        win_loss_ratio = self.reward_risk_ratio
         
         if win_prob > 0 and win_loss_ratio > 0:
             kelly_pct = (win_prob * win_loss_ratio - loss_prob) / win_loss_ratio

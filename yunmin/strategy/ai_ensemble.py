@@ -317,7 +317,7 @@ Be decisive but realistic. Only recommend BUY/SELL with high confidence if condi
             raise ValueError(f"Unknown provider: {provider}")
     
     def _call_groq(self, prompt: str, timeout: int) -> str:
-        """Call Groq API."""
+        """Call Groq API with proper error handling."""
         headers = {
             "Content-Type": "application/json",
             "Authorization": f"Bearer {self.groq_api_key}"
@@ -336,13 +336,17 @@ Be decisive but realistic. Only recommend BUY/SELL with high confidence if condi
             "max_tokens": 300
         }
         
-        response = requests.post(self.groq_url, headers=headers, json=payload, timeout=timeout)
-        response.raise_for_status()
-        
-        return response.json()["choices"][0]["message"]["content"]
+        try:
+            response = requests.post(self.groq_url, headers=headers, json=payload, timeout=timeout)
+            response.raise_for_status()
+            return response.json()["choices"][0]["message"]["content"]
+        except requests.exceptions.Timeout:
+            raise Exception(f"Groq API request timed out after {timeout}s")
+        except requests.exceptions.RequestException as e:
+            raise Exception(f"Groq API request failed: {str(e)}")
     
     def _call_openrouter(self, prompt: str, timeout: int) -> str:
-        """Call OpenRouter API."""
+        """Call OpenRouter API with proper error handling."""
         headers = {
             "Content-Type": "application/json",
             "Authorization": f"Bearer {self.openrouter_api_key}",
@@ -363,13 +367,17 @@ Be decisive but realistic. Only recommend BUY/SELL with high confidence if condi
             "max_tokens": 300
         }
         
-        response = requests.post(self.openrouter_url, headers=headers, json=payload, timeout=timeout)
-        response.raise_for_status()
-        
-        return response.json()["choices"][0]["message"]["content"]
+        try:
+            response = requests.post(self.openrouter_url, headers=headers, json=payload, timeout=timeout)
+            response.raise_for_status()
+            return response.json()["choices"][0]["message"]["content"]
+        except requests.exceptions.Timeout:
+            raise Exception(f"OpenRouter API request timed out after {timeout}s")
+        except requests.exceptions.RequestException as e:
+            raise Exception(f"OpenRouter API request failed: {str(e)}")
     
     def _call_openai(self, prompt: str, timeout: int) -> str:
-        """Call OpenAI API."""
+        """Call OpenAI API with proper error handling."""
         headers = {
             "Content-Type": "application/json",
             "Authorization": f"Bearer {self.openai_api_key}"
@@ -388,10 +396,14 @@ Be decisive but realistic. Only recommend BUY/SELL with high confidence if condi
             "max_tokens": 300
         }
         
-        response = requests.post(self.openai_url, headers=headers, json=payload, timeout=timeout)
-        response.raise_for_status()
-        
-        return response.json()["choices"][0]["message"]["content"]
+        try:
+            response = requests.post(self.openai_url, headers=headers, json=payload, timeout=timeout)
+            response.raise_for_status()
+            return response.json()["choices"][0]["message"]["content"]
+        except requests.exceptions.Timeout:
+            raise Exception(f"OpenAI API request timed out after {timeout}s")
+        except requests.exceptions.RequestException as e:
+            raise Exception(f"OpenAI API request failed: {str(e)}")
     
     def _parse_llm_response(self, response: str) -> Tuple[SignalType, float, str]:
         """
