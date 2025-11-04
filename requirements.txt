@@ -14,6 +14,8 @@ xgboost>=2.0.0
 lightgbm>=4.1.0
 torch>=2.1.0
 stable-baselines3>=2.2.0
+tensorflow>=2.13.0
+scipy>=1.10.0
 
 # LLM Integration
 openai>=1.0.0
