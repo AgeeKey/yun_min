@@ -19,6 +19,7 @@ from yunmin.risk.policies import (
     MarginCheckPolicy,
     CircuitBreakerPolicy
 )
+from yunmin.risk.dynamic_limits import DynamicRiskLimits
 from yunmin.core.config import RiskConfig
 
 
@@ -29,16 +30,28 @@ class RiskManager:
     This is the CRITICAL safety component - all orders must pass through here.
     """
     
-    def __init__(self, config: RiskConfig):
+    def __init__(self, config: RiskConfig, enable_dynamic_limits: bool = True):
         """
         Initialize risk manager with policies.
         
         Args:
             config: Risk configuration
+            enable_dynamic_limits: Enable dynamic risk limits (default: True)
         """
         self.config = config
         self.policies: List[RiskPolicy] = []
         self._setup_policies()
+        
+        # Initialize dynamic risk limits
+        self.dynamic_limits: Optional[DynamicRiskLimits] = None
+        if enable_dynamic_limits:
+            self.dynamic_limits = DynamicRiskLimits(
+                max_daily_risk=0.02,
+                normal_max_position=config.max_position_size,
+                high_vol_max_position=config.max_position_size * 0.5,
+                max_total_exposure=0.50
+            )
+            logger.info("Dynamic risk limits enabled")
         
         logger.info("Risk Manager initialized with {} policies", len(self.policies))
         
@@ -160,6 +173,44 @@ class RiskManager:
             return self.circuit_breaker.is_triggered
         return False
         
+    def update_dynamic_limits(self, capital: float, volatility: float):
+        """
+        Update dynamic risk limits with current market state.
+        
+        Args:
+            capital: Current portfolio capital
+            volatility: Current market volatility
+        """
+        if self.dynamic_limits:
+            self.dynamic_limits.update_state(capital, volatility)
+            
+            # Check for emergency exit condition
+            should_exit, reason = self.dynamic_limits.should_emergency_exit()
+            if should_exit:
+                self.trigger_circuit_breaker(reason)
+                logger.critical("Dynamic limits triggered emergency exit: {}", reason)
+    
+    def get_dynamic_max_position_size(
+        self,
+        capital: float,
+        volatility: float,
+        price: float
+    ) -> Optional[float]:
+        """
+        Get dynamic maximum position size.
+        
+        Args:
+            capital: Current capital
+            volatility: Asset volatility
+            price: Current price
+            
+        Returns:
+            Max position size or None if dynamic limits not enabled
+        """
+        if self.dynamic_limits:
+            return self.dynamic_limits.calculate_max_position_size(capital, volatility, price)
+        return None
+    
     def get_risk_summary(self, context: Dict[str, Any]) -> Dict[str, Any]:
         """
         Get summary of current risk status.
@@ -186,5 +237,9 @@ class RiskManager:
                     current_drawdown = (policy.daily_start_capital - current_capital) / policy.daily_start_capital
                     summary['current_daily_drawdown'] = current_drawdown
                     summary['daily_start_capital'] = policy.daily_start_capital
+        
+        # Add dynamic limits summary
+        if self.dynamic_limits:
+            summary['dynamic_limits'] = self.dynamic_limits.get_state_summary()
                     
         return summary
