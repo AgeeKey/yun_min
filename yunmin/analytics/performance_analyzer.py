@@ -395,8 +395,25 @@ class PerformanceAnalyzer:
             logger.warning("No trades to export")
             return
         
-        # Validate filepath
+        # Validate and sanitize filepath
         path = Path(filepath).resolve()
+        
+        # Ensure it's within a safe directory (data, exports, /tmp, or current)
+        allowed_dirs = [
+            Path('data').resolve(), 
+            Path('exports').resolve(), 
+            Path('.').resolve(),
+            Path('/tmp').resolve()
+        ]
+        is_safe = any(
+            str(path).startswith(str(allowed_dir))
+            for allowed_dir in allowed_dirs
+        )
+        
+        if not is_safe:
+            logger.error(f"❌ Invalid export path: must be within data/, exports/, /tmp, or current directory")
+            return
+        
         if not str(path).endswith('.csv'):
             path = path.with_suffix('.csv')
         
@@ -418,8 +435,25 @@ class PerformanceAnalyzer:
             logger.warning("No trades to export")
             return
         
-        # Validate filepath
+        # Validate and sanitize filepath
         path = Path(filepath).resolve()
+        
+        # Ensure it's within a safe directory (data, exports, /tmp, or current)
+        allowed_dirs = [
+            Path('data').resolve(), 
+            Path('exports').resolve(), 
+            Path('.').resolve(),
+            Path('/tmp').resolve()
+        ]
+        is_safe = any(
+            str(path).startswith(str(allowed_dir))
+            for allowed_dir in allowed_dirs
+        )
+        
+        if not is_safe:
+            logger.error(f"❌ Invalid export path: must be within data/, exports/, /tmp, or current directory")
+            return
+        
         if not str(path).endswith('.xlsx'):
             path = path.with_suffix('.xlsx')
         

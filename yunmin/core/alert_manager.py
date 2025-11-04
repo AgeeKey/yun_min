@@ -352,10 +352,11 @@ class AlertManager:
                     # Use osascript for macOS notifications
                     import subprocess
                     title = f"{alert.level.value.upper()}: {alert.title}"
+                    # Use shell=False for security
                     subprocess.run([
                         "osascript", "-e",
-                        f'display notification "{alert.message[:255]}" with title "{title}"'
-                    ])
+                        f'display notification "{alert.message[:255]}" with title "{title[:100]}"'
+                    ], shell=False, check=False)
                     logger.success(f"✅ Desktop notification sent (macOS): {alert.title}")
                 
                 elif system == "Linux":

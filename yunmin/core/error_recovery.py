@@ -458,8 +458,30 @@ class ErrorRecoveryManager:
     def _save_state(self):
         """Save current state to file"""
         try:
+            # Validate state file path is safe
+            state_path = Path(self.config.state_file).resolve()
+            
+            # Ensure it's within data directory (or /tmp for tests)
+            data_dir = Path('data').resolve()
+            tmp_dir = Path('/tmp').resolve()
+            
+            is_safe = False
+            try:
+                state_path.relative_to(data_dir)
+                is_safe = True
+            except ValueError:
+                try:
+                    state_path.relative_to(tmp_dir)
+                    is_safe = True
+                except ValueError:
+                    pass
+            
+            if not is_safe:
+                logger.error(f"❌ Invalid state file path: must be within data directory or /tmp")
+                return
+            
             # Create data directory if needed
-            self.state_file.parent.mkdir(parents=True, exist_ok=True)
+            state_path.parent.mkdir(parents=True, exist_ok=True)
             
             state = SystemState(
                 timestamp=datetime.now(UTC),
@@ -471,11 +493,11 @@ class ErrorRecoveryManager:
                 metadata={}
             )
             
-            with open(self.state_file, 'w') as f:
+            with open(state_path, 'w') as f:
                 json.dump(state.to_dict(), f, indent=2)
             
             self.last_save_time = time.time()
-            logger.debug(f"💾 State saved to {self.state_file}")
+            logger.debug(f"💾 State saved to {state_path}")
         
         except Exception as e:
             logger.error(f"❌ Failed to save state: {e}")
