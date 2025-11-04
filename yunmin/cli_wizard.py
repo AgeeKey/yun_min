@@ -175,7 +175,7 @@ class ConfigWizard:
         if use_custom:
             pair = questionary.text(
                 "Enter trading pair (e.g., BTC/USDT):",
-                validate=lambda text: len(text) > 0 and "/" in text
+                validate=lambda text: self._validate_trading_pair(text)
             ).ask()
         else:
             pair = questionary.select(
@@ -186,15 +186,30 @@ class ConfigWizard:
         
         self.config["trading_pair"] = pair
     
+    def _validate_trading_pair(self, text: str) -> bool:
+        """Validate trading pair format."""
+        import re
+        # Basic validation: BASE/QUOTE format with alphanumeric symbols
+        pattern = r'^[A-Z0-9]{2,10}/[A-Z0-9]{2,10}$'
+        return bool(re.match(pattern, text.upper()))
+    
     def _set_initial_capital(self):
         """Set initial capital amount."""
         capital = questionary.text(
             "Enter your initial capital (USD):",
             default="10000",
-            validate=lambda text: text.replace('.', '').isdigit() and float(text) > 0
+            validate=lambda text: self._validate_positive_number(text)
         ).ask()
         
         self.config["initial_capital"] = float(capital)
+    
+    def _validate_positive_number(self, text: str) -> bool:
+        """Validate that text is a positive number."""
+        try:
+            value = float(text)
+            return value > 0
+        except ValueError:
+            return False
     
     def _select_risk_profile(self):
         """Select risk tolerance profile."""

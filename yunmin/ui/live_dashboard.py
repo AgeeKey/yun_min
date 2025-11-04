@@ -6,6 +6,7 @@ positions, trades, and system status.
 """
 
 import time
+import random
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Any
 from decimal import Decimal
@@ -282,8 +283,6 @@ class LiveDashboard:
     def _update_mock_data(self):
         """Update with mock data for demonstration."""
         # Simulate slight variations
-        import random
-        
         self.daily_pnl += random.uniform(-10, 20)
         self.portfolio_value = 15000 + self.daily_pnl
         
