@@ -1,0 +1,35 @@
+{
+  "total_return": 0.7665952105291217,
+  "final_capital": 10076.659521052912,
+  "total_trades": 2,
+  "winning_trades": 1,
+  "losing_trades": 1,
+  "win_rate": 50.0,
+  "avg_win": 1.9924610189960918,
+  "avg_loss": -0.7230865463755234,
+  "profit_factor": 2.711796053978351,
+  "max_drawdown": 0.649615662946667,
+  "ai_calls": 1977,
+  "trades": [
+    {
+      "entry_time": "2025-10-03 20:00:00",
+      "exit_time": "2025-10-03 20:05:00",
+      "entry_price": 119718.679425,
+      "exit_price": 122104.02744500001,
+      "position_type": "LONG",
+      "pnl": 179.32149170964826,
+      "pnl_pct": 1.9924610189960918,
+      "exit_reason": "AI Exit Signal: Bearish trend, RSI not oversold, price below BB Middle"
+    },
+    {
+      "entry_time": "2025-10-07 14:00:00",
+      "exit_time": "2025-10-07 14:05:00",
+      "entry_price": 122265.81651,
+      "exit_price": 123149.90418,
+      "position_type": "SHORT",
+      "pnl": -66.12646679184223,
+      "pnl_pct": -0.7230865463755234,
+      "exit_reason": "AI Exit Signal: Oversold RSI and price near lower Bollinger Band"
+    }
+  ]
+}
