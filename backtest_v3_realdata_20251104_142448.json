@@ -1,0 +1,19 @@
+{
+  "metrics": {
+    "total_return": -21.537326866164765,
+    "win_rate": 14.606741573033707,
+    "total_trades": 89,
+    "winning_trades": 13,
+    "losing_trades": 76,
+    "avg_win": 0.8784159759557558,
+    "avg_loss": -0.48403181781111754,
+    "profit_factor": 0.30171797572358666,
+    "max_drawdown": 22.291175693702453,
+    "sharpe_ratio": -8.15532296401124,
+    "best_trade": 1.8850689288867593,
+    "worst_trade": -1.0637828335583532,
+    "avg_trade_duration_hours": 1.838951310861423
+  },
+  "trades": [
+    {
+      "entry_time": 
