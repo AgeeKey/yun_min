@@ -12,25 +12,32 @@ trading:
   mode: dry_run  # Options: dry_run, paper, live
   symbol: BTC/USDT
   timeframe: 5m
-  initial_capital: 10000.0
+  initial_capital: 15000.0  # Increased for 3 symbols ($5k each)
 
 # Risk Management (CRITICAL - DO NOT DISABLE)
 risk:
-  max_position_size: 0.1  # 10% of capital per position
-  max_leverage: 3.0
-  max_daily_drawdown: 0.05  # 5% max daily loss
-  stop_loss_pct: 0.02  # 2% stop loss
-  take_profit_pct: 0.03  # 3% take profit
+  max_position_size: 0.08  # 8% of capital per position (more conservative)
+  max_leverage: 2.0  # Reduced leverage for safety
+  max_daily_drawdown: 0.04  # 4% max daily loss (tighter)
+  stop_loss_pct: 0.025  # 2.5% stop loss
+  take_profit_pct: 0.04  # 4% take profit (better R/R ratio)
   enable_circuit_breaker: true
+  
+  # Separate parameters for SHORT positions (more conservative)
+  short:
+    stop_loss_pct: 0.03  # 3% stop loss (shorts are riskier)
+    take_profit_pct: 0.05  # 5% take profit (larger target)
+    max_position_size: 0.06  # 6% of capital (smaller size)
+    trailing_stop_pct: 2.5  # 2.5% trailing stop
 
 # Strategy Configuration
 strategy:
   name: ema_crossover
-  fast_ema: 9
-  slow_ema: 21
+  fast_ema: 12  # Optimized for 5m timeframe
+  slow_ema: 26  # Better signal quality
   rsi_period: 14
-  rsi_overbought: 70.0
-  rsi_oversold: 30.0
+  rsi_overbought: 68.0  # Slightly more sensitive
+  rsi_oversold: 32.0  # Earlier entry signals
 
 # Machine Learning
 ml:
@@ -41,21 +48,14 @@ ml:
 
 # LLM Integration
 llm:
-  enabled: false
-  provider: openai
+  enabled: true
+  provider: grok
   explain_trades: true
 
 # Database
 database:
   db_url: sqlite:///data/yunmin.db
   redis_url: redis://localhost:6379/0
-
-# External Dependencies (relative to yun_min folder)
-external_paths:
-  jesse: ../jesse
-  hummingbot: ../hummingbot
-  freqtrade: ../freqtrade
-  gateway: ../gateway
 
 # Notifications
 notification:

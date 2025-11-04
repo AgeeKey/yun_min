@@ -13,7 +13,7 @@ import logging
 import asyncio
 from typing import Optional, Callable, Dict
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, UTC
 from enum import Enum
 
 from yunmin.core.data_contracts import Decision
@@ -140,7 +140,7 @@ class Executor:
         
         Args:
             symbol: Trading pair
-            decision: Strategy Decision
+            decision: Strategy Decision (dict with keys: intent, confidence, size_hint, reason)
             current_price: Current market price
             stop_loss_pct: Stop loss as % below entry
             take_profit_pct: Take profit as % above entry
@@ -150,12 +150,14 @@ class Executor:
             ExecutionResult with order details
         """
         try:
-            # Determine side from decision intent
-            if decision.intent == "long":
+            # Determine side from decision intent (dict access for Python 3.13 compatibility)
+            intent = decision.get("intent") if isinstance(decision, dict) else decision.intent
+            
+            if intent == "long":
                 side = "BUY"
-            elif decision.intent == "short":
+            elif intent == "short":
                 side = "SELL"
-            elif decision.intent == "exit":
+            elif intent == "exit":
                 # Exit current position
                 if current_position > 0:
                     side = "SELL"
@@ -171,14 +173,17 @@ class Executor:
                 return ExecutionResult(
                     success=False,
                     status=ExecutionStatus.ERROR,
-                    error_message=f"Invalid intent: {decision.intent}"
+                    error_message=f"Invalid intent: {intent}"
                 )
+            
+            # Get size_hint from decision (dict or attribute)
+            size_hint = decision.get("size_hint") if isinstance(decision, dict) else decision.size_hint
             
             # Suggest position size
             qty = self.risk_manager.suggest_position_size(
                 symbol,
                 current_price,
-                risk_pct=decision.size_hint
+                risk_pct=size_hint
             )
             
             if qty <= 0:
@@ -253,7 +258,7 @@ class Executor:
         
         Creates order in tracker but doesn't place on exchange.
         """
-        client_oid = f"dry_{symbol}_{int(datetime.utcnow().timestamp() * 1000)}"
+        client_oid = f"dry_{symbol}_{int(datetime.now(UTC).timestamp() * 1000)}"
         
         self.tracker.create_order(
             client_order_id=client_oid,
@@ -288,7 +293,7 @@ class Executor:
         
         Creates order and immediately simulates a fill.
         """
-        client_oid = f"paper_{symbol}_{int(datetime.utcnow().timestamp() * 1000)}"
+        client_oid = f"paper_{symbol}_{int(datetime.now(UTC).timestamp() * 1000)}"
         
         # Create order
         self.tracker.create_order(
@@ -347,7 +352,7 @@ class Executor:
         
         Places order on Binance and tracks via OrderTracker.
         """
-        client_oid = f"ym_{symbol}_{int(datetime.utcnow().timestamp() * 1000)}"
+        client_oid = f"ym_{symbol}_{int(datetime.now(UTC).timestamp() * 1000)}"
         
         # Try to place order with retries
         for attempt in range(self.max_retries):

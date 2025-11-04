@@ -11,7 +11,7 @@ Data contracts:
 
 from typing import Dict, List, Optional
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, UTC
 from enum import Enum
 import logging
 
@@ -72,7 +72,7 @@ class RouteManager:
             strategy_name="ema_crossover"
         )
         enabled = manager.get_enabled_routes()
-        manager.set_global_time(datetime.utcnow())
+        manager.set_global_time(datetime.now(UTC))
         manager.step_route(route)  # Process one candle for this route
     """
     

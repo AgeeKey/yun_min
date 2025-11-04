@@ -56,7 +56,7 @@ Example:
     "qty": 0.5,
     "price": 42000.0,
     "tif": "GTC",
-    "ts_created": datetime.utcnow(),
+    "ts_created": datetime.now(UTC),
     "ts_filled": None,
     "status": "PENDING"
   }
@@ -75,7 +75,7 @@ Dict with keys:
 Example:
   {
     "order_id": "ym_ord_123456",
-    "ts": datetime.utcnow(),
+    "ts": datetime.now(UTC),
     "price": 42000.0,
     "qty": 0.5,
     "fee": 21.0,  # 0.05% fee on 0.5 BTC @ 42000
@@ -146,7 +146,7 @@ Example:
     "side": "LONG",
     "qty": 0.5,
     "entry_price": 42000.0,
-    "entry_ts": datetime.utcnow(),
+    "entry_ts": datetime.now(UTC),
     "unrealized_pnl": 75.0,
     "unrealized_pnl_pct": 0.00357,
     "mark_price": 42150.0,

@@ -1,29 +1,38 @@
-# Yun Min (云敏) - AI Trading Agent
+# Yun Min (云敏) - Grok AI Trading Bot
 
 <div align="center">
 
-**Advanced Cryptocurrency Trading Agent with ML/AI Capabilities**
+**Полностью автономный торговый бот на основе Grok AI**
 
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Grok AI](https://img.shields.io/badge/Powered%20by-Grok%20AI-00ADD8.svg)](https://x.ai)
 
-📊 **[Полный отчет о проекте](YUN_MIN_COMPLETE_REPORT.md)** | 📚 **[Архитектура](ARCHITECTURE.md)** | 🚀 **[Быстрый старт](QUICKSTART.md)**
+📊 **[V3 Test Results](V3_FINAL_REPORT.md)** | 📚 **[Architecture](ARCHITECTURE.md)** | 🚀 **[Quick Start](QUICKSTART.md)**
 
 </div>
 
 ## 🎯 Overview
 
-Yun Min is a modular, AI-powered cryptocurrency trading agent designed for futures trading with a strong emphasis on risk management and safety. The system follows a hybrid approach, combining proven trading strategies with modern ML/AI capabilities.
+**Yun Min** - это полностью автономный торговый бот для криптовалютных фьючерсов, который использует **Grok AI** для принятия торговых решений в режиме реального времени. Система комбинирует технический анализ (RSI, EMA) с анализом рыночных трендов через Grok AI.
 
-### Key Features
+### ✨ Текущий статус (ноябрь 2025)
 
-- 🛡️ **Risk-First Architecture**: Comprehensive risk management system with circuit breakers
-- 🔄 **Multiple Trading Modes**: Dry-run, paper trading, and live trading
-- 📊 **Technical Analysis**: Built-in EMA crossover strategy with RSI filters
-- 🤖 **ML Ready**: Framework for integrating machine learning models
-- 🧠 **LLM Integration**: Support for trade explanation and strategy generation
-- 📈 **Backtesting**: Test strategies on historical data
-- 🔌 **Exchange Support**: Via CCXT library (Binance, Bybit, OKX, etc.)
+- ✅ **V3 тест завершён** (2ч 51мин работы)
+- ✅ **124 позиции открыто**, 37 закрыто, 87 ожидают TP/SL
+- ⚠️ **Обнаружена асимметрия**: SHORT 100% WR, LONG 38.7% WR
+- 🔄 **V4 в разработке** (улучшенные параметры от Grok)
+
+### 🔥 Key Features
+
+### 🔥 Key Features
+
+- 🤖 **Grok AI Decision Making**: Каждое решение принимается через Grok AI API
+- 📊 **Technical Analysis**: RSI, EMA, волатильность, объём
+- 🛡️ **Risk Management**: SL/TP на каждую позицию, максимум 10% капитала
+- 🔄 **24/7 Autonomous Trading**: Полностью автономная работа
+- 📈 **Real-time Monitoring**: База данных SQLite для отслеживания
+- 🎯 **Futures Trading**: LONG/SHORT позиции на криптофьючерсах
 
 ## 🏗️ Architecture
 
@@ -43,7 +52,7 @@ yunmin/
 
 ## 🚀 Quick Start
 
-### Installation
+### 1️⃣ Установка
 
 ```bash
 # Clone repository
@@ -52,205 +61,213 @@ cd yun_min
 
 # Create virtual environment
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+venv\Scripts\activate  # Windows
 
 # Install dependencies
 pip install -r requirements.txt
-
-# Install package in development mode
 pip install -e .
 ```
 
-### Configuration
+### 2️⃣ Конфигурация
 
 ```bash
-# Copy example configuration
-cp .env.example .env
-cp config/default.yaml config/my_config.yaml
-
-# Edit configuration files with your settings
-# IMPORTANT: Start with testnet and dry_run mode!
+# Создайте .env файл с вашим Grok API ключом
+echo GROK_API_KEY=your_key_here > .env
+echo BINANCE_API_KEY=your_binance_key >> .env
+echo BINANCE_SECRET=your_binance_secret >> .env
 ```
 
-### Running the Bot
+### 3️⃣ Запуск 24-часового теста
 
-```bash
-# Dry-run mode (safe, no real orders)
-yunmin --config config/default.yaml --mode dry_run
+```powershell
+# Запустить через PowerShell скрипт
+.\Start-24h-DryRun.ps1
 
-# Run for specific number of iterations
-yunmin --iterations 10 --interval 30
+# Или напрямую через Python
+python run_24h_dry_run.py
+```
 
-# Paper trading mode (simulated orders)
-yunmin --mode paper
+### 4️⃣ Мониторинг
 
-# View help
-yunmin --help
+```python
+# Анализ базы данных
+python -c "
+import sqlite3
+conn = sqlite3.connect('yunmin.db')
+print(conn.execute('SELECT COUNT(*) FROM positions').fetchone())
+conn.close()
+"
 ```
 
 ## ⚙️ Configuration
 
-### Environment Variables
+### Ключевые параметры (V3 → V4)
 
-Key environment variables (see `.env.example`):
+**Текущие параметры V3:**
+```yaml
+LONG:  SL -2%, TP +3%
+SHORT: SL -2%, TP +3%
+Confidence: 50%
+```
+
+**Рекомендации Grok для V4:**
+```yaml
+LONG:  SL -3%, TP +4%  # Расширены из-за низкого WR
+SHORT: SL -2%, TP +3%  # Без изменений (100% WR)
+Confidence: 65%         # Повышен порог
+```
+
+### Environment Variables (.env)
 
 ```bash
-# Exchange
-YUNMIN_EXCHANGE_NAME=binance
-YUNMIN_EXCHANGE_TESTNET=true  # ALWAYS start with testnet!
+# Grok AI
+GROK_API_KEY=xai-xxxxxxxxx
+
+# Binance
+BINANCE_API_KEY=your_key
+BINANCE_SECRET=your_secret
 
 # Trading
-YUNMIN_TRADING_MODE=dry_run   # dry_run, paper, or live
-YUNMIN_TRADING_SYMBOL=BTC/USDT
-
-# Risk (CRITICAL - adjust carefully)
-YUNMIN_RISK_MAX_POSITION_SIZE=0.1      # 10% max position
-YUNMIN_RISK_MAX_LEVERAGE=3.0           # Max 3x leverage
-YUNMIN_RISK_MAX_DAILY_DRAWDOWN=0.05    # 5% daily loss limit
+TRADING_SYMBOL=BTC/USDT
+TIMEFRAME=5m
+MAX_POSITIONS=10
 ```
 
-### YAML Configuration
+## 📊 V3 Test Results
 
-Edit `config/default.yaml` for detailed settings:
+**Длительность:** 2h 51min (07:23 - 10:14, 4 ноября 2025)
 
-```yaml
-trading:
-  mode: dry_run
-  symbol: BTC/USDT
-  timeframe: 5m
-  initial_capital: 10000.0
+**Статистика:**
+- Всего позиций: 124 (77 LONG, 47 SHORT)
+- Закрыто: 37 (48.6% WR)
+- Открыто: 87 (ожидают SL/TP)
+- Реализованный P&L: -$31.49
 
-risk:
-  max_position_size: 0.1
-  max_leverage: 3.0
-  stop_loss_pct: 0.02
-  take_profit_pct: 0.03
-  enable_circuit_breaker: true
+**Критическая находка:**
+- **SHORT**: 6/6 wins (100%), +$27.83
+- **LONG**: 12/31 wins (38.7%), -$59.32
 
-strategy:
-  name: ema_crossover
-  fast_ema: 9
-  slow_ema: 21
-```
+**Вывод:** Стратегия работает, но требует асимметричных параметров
 
 ## 📚 Usage Examples
 
-### Basic Trading Loop
+### Запуск 24-часового теста
 
 ```python
-from yunmin.core.config import load_config
-from yunmin.bot import YunMinBot
+# run_24h_dry_run.py
+from yunmin.strategy.grok_ai_strategy import GrokAIStrategy
+from yunmin.connectors.binance_connector import BinanceConnector
 
-# Load configuration
-config = load_config('config/default.yaml')
+# Инициализация
+connector = BinanceConnector()
+strategy = GrokAIStrategy()
 
-# Create bot instance
-bot = YunMinBot(config)
-
-# Run for 10 iterations with 60s interval
-bot.run(iterations=10, interval=60)
+# Запуск бесконечного цикла
+while True:
+    # 1. Получить данные
+    market_data = connector.get_market_data('BTCUSDT', '5m')
+    
+    # 2. Спросить Grok AI
+    decision = strategy.analyze(market_data)
+    
+    # 3. Выполнить решение
+    if decision.action in ['LONG', 'SHORT']:
+        connector.open_position(decision)
+    
+    time.sleep(300)  # 5 минут
 ```
 
-### Custom Strategy
+### Анализ результатов
 
 ```python
-from yunmin.strategy.base import BaseStrategy, Signal, SignalType
+import sqlite3
 import pandas as pd
 
-class MyStrategy(BaseStrategy):
-    def analyze(self, data: pd.DataFrame) -> Signal:
-        # Your strategy logic here
-        return Signal(
-            type=SignalType.BUY,
-            confidence=0.8,
-            reason="Custom signal"
-        )
+# Подключение к БД
+conn = sqlite3.connect('yunmin.db')
+
+# Статистика по сторонам
+df = pd.read_sql("""
+    SELECT side, 
+           COUNT(*) as total,
+           SUM(CASE WHEN status='CLOSED' THEN 1 ELSE 0 END) as closed,
+           AVG(realized_pnl) as avg_pnl
+    FROM positions
+    GROUP BY side
+""", conn)
+
+print(df)
 ```
 
-### Risk Management
+### Grok AI интеграция
 
 ```python
-from yunmin.risk import RiskManager
-from yunmin.risk.policies import OrderRequest
+from openai import OpenAI
+import os
 
-# Create risk manager
-risk_manager = RiskManager(config.risk)
-
-# Validate order
-order = OrderRequest(
-    symbol='BTC/USDT',
-    side='buy',
-    order_type='market',
-    amount=0.1,
-    leverage=2.0
+# Подключение к Grok
+client = OpenAI(
+    api_key=os.environ.get("GROK_API_KEY"),
+    base_url="https://api.x.ai/v1"
 )
 
-context = {'capital': 10000, 'current_price': 50000}
-approved, messages = risk_manager.validate_order(order, context)
+# Запрос решения
+response = client.chat.completions.create(
+    model="grok-2-1212",
+    messages=[{
+        "role": "user",
+        "content": f"Analyze: RSI={rsi}, Price={price}, Trend={trend}"
+    }]
+)
+
+decision = response.choices[0].message.content
 ```
 
-## 🔒 Safety & Risk Management
+## 🎯 Roadmap
 
-### Five Rules of Yun Min
+### ✅ Completed (V1-V3)
+- [x] Grok AI integration
+- [x] RSI + EMA indicators
+- [x] Database persistence (SQLite)
+- [x] Position tracking (OPEN/CLOSED)
+- [x] SL/TP automatic management
+- [x] 24h autonomous testing
 
-1. **Never store withdrawal keys** - Use API keys with trade-only permissions
-2. **Dry-run is mandatory** - Test thoroughly before live trading
-3. **Kill-switch ready** - One command stops everything (Ctrl+C)
-4. **Rate limits respected** - Handle exchange 429/5xx responses
-5. **Monitor anomalies** - Alert on latency spikes, order failures
+### 🔄 In Progress (V4)
+- [ ] Asymmetric SL/TP parameters
+- [ ] Higher confidence threshold (65%)
+- [ ] Trend detection filter
+- [ ] MACD/Bollinger Bands for LONG
 
-### Risk Policies
+### 🚀 Future
+- [ ] Real trading on Binance
+- [ ] Multi-pair support
+- [ ] Telegram notifications
+- [ ] Web dashboard
 
-- **Max Position Size**: Limits exposure per trade
-- **Max Leverage**: Prevents excessive leverage
-- **Daily Drawdown**: Halts trading if daily loss exceeds limit
-- **Stop Loss/Take Profit**: Automatic position management
-- **Circuit Breaker**: Emergency halt on anomalous conditions
+## 📄 License
 
-## 🧪 Testing
+MIT License - see [LICENSE](LICENSE)
 
-### Backtesting
+## 🤝 Contributing
 
-```bash
-# Run backtest (coming soon)
-python -m yunmin.backtester \
-    --strategy ema_crossover \
-    --symbol BTC/USDT \
-    --start 2024-01-01 \
-    --end 2024-12-31
-```
+Вклад приветствуется! Пожалуйста:
 
-### Unit Tests
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Open Pull Request
 
-```bash
-# Run tests
-pytest tests/
+## 📞 Contact
 
-# With coverage
-pytest --cov=yunmin tests/
-```
+- Issues: [GitHub Issues](https://github.com/AgeeKey/yun_min/issues)
+- Author: AgeeKey
 
-## 🤖 ML/AI Integration
+---
 
-### Machine Learning
+**⚠️ DISCLAIMER**: Это экспериментальный проект. Торговля криптовалютой несёт высокий риск. Используйте только средства, которые можете потерять.
 
-The framework supports:
-- **XGBoost/LightGBM**: For tabular feature predictions
-- **Neural Networks**: LSTM/Transformer for time series
-- **Reinforcement Learning**: Via Stable-Baselines3
-
-### LLM Features
-
-- Trade explanation generation
-- Strategy hypothesis generation
-- Market analysis and reporting
-- Anomaly detection and alerts
-
-## 📊 Monitoring
-
-### Logs
-
-Logs are stored in `logs/` directory with daily rotation.
 
 ### Metrics
 

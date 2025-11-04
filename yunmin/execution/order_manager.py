@@ -7,10 +7,11 @@ Manages order execution with support for dry-run, paper trading, and live tradin
 from typing import Dict, Any, Optional
 from enum import Enum
 from loguru import logger
-from datetime import datetime
+from datetime import datetime, UTC
 
 from yunmin.data_ingest.exchange_adapter import ExchangeAdapter
 from yunmin.risk.policies import OrderRequest
+from yunmin.execution.market_simulator import MarketSimulator
 
 
 class TradingMode(Enum):
@@ -47,6 +48,9 @@ class OrderManager:
         self.orders_log = []
         self.paper_positions = {}  # For paper trading
         
+        # Market simulator for realistic DRY RUN
+        self.market_simulator = MarketSimulator(exchange=exchange)
+        
         logger.info(f"OrderManager initialized in {self.mode.value} mode")
         
         if self.mode == TradingMode.LIVE:
@@ -81,10 +85,38 @@ class OrderManager:
         order: OrderRequest,
         current_price: Optional[float]
     ) -> Dict[str, Any]:
-        """Execute order in dry-run mode (logging only)."""
+        """
+        Execute order in dry-run mode with realistic market simulation.
+        
+        Использует MarketSimulator для:
+        - Точных комиссий (0.1%)
+        - Реалистичного проскальзывания
+        - Синхронизации с реальными ценами
+        """
+        # Получить реальную цену если не передана
+        if current_price is None and self.exchange:
+            real_price = self.market_simulator.get_real_price(order.symbol)
+            if real_price:
+                current_price = real_price
+                logger.debug(f"Using real market price: ${current_price:.2f}")
+        
+        if current_price is None:
+            logger.error("Cannot execute DRY RUN order without price")
+            raise ValueError("Price required for dry-run simulation")
+        
+        # Исполнить через MarketSimulator
+        execution = self.market_simulator.execute_market_order(
+            symbol=order.symbol,
+            side=order.side,
+            amount=order.amount,
+            current_price=current_price,
+            is_maker=False  # Market orders = taker
+        )
+        
         logger.info(
-            f"[DRY-RUN] {order.side.upper()} {order.amount} {order.symbol} "
-            f"@ {order.price or current_price or 'MARKET'}"
+            f"[DRY-RUN] {order.side.upper()} {order.amount:.6f} {order.symbol} "
+            f"@ ${execution.executed_price:.2f} "
+            f"(slippage {execution.slippage_pct*100:.3f}%, fee ${execution.commission:.2f})"
         )
         
         result = {
@@ -93,9 +125,14 @@ class OrderManager:
             'side': order.side,
             'type': order.order_type,
             'amount': order.amount,
-            'price': order.price or current_price,
+            'requested_price': execution.requested_price,
+            'executed_price': execution.executed_price,
+            'total_cost': execution.total_cost,
+            'commission': execution.commission,
+            'slippage': execution.slippage,
+            'slippage_pct': execution.slippage_pct,
             'status': 'simulated',
-            'timestamp': datetime.utcnow().isoformat(),
+            'timestamp': datetime.now(UTC).isoformat(),
             'mode': 'dry_run'
         }
         
@@ -151,7 +188,7 @@ class OrderManager:
             'amount': order.amount,
             'price': execution_price,
             'status': 'filled',
-            'timestamp': datetime.utcnow().isoformat(),
+            'timestamp': datetime.now(UTC).isoformat(),
             'mode': 'paper',
             'position': pos.copy()
         }
@@ -210,6 +247,44 @@ class OrderManager:
     def get_paper_positions(self) -> Dict[str, Any]:
         """Get current paper trading positions."""
         return self.paper_positions.copy()
+        
+    def close_paper_position(self, symbol: str, current_price: float):
+        """
+        Close paper position (called by PositionMonitor)
+        
+        Args:
+            symbol: Symbol to close (e.g., 'BTC/USDT')
+            current_price: Current price for closing
+        """
+        # Найти позицию для этого символа
+        positions_to_close = [
+            key for key in self.paper_positions.keys()
+            if key.startswith(symbol)
+        ]
+        
+        for position_key in positions_to_close:
+            pos = self.paper_positions[position_key]
+            
+            if pos['amount'] > 0:
+                # Создать ордер на закрытие
+                close_side = 'sell' if pos['side'] == 'buy' else 'buy'
+                
+                order = OrderRequest(
+                    symbol=symbol,
+                    side=close_side,
+                    order_type='market',
+                    amount=pos['amount'],
+                    price=current_price,
+                    leverage=1.0
+                )
+                
+                # Выполнить закрытие
+                result = self._paper_trade_order(order, current_price)
+                
+                logger.info(
+                    f"💰 PAPER: Closed position {position_key}, "
+                    f"entry: {pos['avg_price']:.2f}, exit: {current_price:.2f}"
+                )
         
     def cancel_order(self, order_id: str, symbol: str) -> Dict[str, Any]:
         """Cancel an order."""

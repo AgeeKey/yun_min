@@ -6,7 +6,7 @@ Inspired by freqtrade/optimize patterns.
 
 from typing import Dict, List, Optional
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, UTC
 import logging
 
 logger = logging.getLogger(__name__)
@@ -108,7 +108,7 @@ class ReportGenerator:
                 f.write(report)
             logger.info(f"Report saved to {output_file}")
             
-        self.generated_reports.append({"metrics": metrics, "format": format, "timestamp": datetime.utcnow()})
+        self.generated_reports.append({"metrics": metrics, "format": format, "timestamp": datetime.now(UTC)})
         return report
         
     def _generate_text_report(self, metrics: PerformanceMetrics) -> str:

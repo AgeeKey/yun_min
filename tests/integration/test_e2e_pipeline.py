@@ -23,10 +23,12 @@ Usage:
 
 import pytest
 import asyncio
-from datetime import datetime
+from datetime import datetime, UTC
 from unittest.mock import Mock, AsyncMock
 
-from yunmin.core.data_contracts import Decision
+# Note: Decision is a type alias Dict[str, Any], not a class
+# Use dict() with required keys instead
+from yunmin.core.data_contracts import Decision as DecisionType
 from yunmin.core.executor import Executor, ExecutionMode, ExecutionStatus
 from yunmin.core.websocket_layer import (
     WebSocketLayer, OrderUpdateEvent, KlineUpdateEvent
@@ -35,6 +37,17 @@ from yunmin.core.order_tracker import OrderTracker, OrderState
 from yunmin.core.risk_manager import RiskManager, RiskLevel
 from yunmin.connectors.binance_connector import BinanceConnector
 from yunmin.core.trading_engine import TradingEngine
+
+
+# Helper function to create Decision dict (Python 3.13 compatible)
+def create_decision(intent: str, confidence: float, size_hint: float, reason: str) -> DecisionType:
+    """Create a Decision dict (Python 3.13 safe)"""
+    return {
+        "intent": intent,
+        "confidence": confidence,
+        "size_hint": size_hint,
+        "reason": reason
+    }
 
 
 @pytest.fixture
@@ -125,7 +138,7 @@ class TestExecutionModes:
     @pytest.mark.asyncio
     async def test_dry_run_mode(self, executor, order_tracker):
         """Test DRY_RUN: no real orders, only tracker updates."""
-        decision = Decision(
+        decision = create_decision(
             intent="long",
             confidence=0.85,
             size_hint=0.05,
@@ -155,7 +168,7 @@ class TestExecutionModes:
         """Test PAPER: simulated fills, position tracking."""
         executor.mode = ExecutionMode.PAPER
         
-        decision = Decision(
+        decision = create_decision(
             intent="long",
             confidence=0.85,
             size_hint=0.05,
@@ -184,7 +197,7 @@ class TestExecutionModes:
         """Test LIVE-sim: real order placement (mocked)."""
         executor.mode = ExecutionMode.LIVE
         
-        decision = Decision(
+        decision = create_decision(
             intent="long",
             confidence=0.85,
             size_hint=0.05,
@@ -220,7 +233,7 @@ class TestDecisionToOrderPipeline:
         executor.mode = ExecutionMode.PAPER
         
         # Create decision
-        decision = Decision(
+        decision = create_decision(
             intent="long",
             confidence=0.95,
             size_hint=0.05,
@@ -260,7 +273,7 @@ class TestDecisionToOrderPipeline:
         executor.mode = ExecutionMode.PAPER
         
         # Open position
-        open_decision = Decision(intent="long", confidence=0.9, size_hint=0.05, reason="Entry")
+        open_decision = create_decision(intent="long", confidence=0.9, size_hint=0.05, reason="Entry")
         await executor.execute_decision(
             symbol="BTCUSDT",
             decision=open_decision,
@@ -269,7 +282,7 @@ class TestDecisionToOrderPipeline:
         )
         
         # Close position
-        close_decision = Decision(intent="exit", confidence=0.8, size_hint=0.05, reason="Exit")
+        close_decision = create_decision(intent="exit", confidence=0.8, size_hint=0.05, reason="Exit")
         result = await executor.execute_decision(
             symbol="BTCUSDT",
             decision=close_decision,
@@ -294,7 +307,7 @@ class TestPartialFills:
         executor.mode = ExecutionMode.PAPER
         
         # Place order
-        decision = Decision(intent="long", confidence=0.9, size_hint=0.05, reason="Test")
+        decision = create_decision(intent="long", confidence=0.9, size_hint=0.05, reason="Test")
         result = await executor.execute_decision(
             symbol="BTCUSDT",
             decision=decision,
@@ -370,7 +383,7 @@ class TestCancelAndReissue:
         """Test order cancellation."""
         executor.mode = ExecutionMode.DRY_RUN
         
-        decision = Decision(intent="long", confidence=0.9, size_hint=0.05, reason="Test")
+        decision = create_decision(intent="long", confidence=0.9, size_hint=0.05, reason="Test")
         result = await executor.execute_decision(
             symbol="BTCUSDT",
             decision=decision,
@@ -394,7 +407,7 @@ class TestCancelAndReissue:
         executor.mode = ExecutionMode.PAPER
         
         # Issue and cancel
-        decision1 = Decision(intent="long", confidence=0.9, size_hint=0.05, reason="v1")
+        decision1 = create_decision(intent="long", confidence=0.9, size_hint=0.05, reason="v1")
         result1 = await executor.execute_decision(
             symbol="BTCUSDT",
             decision=decision1,
@@ -405,7 +418,7 @@ class TestCancelAndReissue:
         await executor.cancel_order("BTCUSDT", result1.order_id)
         
         # Reissue
-        decision2 = Decision(intent="long", confidence=0.95, size_hint=0.05, reason="v2")
+        decision2 = create_decision(intent="long", confidence=0.95, size_hint=0.05, reason="v2")
         await executor.execute_decision(
             symbol="BTCUSDT",
             decision=decision2,
@@ -430,7 +443,7 @@ class TestRiskValidation:
         executor.mode = ExecutionMode.PAPER
         
         # Try to order 10% (> 5% limit)
-        decision = Decision(
+        decision = create_decision(
             intent="long",
             confidence=0.9,
             size_hint=0.20,  # 20% of balance
@@ -469,7 +482,7 @@ class TestRiskValidation:
         
         # If DD > max_daily_dd, next order should be rejected
         if dd > risk_manager.max_daily_dd:
-            decision = Decision(intent="long", confidence=0.9, size_hint=0.05, reason="Test")
+            decision = create_decision(intent="long", confidence=0.9, size_hint=0.05, reason="Test")
             result = await executor.execute_decision(
                 symbol="BTCUSDT",
                 decision=decision,
@@ -487,7 +500,7 @@ class TestRiskValidation:
         risk_manager.max_open_orders = 2
         
         # Place order 1
-        decision1 = Decision(intent="long", confidence=0.9, size_hint=0.02, reason="1")
+        decision1 = create_decision(intent="long", confidence=0.9, size_hint=0.02, reason="1")
         result1 = await executor.execute_decision(
             symbol="BTCUSDT",
             decision=decision1,
@@ -501,7 +514,7 @@ class TestRiskValidation:
         order1.state = OrderState.SUBMITTED  # Keep it open
         
         # Place order 2
-        decision2 = Decision(intent="long", confidence=0.9, size_hint=0.02, reason="2")
+        decision2 = create_decision(intent="long", confidence=0.9, size_hint=0.02, reason="2")
         result2 = await executor.execute_decision(
             symbol="ETHUSDT",
             decision=decision2,
@@ -510,7 +523,7 @@ class TestRiskValidation:
         )
         
         # Place order 3 (should fail)
-        decision3 = Decision(intent="long", confidence=0.9, size_hint=0.02, reason="3")
+        decision3 = create_decision(intent="long", confidence=0.9, size_hint=0.02, reason="3")
         result3 = await executor.execute_decision(
             symbol="BNBUSDT",
             decision=decision3,
@@ -534,7 +547,7 @@ class TestWebSocketIntegration:
         # Simulate order update event
         event = OrderUpdateEvent(
             event_type="executionReport",
-            event_time=int(datetime.utcnow().timestamp() * 1000),
+            event_time=int(datetime.now(UTC).timestamp() * 1000),
             symbol="BTCUSDT",
             client_order_id="test_order_1",
             exchange_order_id="123456",
@@ -561,7 +574,7 @@ class TestWebSocketIntegration:
         """Test kline update from WebSocket."""
         event = KlineUpdateEvent(
             event_type="kline",
-            event_time=int(datetime.utcnow().timestamp() * 1000),
+            event_time=int(datetime.now(UTC).timestamp() * 1000),
             symbol="BTCUSDT",
             timeframe="1m",
             open_time=1000000,
@@ -597,7 +610,7 @@ class TestErrorHandling:
             side_effect=Exception("Insufficient balance")
         )
         
-        decision = Decision(intent="long", confidence=0.9, size_hint=0.5, reason="Test")
+        decision = create_decision(intent="long", confidence=0.9, size_hint=0.5, reason="Test")
         result = await executor.execute_decision(
             symbol="BTCUSDT",
             decision=decision,
@@ -611,7 +624,7 @@ class TestErrorHandling:
     @pytest.mark.asyncio
     async def test_invalid_decision_intent(self, executor):
         """Test handling of invalid decision intent."""
-        decision = Decision(
+        decision = create_decision(
             intent="invalid_action",
             confidence=0.9,
             size_hint=0.05,
@@ -631,7 +644,7 @@ class TestErrorHandling:
     @pytest.mark.asyncio
     async def test_no_position_to_exit(self, executor):
         """Test exit when no position open."""
-        decision = Decision(intent="exit", confidence=0.9, size_hint=0.05, reason="Test")
+        decision = create_decision(intent="exit", confidence=0.9, size_hint=0.05, reason="Test")
         result = await executor.execute_decision(
             symbol="BTCUSDT",
             decision=decision,
@@ -653,7 +666,7 @@ async def test_concurrent_decisions(executor, order_tracker):
     executor.mode = ExecutionMode.PAPER
     
     decisions = [
-        Decision(intent="long", confidence=0.9, size_hint=0.01, reason=f"D{i}")
+        create_decision(intent="long", confidence=0.9, size_hint=0.01, reason=f"D{i}")
         for i in range(5)
     ]
     

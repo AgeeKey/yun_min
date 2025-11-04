@@ -14,7 +14,7 @@ Tracks:
 
 from typing import Dict, List, Optional
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, UTC
 from enum import Enum
 import logging
 
@@ -124,7 +124,7 @@ class InFlightOrder:
             Self for chaining
         """
         self.fills.append(OrderFill(
-            ts=ts or datetime.utcnow(),
+            ts=ts or datetime.now(UTC),
             qty=qty,
             price=price,
             fee=fee,
@@ -136,7 +136,7 @@ class InFlightOrder:
         else:
             self.state = OrderState.PARTIALLY_FILLED
             
-        self.updated_ts = datetime.utcnow()
+        self.updated_ts = datetime.now(UTC)
         logger.debug(
             f"Fill recorded: {self.client_order_id} +{qty} @ {price} "
             f"(total: {self.total_filled_qty}/{self.qty})"
@@ -149,7 +149,7 @@ class InFlightOrder:
             logger.warning(f"Cannot cancel non-open order: {self.client_order_id}")
             return self
         self.state = OrderState.CANCELLED
-        self.updated_ts = datetime.utcnow()
+        self.updated_ts = datetime.now(UTC)
         logger.info(f"Order cancelled: {self.client_order_id}")
         return self
         
@@ -165,10 +165,10 @@ class InFlightOrder:
             Self for chaining
         """
         self.exchange_order_id = exchange_order_id
-        self.exchange_ts = ts or datetime.utcnow()
+        self.exchange_ts = ts or datetime.now(UTC)
         if self.state == OrderState.PENDING:
             self.state = OrderState.OPEN
-        self.updated_ts = datetime.utcnow()
+        self.updated_ts = datetime.now(UTC)
         logger.debug(f"Exchange ID set: {self.client_order_id} → {exchange_order_id}")
         return self
 

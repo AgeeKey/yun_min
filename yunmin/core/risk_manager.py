@@ -16,7 +16,7 @@ Provides:
 import logging
 from typing import Dict, List
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, UTC
 from enum import Enum
 
 logger = logging.getLogger(__name__)
@@ -154,7 +154,7 @@ class RiskManager:
         self.leverage = leverage
         
         # Track current day
-        self.day_start = datetime.utcnow().date()
+        self.day_start = datetime.now(UTC).date()
         self.daily_trades: List[TradeRecord] = []
         self.daily_profit = 0
         self.daily_loss = 0
@@ -387,7 +387,7 @@ class RiskManager:
     
     def _check_day_reset(self):
         """Reset daily stats if new day started."""
-        today = datetime.utcnow().date()
+        today = datetime.now(UTC).date()
         if today > self.day_start:
             logger.info(
                 f"New day started. Daily stats: "

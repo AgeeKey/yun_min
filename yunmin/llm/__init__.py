@@ -1,3 +1,5 @@
 """LLM module - Language model integration for analysis."""
 
-__all__ = []
+from yunmin.llm.grok_analyzer import GrokAnalyzer
+
+__all__ = ["GrokAnalyzer"]

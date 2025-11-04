@@ -12,7 +12,7 @@ NOTE: Requires valid BINANCE_API_KEY and BINANCE_API_SECRET in environment
 """
 
 import os
-from datetime import datetime
+from datetime import datetime, UTC
 import logging
 import sys
 
@@ -69,7 +69,7 @@ class TestBinanceConnectorBasic:
         server_ts = connector.get_server_time()
         assert isinstance(server_ts, int)
         # Should be close to current time (within 1 minute)
-        now = int(datetime.utcnow().timestamp() * 1000)
+        now = int(datetime.now(UTC).timestamp() * 1000)
         assert abs(server_ts - now) < 60000
         logger.info(f"✓ Server time: {server_ts}")
     
