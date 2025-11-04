@@ -1,0 +1,15 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'yunmin-bot'
+    static_configs:
+      - targets: ['yunmin-dev:8000']
+        labels:
+          service: 'yunmin-trading-bot'
+    metrics_path: '/metrics'
+    
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
