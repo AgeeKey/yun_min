@@ -1,12 +1,16 @@
 """
 Error Recovery Module for YunMin Trading Bot
-Handles reconnection, network failures, and graceful degradation.
+Handles reconnection, network failures, graceful degradation, circuit breaker, and failover.
 """
 import asyncio
 import time
-from typing import Optional, Callable, Any
-from dataclasses import dataclass
+import json
+import pickle
+from pathlib import Path
+from typing import Optional, Callable, Any, Dict, List
+from dataclasses import dataclass, asdict
 from enum import Enum
+from datetime import datetime, timedelta, UTC
 from loguru import logger
 
 
@@ -18,6 +22,13 @@ class RecoveryState(Enum):
     CRITICAL = "critical"
 
 
+class CircuitState(Enum):
+    """Circuit breaker states"""
+    CLOSED = "closed"  # Normal operation
+    OPEN = "open"      # Circuit broken, reject requests
+    HALF_OPEN = "half_open"  # Testing if service recovered
+
+
 @dataclass
 class RecoveryConfig:
     """Configuration for error recovery"""
@@ -27,6 +38,44 @@ class RecoveryConfig:
     backoff_multiplier: float = 2.0
     health_check_interval: float = 30.0  # seconds
     critical_error_threshold: int = 3  # consecutive critical errors
+    
+    # Circuit breaker settings
+    circuit_failure_threshold: int = 5  # Failures to open circuit
+    circuit_timeout: float = 60.0  # Seconds before trying half-open
+    circuit_success_threshold: int = 2  # Successes to close circuit
+    
+    # State persistence settings
+    state_file: str = "data/recovery_state.json"
+    auto_save_interval: float = 300.0  # Save state every 5 minutes
+    
+    # Failover settings
+    enable_failover: bool = True
+    failover_timeout: float = 10.0  # Seconds before failover
+
+
+@dataclass
+class SystemState:
+    """Persistent system state"""
+    timestamp: datetime
+    recovery_state: str
+    consecutive_errors: int
+    reconnection_attempts: int
+    circuit_state: str
+    circuit_failure_count: int
+    last_error: Optional[str] = None
+    metadata: Dict[str, Any] = None
+    
+    def to_dict(self) -> dict:
+        """Convert to dictionary"""
+        data = asdict(self)
+        data['timestamp'] = self.timestamp.isoformat()
+        return data
+    
+    @classmethod
+    def from_dict(cls, data: dict) -> 'SystemState':
+        """Create from dictionary"""
+        data['timestamp'] = datetime.fromisoformat(data['timestamp'])
+        return cls(**data)
 
 
 class ExponentialBackoff:
@@ -59,6 +108,130 @@ class ExponentialBackoff:
         self.attempt = 0
 
 
+class CircuitBreaker:
+    """
+    Circuit breaker pattern implementation for API failures.
+    
+    States:
+    - CLOSED: Normal operation, requests pass through
+    - OPEN: Too many failures, reject requests immediately
+    - HALF_OPEN: Testing if service recovered
+    """
+    
+    def __init__(
+        self,
+        failure_threshold: int = 5,
+        timeout: float = 60.0,
+        success_threshold: int = 2
+    ):
+        self.failure_threshold = failure_threshold
+        self.timeout = timeout
+        self.success_threshold = success_threshold
+        
+        self.state = CircuitState.CLOSED
+        self.failure_count = 0
+        self.success_count = 0
+        self.last_failure_time: Optional[datetime] = None
+    
+    async def call(self, func: Callable, *args, **kwargs) -> Any:
+        """
+        Execute function through circuit breaker.
+        
+        Args:
+            func: Function to execute
+            *args: Function arguments
+            **kwargs: Function keyword arguments
+        
+        Returns:
+            Function result
+        
+        Raises:
+            Exception: If circuit is OPEN or function fails
+        """
+        # Check circuit state
+        if self.state == CircuitState.OPEN:
+            if self._should_attempt_reset():
+                logger.info("🔄 Circuit breaker: Attempting reset (HALF_OPEN)")
+                self.state = CircuitState.HALF_OPEN
+                self.success_count = 0
+            else:
+                raise Exception(
+                    f"Circuit breaker OPEN. Service unavailable. "
+                    f"Retry after {self.timeout}s"
+                )
+        
+        try:
+            # Execute function
+            result = await func(*args, **kwargs) if asyncio.iscoroutinefunction(func) else func(*args, **kwargs)
+            
+            # Handle success
+            self._on_success()
+            return result
+        
+        except Exception as e:
+            # Handle failure
+            self._on_failure()
+            raise e
+    
+    def _should_attempt_reset(self) -> bool:
+        """Check if enough time has passed to attempt reset"""
+        if self.last_failure_time is None:
+            return True
+        
+        elapsed = (datetime.now(UTC) - self.last_failure_time).total_seconds()
+        return elapsed >= self.timeout
+    
+    def _on_success(self):
+        """Handle successful call"""
+        if self.state == CircuitState.HALF_OPEN:
+            self.success_count += 1
+            logger.info(f"🔄 Circuit breaker: Success {self.success_count}/{self.success_threshold}")
+            
+            if self.success_count >= self.success_threshold:
+                logger.success("✅ Circuit breaker: CLOSED (service recovered)")
+                self.state = CircuitState.CLOSED
+                self.failure_count = 0
+                self.success_count = 0
+        
+        elif self.state == CircuitState.CLOSED:
+            # Reset failure count on success
+            self.failure_count = 0
+    
+    def _on_failure(self):
+        """Handle failed call"""
+        self.last_failure_time = datetime.now(UTC)
+        self.failure_count += 1
+        
+        if self.state == CircuitState.HALF_OPEN:
+            logger.warning("⚠️ Circuit breaker: Failure in HALF_OPEN, reopening")
+            self.state = CircuitState.OPEN
+            self.success_count = 0
+        
+        elif self.state == CircuitState.CLOSED:
+            if self.failure_count >= self.failure_threshold:
+                logger.error(
+                    f"🔴 Circuit breaker: OPEN after {self.failure_count} failures"
+                )
+                self.state = CircuitState.OPEN
+    
+    def get_state(self) -> dict:
+        """Get circuit breaker state"""
+        return {
+            "state": self.state.value,
+            "failure_count": self.failure_count,
+            "success_count": self.success_count,
+            "last_failure": self.last_failure_time.isoformat() if self.last_failure_time else None
+        }
+    
+    def reset(self):
+        """Manually reset circuit breaker"""
+        logger.info("🔄 Circuit breaker: Manual reset")
+        self.state = CircuitState.CLOSED
+        self.failure_count = 0
+        self.success_count = 0
+        self.last_failure_time = None
+
+
 class ErrorRecoveryManager:
     """
     Manages error recovery, reconnection logic, and graceful degradation.
@@ -69,6 +242,9 @@ class ErrorRecoveryManager:
     - State recovery from database
     - Circuit breaker pattern
     - Health monitoring
+    - Failover logic
+    - State persistence
+    - Runbook automation
     """
     
     def __init__(self, config: Optional[RecoveryConfig] = None):
@@ -82,6 +258,29 @@ class ErrorRecoveryManager:
             maximum=self.config.max_backoff,
             multiplier=self.config.backoff_multiplier
         )
+        
+        # Circuit breaker for API calls
+        self.circuit_breaker = CircuitBreaker(
+            failure_threshold=self.config.circuit_failure_threshold,
+            timeout=self.config.circuit_timeout,
+            success_threshold=self.config.circuit_success_threshold
+        )
+        
+        # State persistence
+        self.state_file = Path(self.config.state_file)
+        self.last_save_time = time.time()
+        
+        # Failover configuration
+        self.primary_service = None
+        self.backup_services: List[Any] = []
+        self.current_service_index = 0
+        
+        # Runbook automation
+        self.known_errors: Dict[str, Callable] = {}
+        self.error_counts: Dict[str, int] = {}
+        
+        # Load saved state if exists
+        self._load_state()
     
     async def execute_with_retry(
         self,
@@ -231,6 +430,210 @@ class ErrorRecoveryManager:
         self.state = RecoveryState.HEALTHY
         self.consecutive_errors = 0
         self.backoff.reset()
+    
+    def _load_state(self):
+        """Load persisted state from file"""
+        if not self.state_file.exists():
+            logger.info("No saved state found, starting fresh")
+            return
+        
+        try:
+            with open(self.state_file, 'r') as f:
+                data = json.load(f)
+                saved_state = SystemState.from_dict(data)
+                
+                # Restore state
+                self.state = RecoveryState(saved_state.recovery_state)
+                self.consecutive_errors = saved_state.consecutive_errors
+                self.reconnection_attempts = saved_state.reconnection_attempts
+                self.circuit_breaker.state = CircuitState(saved_state.circuit_state)
+                self.circuit_breaker.failure_count = saved_state.circuit_failure_count
+                
+                logger.success(f"✅ Restored state from {self.state_file}")
+                logger.info(f"   State: {self.state.value}, Errors: {self.consecutive_errors}")
+        
+        except Exception as e:
+            logger.error(f"❌ Failed to load state: {e}")
+    
+    def _save_state(self):
+        """Save current state to file"""
+        try:
+            # Create data directory if needed
+            self.state_file.parent.mkdir(parents=True, exist_ok=True)
+            
+            state = SystemState(
+                timestamp=datetime.now(UTC),
+                recovery_state=self.state.value,
+                consecutive_errors=self.consecutive_errors,
+                reconnection_attempts=self.reconnection_attempts,
+                circuit_state=self.circuit_breaker.state.value,
+                circuit_failure_count=self.circuit_breaker.failure_count,
+                metadata={}
+            )
+            
+            with open(self.state_file, 'w') as f:
+                json.dump(state.to_dict(), f, indent=2)
+            
+            self.last_save_time = time.time()
+            logger.debug(f"💾 State saved to {self.state_file}")
+        
+        except Exception as e:
+            logger.error(f"❌ Failed to save state: {e}")
+    
+    def auto_save_state(self):
+        """Auto-save state if interval elapsed"""
+        current_time = time.time()
+        if current_time - self.last_save_time >= self.config.auto_save_interval:
+            self._save_state()
+    
+    def set_failover_services(self, primary: Any, backups: List[Any]):
+        """
+        Configure failover services.
+        
+        Args:
+            primary: Primary service/connector
+            backups: List of backup services
+        """
+        self.primary_service = primary
+        self.backup_services = backups
+        self.current_service_index = 0
+        logger.info(f"🔄 Failover configured: 1 primary + {len(backups)} backup(s)")
+    
+    async def execute_with_failover(
+        self,
+        operation: str,
+        func_name: str,
+        *args,
+        **kwargs
+    ) -> Any:
+        """
+        Execute operation with automatic failover to backup services.
+        
+        Args:
+            operation: Operation name for logging
+            func_name: Name of method to call on service
+            *args: Function arguments
+            **kwargs: Function keyword arguments
+        
+        Returns:
+            Operation result
+        
+        Raises:
+            Exception: If all services fail
+        """
+        if not self.config.enable_failover or not self.backup_services:
+            # No failover configured, use primary
+            service = self.primary_service or self.backup_services[0] if self.backup_services else None
+            if service:
+                func = getattr(service, func_name)
+                return await func(*args, **kwargs)
+            raise Exception("No service configured")
+        
+        # Try current service
+        services = [self.primary_service] + self.backup_services
+        start_index = self.current_service_index
+        
+        for i in range(len(services)):
+            service_index = (start_index + i) % len(services)
+            service = services[service_index]
+            service_name = "primary" if service_index == 0 else f"backup-{service_index}"
+            
+            try:
+                logger.info(f"🔄 Attempting {operation} on {service_name}")
+                func = getattr(service, func_name)
+                
+                result = await asyncio.wait_for(
+                    func(*args, **kwargs),
+                    timeout=self.config.failover_timeout
+                )
+                
+                # Success - update current service
+                if service_index != self.current_service_index:
+                    logger.success(f"✅ Failover to {service_name} successful")
+                    self.current_service_index = service_index
+                
+                return result
+            
+            except Exception as e:
+                logger.warning(f"⚠️ {operation} failed on {service_name}: {e}")
+                
+                if i == len(services) - 1:
+                    # All services failed
+                    logger.error(f"❌ All services failed for {operation}")
+                    raise Exception(f"All failover services failed: {e}")
+                
+                # Try next service
+                continue
+    
+    def register_error_handler(self, error_pattern: str, handler: Callable):
+        """
+        Register automatic error handler (runbook automation).
+        
+        Args:
+            error_pattern: Error pattern to match (regex)
+            handler: Async function to handle error
+        """
+        self.known_errors[error_pattern] = handler
+        logger.info(f"📋 Registered error handler for: {error_pattern}")
+    
+    async def handle_known_error(self, error: Exception) -> bool:
+        """
+        Check if error matches known patterns and handle automatically.
+        
+        Args:
+            error: Exception to handle
+        
+        Returns:
+            True if error was handled, False otherwise
+        """
+        import re
+        
+        error_str = str(error)
+        
+        for pattern, handler in self.known_errors.items():
+            if re.search(pattern, error_str, re.IGNORECASE):
+                logger.info(f"📋 Running automated handler for: {pattern}")
+                
+                try:
+                    await handler(error)
+                    
+                    # Track successful automated handling
+                    self.error_counts[pattern] = self.error_counts.get(pattern, 0) + 1
+                    logger.success(f"✅ Automated handler succeeded (count: {self.error_counts[pattern]})")
+                    
+                    return True
+                
+                except Exception as e:
+                    logger.error(f"❌ Automated handler failed: {e}")
+                    return False
+        
+        return False
+    
+    async def execute_with_circuit_breaker(
+        self,
+        func: Callable,
+        *args,
+        operation_name: str = "operation",
+        **kwargs
+    ) -> Any:
+        """
+        Execute function through circuit breaker.
+        
+        Args:
+            func: Async function to execute
+            *args: Function arguments
+            operation_name: Name for logging
+            **kwargs: Function keyword arguments
+        
+        Returns:
+            Function result
+        """
+        try:
+            result = await self.circuit_breaker.call(func, *args, **kwargs)
+            return result
+        except Exception as e:
+            logger.error(f"❌ {operation_name} failed (circuit: {self.circuit_breaker.state.value}): {e}")
+            raise e
 
 
 class NetworkErrorHandler:
