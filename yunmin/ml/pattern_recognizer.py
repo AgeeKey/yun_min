@@ -150,6 +150,10 @@ class PatternRecognizer:
             idx1, idx2 = pivot_highs[i], pivot_highs[i + 1]
             price1, price2 = prices[idx1], prices[idx2]
             
+            # Skip if price is zero or invalid
+            if price1 <= 0 or price2 <= 0:
+                continue
+            
             # Check if peaks are at similar levels (within 2%)
             price_diff_pct = abs(price1 - price2) / price1
             if price_diff_pct < 0.02:
@@ -199,6 +203,10 @@ class PatternRecognizer:
         for i in range(len(pivot_lows) - 1):
             idx1, idx2 = pivot_lows[i], pivot_lows[i + 1]
             price1, price2 = prices[idx1], prices[idx2]
+            
+            # Skip if price is zero or invalid
+            if price1 <= 0 or price2 <= 0:
+                continue
             
             # Check if troughs are at similar levels (within 2%)
             price_diff_pct = abs(price1 - price2) / price1
@@ -250,6 +258,10 @@ class PatternRecognizer:
             left_idx, head_idx, right_idx = pivot_highs[i], pivot_highs[i + 1], pivot_highs[i + 2]
             left_price, head_price, right_price = prices[left_idx], prices[head_idx], prices[right_idx]
             
+            # Skip if any price is zero or invalid
+            if left_price <= 0 or head_price <= 0 or right_price <= 0:
+                continue
+            
             # Head should be higher than shoulders
             if head_price > left_price and head_price > right_price:
                 # Shoulders should be at similar levels (within 3%)
@@ -295,6 +307,10 @@ class PatternRecognizer:
         for i in range(len(pivot_lows) - 2):
             left_idx, head_idx, right_idx = pivot_lows[i], pivot_lows[i + 1], pivot_lows[i + 2]
             left_price, head_price, right_price = prices[left_idx], prices[head_idx], prices[right_idx]
+            
+            # Skip if any price is zero or invalid
+            if left_price <= 0 or head_price <= 0 or right_price <= 0:
+                continue
             
             # Head should be lower than shoulders
             if head_price < left_price and head_price < right_price:

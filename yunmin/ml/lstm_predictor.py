@@ -207,14 +207,16 @@ class LSTMPricePredictor:
             X_list.append(X_seq)
             
             # Target prices at different horizons
-            # Use .values[0] if Series, otherwise use scalar
-            current_price_val = df_clean['close'].iloc[i + self.lookback_candles - 1]
-            current_price = float(current_price_val.values[0] if hasattr(current_price_val, 'values') else current_price_val)
+            # Use .item() for cleaner scalar extraction
+            current_price = float(df_clean['close'].iloc[i + self.lookback_candles - 1].item() 
+                                if hasattr(df_clean['close'].iloc[i + self.lookback_candles - 1], 'item')
+                                else df_clean['close'].iloc[i + self.lookback_candles - 1])
             
             y_targets = []
             for horizon in target_horizons:
-                future_price_val = df_clean['close'].iloc[i + self.lookback_candles + horizon - 1]
-                future_price = float(future_price_val.values[0] if hasattr(future_price_val, 'values') else future_price_val)
+                future_price = float(df_clean['close'].iloc[i + self.lookback_candles + horizon - 1].item()
+                                   if hasattr(df_clean['close'].iloc[i + self.lookback_candles + horizon - 1], 'item')
+                                   else df_clean['close'].iloc[i + self.lookback_candles + horizon - 1])
                 # Predict percentage change instead of absolute price
                 y_targets.append((future_price - current_price) / current_price)
             

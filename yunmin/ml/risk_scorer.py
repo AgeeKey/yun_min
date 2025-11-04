@@ -291,10 +291,8 @@ class RiskScorer:
         if not self.is_trained:
             return {}
         
-        if self.model_type == 'xgboost':
-            importance = self.model.feature_importances_
-        else:
-            importance = self.model.feature_importances_
+        # Both XGBoost and LightGBM have the same attribute
+        importance = self.model.feature_importances_
         
         return dict(zip(self.feature_names, importance.tolist()))
     
