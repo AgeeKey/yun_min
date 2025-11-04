@@ -1,3 +1,17 @@
 """Machine Learning module - Model training and inference."""
 
-__all__ = []
+from .lstm_predictor import LSTMPricePredictor, PricePrediction
+from .pattern_recognizer import PatternRecognizer, Pattern, PatternSignal, PatternType, PatternSentiment
+from .risk_scorer import RiskScorer, RiskScore
+
+__all__ = [
+    'LSTMPricePredictor',
+    'PricePrediction',
+    'PatternRecognizer',
+    'Pattern',
+    'PatternSignal',
+    'PatternType',
+    'PatternSentiment',
+    'RiskScorer',
+    'RiskScore',
+]
