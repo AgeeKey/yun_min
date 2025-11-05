@@ -1,0 +1,153 @@
+# YunMin Trading Bot - Alert Configuration
+# Configure multi-channel alerts with smart rules
+
+# Alert Channels Configuration
+channels:
+  telegram:
+    enabled: false
+    bot_token: ""  # Set your Telegram bot token here
+    chat_id: ""    # Set your Telegram chat ID here
+  
+  email:
+    enabled: false
+    smtp_server: "smtp.gmail.com"
+    smtp_port: 587
+    username: ""    # Your email address
+    password: ""    # Your email password or app-specific password
+    from_address: ""
+    to_addresses:
+      - ""  # Add recipient email addresses
+  
+  webhook:
+    enabled: false
+    url: ""  # Webhook URL for integrations (Discord, Slack, etc.)
+    headers:
+      Content-Type: "application/json"
+  
+  desktop:
+    enabled: true  # Desktop notifications (plyer/win10toast/osascript/notify-send)
+  
+  log:
+    enabled: true  # Always log alerts to console/file
+
+# Default Alert Settings
+settings:
+  # Minimum alert level to process (info, warning, error, critical)
+  min_alert_level: "warning"
+  
+  # Rate limiting - don't spam same alert (seconds)
+  rate_limit_seconds: 60
+  
+  # Alert throttling
+  throttle_enabled: true
+  
+  # Group similar alerts
+  group_similar_alerts: true
+  
+  # Send digest for non-critical alerts (seconds)
+  alert_digest_interval: 3600  # 1 hour
+  
+  # Retry failed deliveries
+  retry_attempts: 3
+
+# Smart Alert Rules
+# Define when to send alerts and through which channels
+rules:
+  # CRITICAL: Immediate alerts via all channels
+  critical:
+    - event: "stop_loss_hit"
+      description: "Position hit stop-loss"
+      channels: ["telegram", "email", "desktop", "log"]
+      min_loss_pct: -2.0  # Alert if loss > 2%
+    
+    - event: "connection_lost"
+      description: "Lost connection to exchange"
+      channels: ["telegram", "email", "desktop", "log"]
+    
+    - event: "api_error"
+      description: "Critical API error"
+      channels: ["telegram", "email", "desktop", "log"]
+      error_codes: [-1000, -2010, -2011]  # Binance critical errors
+  
+  # WARNING: Important but not critical
+  warning:
+    - event: "drawdown_warning"
+      description: "Portfolio drawdown exceeds threshold"
+      channels: ["telegram", "desktop", "log"]
+      threshold_pct: 5.0  # Alert if drawdown > 5%
+      digest: true  # Send hourly digest instead of immediate
+    
+    - event: "risk_limit_hit"
+      description: "Risk management limit reached"
+      channels: ["telegram", "desktop", "log"]
+    
+    - event: "position_closed_loss"
+      description: "Position closed with loss"
+      channels: ["desktop", "log"]
+      min_loss: -100.0  # Only alert if loss > $100
+      digest: true
+  
+  # INFO: Informational alerts
+  info:
+    - event: "position_opened"
+      description: "New position opened"
+      channels: ["log"]
+      digest: true
+    
+    - event: "position_closed_profit"
+      description: "Position closed with profit"
+      channels: ["desktop", "log"]
+      min_profit: 50.0  # Only alert if profit > $50
+    
+    - event: "daily_summary"
+      description: "Daily trading summary"
+      channels: ["telegram", "email", "log"]
+      schedule: "20:00"  # Send at 8 PM daily
+    
+    - event: "strategy_signal"
+      description: "New trading signal generated"
+      channels: ["log"]
+      min_confidence: 70.0  # Only alert if confidence > 70%
+    
+    - event: "connection_restored"
+      description: "Connection to exchange restored"
+      channels: ["telegram", "desktop", "log"]
+
+# Alert Templates
+# Define message formats for different alert types
+templates:
+  stop_loss_hit: "🚨 STOP-LOSS HIT: {symbol} @ ${price:,.2f} ({loss_pct:+.1f}%)"
+  
+  position_closed_profit: "✅ TRADE CLOSED: {symbol} +${pnl:,.2f} ({pnl_pct:+.1f}%) in {duration}"
+  
+  position_closed_loss: "📉 TRADE CLOSED: {symbol} ${pnl:,.2f} ({pnl_pct:+.1f}%) in {duration}"
+  
+  drawdown_warning: "⚠️ DRAWDOWN WARNING: Portfolio down {drawdown_pct:.1f}% today"
+  
+  daily_summary: |
+    📊 Daily Trading Summary
+    Trades: {trades}
+    P&L: ${pnl:,.2f}
+    Win Rate: {win_rate:.1f}%
+    Largest Win: ${largest_win:,.2f}
+    Largest Loss: ${largest_loss:,.2f}
+  
+  connection_lost: "🔴 Connection Lost to {exchange}. Attempting reconnection..."
+  
+  connection_restored: "✅ Connection Restored to {exchange} after {downtime}s"
+  
+  api_error: "❌ API Error [{error_code}]: {error_msg}"
+  
+  strategy_signal: "📈 {signal_type} Signal: {symbol} (Confidence: {confidence:.1f}%)"
+
+# Quiet Hours
+# Don't send non-critical alerts during these hours (24h format)
+quiet_hours:
+  enabled: false
+  start: "23:00"
+  end: "07:00"
+  allow_critical: true  # Still send critical alerts during quiet hours
+
+# Testing
+# Set to true to enable test mode (mock alerts without actual delivery)
+test_mode: false
