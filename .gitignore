@@ -70,3 +70,6 @@ mlruns/
 # Coverage
 .coverage
 htmlcov/
+
+# MkDocs documentation
+site/

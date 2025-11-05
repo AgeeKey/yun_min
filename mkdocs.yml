@@ -1,0 +1,101 @@
+site_name: YunMin Trading Bot
+site_description: AI-powered cryptocurrency trading agent with ML and LLM capabilities
+site_author: YunMin Team
+site_url: https://ageekey.github.io/yun_min/
+
+repo_name: AgeeKey/yun_min
+repo_url: https://github.com/AgeeKey/yun_min
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.tabs.link
+  icon:
+    repo: fontawesome/brands/github
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: google
+            show_source: true
+            show_root_heading: true
+            show_root_full_path: false
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.details
+  - pymdownx.emoji
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Quickstart: getting-started/quickstart.md
+      - Installation: getting-started/installation.md
+      - First Run: getting-started/first-run.md
+  - Configuration:
+      - Overview: configuration/overview.md
+      - Exchange Setup: configuration/exchange.md
+      - Risk Management: configuration/risk-management.md
+      - Strategy Config: configuration/strategy.md
+  - Strategies:
+      - Introduction: strategies/introduction.md
+      - AI Strategies: strategies/ai-strategies.md
+      - Rule-Based: strategies/rule-based.md
+      - Creating Custom: strategies/custom-strategy.md
+  - Risk Management:
+      - Best Practices: risk/best-practices.md
+      - Position Sizing: risk/position-sizing.md
+      - Stop Loss & Take Profit: risk/stop-loss.md
+  - API Reference:
+      - Core: api/core.md
+      - Strategies: api/strategies.md
+      - Risk: api/risk.md
+      - Connectors: api/connectors.md
+  - Troubleshooting:
+      - Common Issues: troubleshooting/common-issues.md
+      - FAQ: troubleshooting/faq.md
+  - Development:
+      - Contributing: development/contributing.md
+      - Development Setup: development/setup.md
+      - Testing: development/testing.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/AgeeKey/yun_min
+    - icon: fontawesome/brands/discord
+      link: https://discord.gg/yunmin
