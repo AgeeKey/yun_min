@@ -73,10 +73,10 @@ def cmd_run(args):
     if not Path(config_path).exists():
         logger.error(f"Configuration file not found: {config_path}")
         sys.exit(1)
-        
-        logger.info("=" * 60)
-        logger.info("Yun Min Trading Agent v0.1.0")
-        logger.info("=" * 60)
+    
+    # Load YAML config using load_config function
+    config = load_config(config_path)
+    logger.info(f"Configuration loaded from {config_path}")
         
     # Create and run bot
     bot = YunMinBot(config)

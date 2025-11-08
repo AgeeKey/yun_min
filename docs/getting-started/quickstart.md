@@ -155,10 +155,10 @@ yunmin --help
 
 ## Next Steps
 
-1. ✅ Read the [Configuration Guide](../configuration/overview.md)
-2. ✅ Learn about [Trading Strategies](../strategies/introduction.md)
-3. ✅ Understand [Risk Management](../risk/best-practices.md)
-4. ✅ Review [Common Issues](../troubleshooting/common-issues.md)
+1. ✅ Read the [Development Guide](../DEVELOPMENT.md)
+2. ✅ Learn about [Advanced AI Framework](../ADVANCED_AI_FRAMEWORK_GUIDE.md)
+3. ✅ Create [Custom Strategies](../strategies/custom-strategy.md)
+4. ✅ Review [Testnet Setup Guide](../TESTNET_SETUP_GUIDE.md)
 
 ## Getting Help
 

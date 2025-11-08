@@ -195,9 +195,9 @@ def add_custom_indicator(self, df):
 
 ## Next Steps
 
-- Review [AI Strategies](ai-strategies.md) for advanced examples
-- Read [Risk Management](../risk/best-practices.md) guidelines
-- Check [API Reference](../api/strategies.md) for detailed documentation
+- Review [Advanced AI Framework Guide](../ADVANCED_AI_FRAMEWORK_GUIDE.md) for advanced AI trading examples
+- Read [Development Guide](../DEVELOPMENT.md) for contributing guidelines
+- Check [API Documentation](../API_DOCUMENTATION.md) for detailed technical reference
 
 ---
 

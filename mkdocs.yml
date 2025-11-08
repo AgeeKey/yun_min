@@ -64,34 +64,29 @@ nav:
   - Home: index.md
   - Getting Started:
       - Quickstart: getting-started/quickstart.md
-      - Installation: getting-started/installation.md
-      - First Run: getting-started/first-run.md
-  - Configuration:
-      - Overview: configuration/overview.md
-      - Exchange Setup: configuration/exchange.md
-      - Risk Management: configuration/risk-management.md
-      - Strategy Config: configuration/strategy.md
   - Strategies:
-      - Introduction: strategies/introduction.md
-      - AI Strategies: strategies/ai-strategies.md
-      - Rule-Based: strategies/rule-based.md
       - Creating Custom: strategies/custom-strategy.md
-  - Risk Management:
-      - Best Practices: risk/best-practices.md
-      - Position Sizing: risk/position-sizing.md
-      - Stop Loss & Take Profit: risk/stop-loss.md
-  - API Reference:
-      - Core: api/core.md
-      - Strategies: api/strategies.md
-      - Risk: api/risk.md
-      - Connectors: api/connectors.md
-  - Troubleshooting:
-      - Common Issues: troubleshooting/common-issues.md
-      - FAQ: troubleshooting/faq.md
-  - Development:
-      - Contributing: development/contributing.md
-      - Development Setup: development/setup.md
-      - Testing: development/testing.md
+  - Documentation:
+      - Advanced AI Framework: ADVANCED_AI_FRAMEWORK_GUIDE.md
+      - Development Guide: DEVELOPMENT.md
+      - Deployment: DEPLOYMENT.md
+      - Operations: OPERATIONS.md
+      - Alert Rules: ALERT_RULES.md
+      - API Documentation: API_DOCUMENTATION.md
+  - Guides:
+      - Testnet Setup: TESTNET_SETUP_GUIDE.md
+      - Testnet 48H Validation: TESTNET_48H_VALIDATION_PLAN.md
+      - Phase 4 Deployment: PHASE4_DEPLOYMENT_GUIDE.md
+      - Phase 4 Incident Response: PHASE4_INCIDENT_RESPONSE.md
+      - Phase 4 Monitoring Dashboard: PHASE4_MONITORING_DASHBOARD.md
+      - Phase 4 Scale Up Roadmap: PHASE4_SCALE_UP_ROADMAP.md
+      - Runbook Live Safety: RUNBOOK_LIVE_SAFETY.md
+  - Reports:
+      - 100% Completion Report: 100_PERCENT_COMPLETION_REPORT.md
+      - Phase 2 Week 2 V4 Analysis: PHASE2_WEEK2_V4_ANALYSIS.md
+      - Phase 2 Week 3 Real Data Critical: PHASE2_WEEK3_REALDATA_CRITICAL.md
+      - Tasks 4-5-6-7 Summary: TASKS_4-5-6-7_SUMMARY.md
+  - Attribution: ATTRIBUTION.md
 
 extra:
   social:
