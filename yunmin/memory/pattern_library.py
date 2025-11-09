@@ -17,6 +17,7 @@ class PatternType(Enum):
     """Types of market patterns."""
     BREAKOUT = "breakout"
     REVERSAL = "reversal"
+    TREND_REVERSAL = "trend_reversal"  # Alias for REVERSAL
     CONSOLIDATION = "consolidation"
     TREND_CONTINUATION = "trend_continuation"
     DOUBLE_TOP = "double_top"

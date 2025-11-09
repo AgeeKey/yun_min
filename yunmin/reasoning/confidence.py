@@ -24,23 +24,56 @@ class ConfidenceCalibrator:
         
         logger.info("📊 Confidence Calibrator initialized")
     
-    def calibrate(self, confidence: float, context: Optional[Dict[str, Any]] = None) -> float:
+    def calibrate(
+        self,
+        confidence: float = None,
+        raw_confidence: float = None,  # Alias
+        context: Optional[Dict[str, Any]] = None,
+        market_volatility: float = None,
+        model_agreement: float = None
+    ) -> float:
         """
         Calibrate a confidence score.
         
         Args:
             confidence: Raw confidence score (0-1)
+            raw_confidence: Alias for confidence (backwards compatibility)
             context: Optional context for adaptive calibration
+            market_volatility: Market volatility factor (optional)
+            model_agreement: Agreement between models (optional)
             
         Returns:
             Calibrated confidence score
         """
+        # Backwards compatibility
+        if raw_confidence is not None:
+            confidence = raw_confidence
+        
+        if confidence is None:
+            raise ValueError("Either confidence or raw_confidence must be provided")
+        
+        # Apply basic calibration
+        calibrated = confidence
+        
+        # Adjust for market volatility
+        if market_volatility is not None:
+            # Higher volatility → lower confidence
+            volatility_factor = 1.0 - min(market_volatility * 5, 0.3)
+            calibrated *= volatility_factor
+        
+        # Adjust for model agreement
+        if model_agreement is not None:
+            # Lower agreement → lower confidence
+            agreement_factor = 0.7 + model_agreement * 0.3
+            calibrated *= agreement_factor
+        
+        # Apply learned calibration if available
         if not self.calibrated or len(self.calibration_data) < 10:
             # Not enough data for calibration, apply simple adjustment
-            return self._simple_calibration(confidence)
+            return self._simple_calibration(calibrated)
         
         # Apply learned calibration
-        return self._apply_calibration(confidence)
+        return self._apply_calibration(calibrated)
     
     def add_observation(self, predicted_confidence: float, actual_outcome: bool):
         """

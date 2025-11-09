@@ -26,7 +26,8 @@ class ExecutionAgent:
         self,
         default_strategy: str = "adaptive",
         max_slippage: float = 0.001,  # 0.1%
-        split_threshold: float = 0.01  # 1% of position size
+        split_threshold: float = 0.01,  # 1% of position size
+        slippage_tolerance: float = None  # Backwards compatibility
     ):
         """
         Initialize execution agent.
@@ -35,12 +36,53 @@ class ExecutionAgent:
             default_strategy: Default execution strategy
             max_slippage: Maximum acceptable slippage
             split_threshold: Threshold for splitting large orders
+            slippage_tolerance: Alternative name for max_slippage (backwards compat)
         """
+        # Backwards compatibility
+        if slippage_tolerance is not None:
+            max_slippage = slippage_tolerance
+        
         self.default_strategy = default_strategy
         self.max_slippage = max_slippage
         self.split_threshold = split_threshold
         
         logger.info(f"⚡ Execution Agent initialized (strategy={default_strategy})")
+    
+    def plan_execution(
+        self,
+        order: Dict[str, Any],
+        market_state: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Plan execution strategy for an order (sync version for testing).
+        
+        Args:
+            order: Order details
+            market_state: Current market state
+            
+        Returns:
+            Execution plan with strategy and estimates
+        """
+        symbol = order.get('symbol', 'UNKNOWN')
+        quantity = order.get('quantity', 0.0)
+        spread = market_state.get('spread', 0.0)
+        volume = market_state.get('volume', 0.0)
+        
+        # Select strategy based on market conditions
+        strategy = self.default_strategy
+        if spread > 50 or volume < 100000:
+            strategy = 'iceberg'
+        
+        # Estimate slippage
+        estimated_slippage = min(spread / 2, quantity / volume * 100) if volume > 0 else 0.01
+        
+        return {
+            'strategy': strategy,
+            'estimated_slippage': estimated_slippage,
+            'symbol': symbol,
+            'quantity': quantity,
+            'split_orders': quantity > 1.0
+        }
     
     async def execute(
         self,

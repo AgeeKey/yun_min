@@ -34,23 +34,29 @@ class StrategyOptimizer:
     
     def optimize(
         self,
-        objective_function: Callable,
         param_space: Dict[str, Any],
+        objective_function: Callable,
         n_iterations: int = 50,
+        n_trials: int = None,  # Backwards compatibility
         maximize: bool = True
     ) -> Dict[str, Any]:
         """
         Optimize strategy parameters.
         
         Args:
-            objective_function: Function to optimize (returns score)
             param_space: Parameter space to search
+            objective_function: Function to optimize (returns score)
             n_iterations: Number of iterations
+            n_trials: Alias for n_iterations (backwards compatibility)
             maximize: Whether to maximize (True) or minimize (False)
             
         Returns:
             Best parameters and score
         """
+        # Backwards compatibility
+        if n_trials is not None:
+            n_iterations = n_trials
+        
         logger.info(f"Starting {self.method} optimization with {n_iterations} iterations")
         
         if self.method == 'grid':
@@ -191,7 +197,14 @@ class StrategyOptimizer:
         params = {}
         
         for name, spec in param_space.items():
-            if isinstance(spec, list):
+            if isinstance(spec, tuple) and len(spec) == 2:
+                # Tuple format (min, max) - added support
+                start, end = spec
+                if isinstance(start, int) and isinstance(end, int):
+                    params[name] = int(np.random.randint(start, end + 1))
+                else:
+                    params[name] = float(np.random.uniform(start, end))
+            elif isinstance(spec, list):
                 # Choose from list
                 params[name] = np.random.choice(spec)
             elif isinstance(spec, dict):
@@ -199,15 +212,15 @@ class StrategyOptimizer:
                     # Uniform sample from range
                     start, end, _ = spec['range']
                     if isinstance(start, int) and isinstance(end, int):
-                        params[name] = np.random.randint(start, end)
+                        params[name] = int(np.random.randint(start, end))
                     else:
-                        params[name] = np.random.uniform(start, end)
+                        params[name] = float(np.random.uniform(start, end))
                 elif 'type' in spec:
                     # Sample based on type
                     if spec['type'] == 'int':
-                        params[name] = np.random.randint(spec['min'], spec['max'])
+                        params[name] = int(np.random.randint(spec['min'], spec['max']))
                     elif spec['type'] == 'float':
-                        params[name] = np.random.uniform(spec['min'], spec['max'])
+                        params[name] = float(np.random.uniform(spec['min'], spec['max']))
             else:
                 # Use as-is
                 params[name] = spec

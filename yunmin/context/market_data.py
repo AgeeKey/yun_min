@@ -279,3 +279,62 @@ class MarketDataProvider:
         # This would normally query the exchange
         # For now, return None to trigger async fetch
         return None
+
+
+class MarketDataCollector:
+    """
+    Simplified market data collector for testing.
+    Stores candle history and provides context.
+    """
+    
+    def __init__(self, history_length: int = 500):
+        """
+        Args:
+            history_length: Maximum history length
+        """
+        self.history_length = history_length
+        self.candles: Optional[pd.DataFrame] = None
+        logger.info(f"📊 Market Data Collector initialized (max length={history_length})")
+    
+    def update(self, candles: pd.DataFrame):
+        """
+        Updates the candle history.
+        
+        Args:
+            candles: DataFrame with candles
+        """
+        if self.candles is None:
+            self.candles = candles.tail(self.history_length).copy()
+        else:
+            # Объединяем и обрезаем
+            self.candles = pd.concat([self.candles, candles]).tail(self.history_length)
+    
+    def get_context(self) -> Dict[str, Any]:
+        """
+        Returns market context.
+        
+        Returns:
+            Dict with market data
+        """
+        if self.candles is None or len(self.candles) == 0:
+            return {
+                'candles_count': 0,
+                'indicators': {}
+            }
+        
+        # Calculate basic indicators
+        close = self.candles['close']
+        
+        indicators = {
+            'current_price': float(close.iloc[-1]),
+            'price_change_24h': float((close.iloc[-1] - close.iloc[0]) / close.iloc[0] * 100),
+            'high_24h': float(self.candles['high'].max()),
+            'low_24h': float(self.candles['low'].min()),
+            'volume_total': float(self.candles['volume'].sum())
+        }
+        
+        return {
+            'candles_count': len(self.candles),
+            'indicators': indicators,
+            'timeframe': '5min'
+        }
