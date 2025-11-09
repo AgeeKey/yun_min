@@ -1,0 +1,35 @@
+{
+  "test_sessions": [
+    {
+      "session_id": 1,
+      "start_time": "2025-11-09 10:00:00",
+      "end_time": "2025-11-09 18:30:00",
+      "iterations_completed": 100,
+      "market_condition": "normal",
+      "results": {
+        "total_trades": 12,
+        "winning_trades": 7,
+        "losing_trades": 5,
+        "win_rate": 0.583,
+        "total_pnl": 245.50,
+        "max_drawdown": 0.08,
+        "signal_distribution": {
+          "BUY": 25,
+          "SELL": 30,
+          "HOLD": 45
+        },
+        "openai_stats": {
+          "total_tokens": 45000,
+          "estimated_cost_usd": 0.09
+        }
+      }
+    }
+  ],
+  "aggregated_results": {
+    "total_iterations": 100,
+    "total_trades": 12,
+    "overall_win_rate": 0.583,
+    "total_pnl": 245.50,
+    "average_trade_duration": "45 minutes"
+  }
+}

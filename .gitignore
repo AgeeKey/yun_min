@@ -50,6 +50,10 @@ data/
 !data/backtest_results/.gitkeep
 !data/market_data/.gitkeep
 
+# Keep live test example files and README
+!data/live_test/*_example.*
+!data/live_test/README.md
+
 # ML Models
 models/
 *.pkl
