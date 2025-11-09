@@ -2,6 +2,39 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Changed - Project Cleanup (2025-11-08)
+- **Massive Documentation Reorganization** 
+  - Removed 39 obsolete/empty files from root directory
+  - Reorganized docs/ into logical subdirectories:
+    - `architecture/` - System architecture documentation
+    - `deployment/` - Deployment and operations guides
+    - `advanced/` - Advanced topics (AI framework, alerts, safety)
+    - `testing/` - Testing and validation guides
+    - `reports/` - Historical reports and summaries
+  - Moved 16 report/summary files from root to docs/reports/
+  
+- **New Documentation Created**
+  - `docs/architecture/memory-system.md` - RAG/vector memory system
+  - `docs/getting-started/installation.md` - Complete installation guide
+  - `docs/getting-started/configuration.md` - Comprehensive configuration guide
+  - `docs/strategies/ai-strategies.md` - AI-powered strategies documentation
+  - `docs/strategies/backtesting.md` - Backtesting guide
+
+- **Documentation Fixes**
+  - Fixed 37+ broken internal documentation links
+  - Updated mkdocs.yml navigation structure
+  - **mkdocs build --strict now passes successfully** ✅
+  - Updated README.md with correct documentation links
+  
+- **Cleanup Summary**
+  - Deleted: 19 empty .md files, 15 empty .py files, 5 empty .ps1 files
+  - Root directory now contains only essential files:
+    - README.md, ARCHITECTURE.md, CONTRIBUTING.md
+    - QUICKSTART.md, INTEGRATION_GUIDE.md
+    - LICENSE, CHANGELOG.md
+
 ## [0.1.0] - 2025-11-04
 
 ### Added
