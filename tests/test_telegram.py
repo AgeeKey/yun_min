@@ -41,18 +41,25 @@ class TestTelegramBot:
         """Test successful message sending."""
         bot = TelegramBot("123:ABC", "456")
         
-        # Mock aiohttp response
-        mock_response = AsyncMock()
-        mock_response.status = 200
-        mock_response.__aenter__.return_value = mock_response
-        mock_response.__aexit__.return_value = None
+        # Create a proper async context manager mock
+        class MockResponse:
+            status = 200
+            async def text(self):
+                return "OK"
+            async def __aenter__(self):
+                return self
+            async def __aexit__(self, *args):
+                return None
         
-        mock_session = AsyncMock()
-        mock_session.post.return_value = mock_response
-        mock_session.__aenter__.return_value = mock_session
-        mock_session.__aexit__.return_value = None
+        class MockSession:
+            def post(self, *args, **kwargs):
+                return MockResponse()
+            async def __aenter__(self):
+                return self
+            async def __aexit__(self, *args):
+                return None
         
-        with patch('aiohttp.ClientSession', return_value=mock_session):
+        with patch('aiohttp.ClientSession', return_value=MockSession()):
             result = await bot.send_message("Test message")
             assert result is True
     
@@ -61,19 +68,25 @@ class TestTelegramBot:
         """Test failed message sending."""
         bot = TelegramBot("123:ABC", "456")
         
-        # Mock aiohttp response with error
-        mock_response = AsyncMock()
-        mock_response.status = 400
-        mock_response.text = AsyncMock(return_value="Bad Request")
-        mock_response.__aenter__.return_value = mock_response
-        mock_response.__aexit__.return_value = None
+        # Create a proper async context manager mock for error
+        class MockResponse:
+            status = 400
+            async def text(self):
+                return "Bad Request"
+            async def __aenter__(self):
+                return self
+            async def __aexit__(self, *args):
+                return None
         
-        mock_session = AsyncMock()
-        mock_session.post.return_value = mock_response
-        mock_session.__aenter__.return_value = mock_session
-        mock_session.__aexit__.return_value = None
+        class MockSession:
+            def post(self, *args, **kwargs):
+                return MockResponse()
+            async def __aenter__(self):
+                return self
+            async def __aexit__(self, *args):
+                return None
         
-        with patch('aiohttp.ClientSession', return_value=mock_session):
+        with patch('aiohttp.ClientSession', return_value=MockSession()):
             result = await bot.send_message("Test message")
             assert result is False
     
