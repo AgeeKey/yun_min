@@ -19,23 +19,52 @@ class OrderBookAnalyzer:
     - Price walls
     """
     
-    def __init__(self, exchange_connector: Optional[Any] = None):
+    def __init__(self, exchange_connector: Optional[Any] = None, depth: int = 50):
         """
         Initialize order book analyzer.
         
         Args:
             exchange_connector: Exchange connector for fetching order book
+            depth: Default depth for analysis (ignored if provided in analyze())
         """
         self.exchange = exchange_connector
-        logger.info("📖 Order Book Analyzer initialized")
+        self.default_depth = depth
+        logger.info(f"📖 Order Book Analyzer initialized (depth={depth})")
     
-    async def analyze(
+    def analyze(self, order_book: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Анализирует предоставленный order book (синхронная версия для тестов).
+        
+        Args:
+            order_book: Dict с 'bids' и 'asks' (список [price, volume])
+            
+        Returns:
+            Анализ order book
+        """
+        try:
+            analysis = {
+                'bid_depth': self._calculate_depth(order_book['bids']),
+                'ask_depth': self._calculate_depth(order_book['asks']),
+                'imbalance': self._calculate_imbalance(order_book),
+                'spread': self._calculate_spread(order_book),
+                'liquidity_score': self._calculate_liquidity_score(order_book),
+                'price_walls': self._find_price_walls(order_book)
+            }
+            
+            logger.debug(f"Order book analyzed: imbalance={analysis['imbalance']:.2f}")
+            return analysis
+        
+        except Exception as e:
+            logger.warning(f"Order book analysis failed: {e}")
+            return self._default_analysis()
+    
+    async def analyze_async(
         self,
         symbol: str = 'BTC/USDT',
         depth: int = 50
     ) -> Dict[str, Any]:
         """
-        Analyze order book.
+        Analyze order book (async version для продакшена).
         
         Args:
             symbol: Trading symbol
@@ -50,17 +79,7 @@ class OrderBookAnalyzer:
             else:
                 order_book = self._generate_sample_orderbook(depth)
             
-            analysis = {
-                'bid_depth': self._calculate_depth(order_book['bids']),
-                'ask_depth': self._calculate_depth(order_book['asks']),
-                'imbalance': self._calculate_imbalance(order_book),
-                'spread': self._calculate_spread(order_book),
-                'liquidity_score': self._calculate_liquidity_score(order_book),
-                'price_walls': self._find_price_walls(order_book)
-            }
-            
-            logger.debug(f"Order book analyzed: imbalance={analysis['imbalance']:.2f}")
-            return analysis
+            return self.analyze(order_book)
         
         except Exception as e:
             logger.warning(f"Order book analysis failed: {e}")
