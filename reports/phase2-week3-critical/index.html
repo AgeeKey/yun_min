@@ -1,0 +1,2610 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="AI-powered cryptocurrency trading agent with ML and LLM capabilities">
+      
+      
+        <meta name="author" content="YunMin Team">
+      
+      
+        <link rel="canonical" href="https://ageekey.github.io/yun_min/reports/phase2-week3-critical/">
+      
+      
+        <link rel="prev" href="../phase2-week2-analysis/">
+      
+      
+        <link rel="next" href="../tasks-summary/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
+    
+    
+      
+        <title>Phase 2 Week 3 Critical - YunMin Trading Bot</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.84d31ad4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#phase-2-week-3-critical-discovery-real-market-testing" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="YunMin Trading Bot" class="md-header__button md-logo" aria-label="YunMin Trading Bot" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            YunMin Trading Bot
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Phase 2 Week 3 Critical
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/AgeeKey/yun_min" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    AgeeKey/yun_min
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../getting-started/quickstart/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../strategies/custom-strategy/" class="md-tabs__link">
+          
+  
+  
+  Strategies
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../deployment/deployment-guide/" class="md-tabs__link">
+          
+  
+  
+  Deployment
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../advanced/advanced-ai-framework/" class="md-tabs__link">
+          
+  
+  
+  Advanced
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../testing/testnet-setup/" class="md-tabs__link">
+          
+  
+  
+  Testing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../completion-report/" class="md-tabs__link">
+          
+  
+  
+  Reports
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../API_DOCUMENTATION/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  API Reference
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../project-overview/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Project Overview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../CONTRIBUTING/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Contributing
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="YunMin Trading Bot" class="md-nav__button md-logo" aria-label="YunMin Trading Bot" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    YunMin Trading Bot
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/AgeeKey/yun_min" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    AgeeKey/yun_min
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Quickstart
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Installation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configuration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/ai-agents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    AI Agents
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/memory-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Memory System
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Strategies
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Strategies
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../strategies/custom-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Creating Custom
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../strategies/ai-strategies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    AI Strategies
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../strategies/backtesting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Backtesting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Deployment
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Deployment
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deployment/deployment-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Deployment Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deployment/monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Monitoring
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deployment/incident-response/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Incident Response
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deployment/scaling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Scaling
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Advanced
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Advanced
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/advanced-ai-framework/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    AI Framework
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/alert-rules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Alert Rules
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/runbook-live-safety/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Live Safety Runbook
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Testing
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Testing
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../testing/testnet-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Testnet Setup
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../testing/validation-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Validation Plan
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Reports
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Reports
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../completion-report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Completion Report
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../phase2-week2-analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Phase 2 Week 2 Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Phase 2 Week 3 Critical
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Phase 2 Week 3 Critical
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#executive-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Executive Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-1-real-data-download-completed" class="md-nav__link">
+    <span class="md-ellipsis">
+      📥 Task 1: Real Data Download (✅ COMPLETED)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-2-backtest-script-for-real-data-completed" class="md-nav__link">
+    <span class="md-ellipsis">
+      🧪 Task 2: Backtest Script for Real Data (✅ COMPLETED)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-3-v3-real-data-test-completed-critical-failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      📊 Task 3: V3 Real Data Test (✅ COMPLETED - CRITICAL FAILURE)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📊 Task 3: V3 Real Data Test (✅ COMPLETED - CRITICAL FAILURE)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#v3-results-original-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔴 V3 Results (Original Strategy)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-4-groq-ai-analysis-completed" class="md-nav__link">
+    <span class="md-ellipsis">
+      🤖 Task 4: Groq AI Analysis (✅ COMPLETED)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🤖 Task 4: Groq AI Analysis (✅ COMPLETED)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ai-verdict-210" class="md-nav__link">
+    <span class="md-ellipsis">
+      AI Verdict: 2/10 баллов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ai-recommendations" class="md-nav__link">
+    <span class="md-ellipsis">
+      AI Recommendations:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-5-v31-ai-optimized-strategy-completed-still-failed" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔧 Task 5: V3.1 AI-Optimized Strategy (✅ COMPLETED - STILL FAILED)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔧 Task 5: V3.1 AI-Optimized Strategy (✅ COMPLETED - STILL FAILED)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#changes-implemented" class="md-nav__link">
+    <span class="md-ellipsis">
+      Changes Implemented:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-6-v31-testing-comparison-completed-worse-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      📊 Task 6: V3.1 Testing &amp; Comparison (✅ COMPLETED - WORSE RESULTS!)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📊 Task 6: V3.1 Testing &amp; Comparison (✅ COMPLETED - WORSE RESULTS!)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#v31-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔴 V3.1 Results
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comparison-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparison Table:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#critical-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      🚨 CRITICAL ANALYSIS
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🚨 CRITICAL ANALYSIS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-strategies-failed-on-real-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Strategies Failed on Real Data?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Works:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-doesnt-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Doesn't Work:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#files-created" class="md-nav__link">
+    <span class="md-ellipsis">
+      📁 Files Created:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommendations-next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Recommendations &amp; Next Steps
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎯 Recommendations &amp; Next Steps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#immediate-actions-needed" class="md-nav__link">
+    <span class="md-ellipsis">
+      IMMEDIATE ACTIONS NEEDED:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recommendation" class="md-nav__link">
+    <span class="md-ellipsis">
+      RECOMMENDATION:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#groq-ai-integration-success" class="md-nav__link">
+    <span class="md-ellipsis">
+      📊 Groq AI Integration Success
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📊 Groq AI Integration Success">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setup:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Features:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Limits:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      🏁 Conclusion
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🏁 Conclusion">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#achievements" class="md-nav__link">
+    <span class="md-ellipsis">
+      ✅ Achievements:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      ❌ Failures:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lessons-learned" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎓 Lessons Learned:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#status" class="md-nav__link">
+    <span class="md-ellipsis">
+      📝 Status:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#path-forward" class="md-nav__link">
+    <span class="md-ellipsis">
+      🚀 Path Forward:
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tasks-summary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tasks Summary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../API_DOCUMENTATION/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Project Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CONTRIBUTING/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#executive-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Executive Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-1-real-data-download-completed" class="md-nav__link">
+    <span class="md-ellipsis">
+      📥 Task 1: Real Data Download (✅ COMPLETED)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-2-backtest-script-for-real-data-completed" class="md-nav__link">
+    <span class="md-ellipsis">
+      🧪 Task 2: Backtest Script for Real Data (✅ COMPLETED)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-3-v3-real-data-test-completed-critical-failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      📊 Task 3: V3 Real Data Test (✅ COMPLETED - CRITICAL FAILURE)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📊 Task 3: V3 Real Data Test (✅ COMPLETED - CRITICAL FAILURE)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#v3-results-original-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔴 V3 Results (Original Strategy)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-4-groq-ai-analysis-completed" class="md-nav__link">
+    <span class="md-ellipsis">
+      🤖 Task 4: Groq AI Analysis (✅ COMPLETED)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🤖 Task 4: Groq AI Analysis (✅ COMPLETED)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ai-verdict-210" class="md-nav__link">
+    <span class="md-ellipsis">
+      AI Verdict: 2/10 баллов
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ai-recommendations" class="md-nav__link">
+    <span class="md-ellipsis">
+      AI Recommendations:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-5-v31-ai-optimized-strategy-completed-still-failed" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔧 Task 5: V3.1 AI-Optimized Strategy (✅ COMPLETED - STILL FAILED)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔧 Task 5: V3.1 AI-Optimized Strategy (✅ COMPLETED - STILL FAILED)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#changes-implemented" class="md-nav__link">
+    <span class="md-ellipsis">
+      Changes Implemented:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-6-v31-testing-comparison-completed-worse-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      📊 Task 6: V3.1 Testing &amp; Comparison (✅ COMPLETED - WORSE RESULTS!)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📊 Task 6: V3.1 Testing &amp; Comparison (✅ COMPLETED - WORSE RESULTS!)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#v31-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔴 V3.1 Results
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comparison-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparison Table:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#critical-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      🚨 CRITICAL ANALYSIS
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🚨 CRITICAL ANALYSIS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-strategies-failed-on-real-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Strategies Failed on Real Data?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Works:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-doesnt-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Doesn't Work:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#files-created" class="md-nav__link">
+    <span class="md-ellipsis">
+      📁 Files Created:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommendations-next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Recommendations &amp; Next Steps
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎯 Recommendations &amp; Next Steps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#immediate-actions-needed" class="md-nav__link">
+    <span class="md-ellipsis">
+      IMMEDIATE ACTIONS NEEDED:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recommendation" class="md-nav__link">
+    <span class="md-ellipsis">
+      RECOMMENDATION:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#groq-ai-integration-success" class="md-nav__link">
+    <span class="md-ellipsis">
+      📊 Groq AI Integration Success
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📊 Groq AI Integration Success">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setup:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Features:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Limits:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      🏁 Conclusion
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🏁 Conclusion">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#achievements" class="md-nav__link">
+    <span class="md-ellipsis">
+      ✅ Achievements:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      ❌ Failures:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lessons-learned" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎓 Lessons Learned:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#status" class="md-nav__link">
+    <span class="md-ellipsis">
+      📝 Status:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#path-forward" class="md-nav__link">
+    <span class="md-ellipsis">
+      🚀 Path Forward:
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="phase-2-week-3-critical-discovery-real-market-testing">Phase 2 Week 3: Critical Discovery - Real Market Testing<a class="headerlink" href="#phase-2-week-3-critical-discovery-real-market-testing" title="Permanent link">&para;</a></h1>
+<p><strong>Date:</strong> November 4, 2024<br />
+<strong>Status:</strong> 🚨 CRITICAL FINDINGS<br />
+<strong>Completed Tasks:</strong> 6/8</p>
+<hr />
+<h2 id="executive-summary">🎯 Executive Summary<a class="headerlink" href="#executive-summary" title="Permanent link">&para;</a></h2>
+<p><strong>КРИТИЧЕСКОЕ ОТКРЫТИЕ:</strong> Стратегия EMA Crossover, показавшая отличные результаты на синтетических данных, <strong>провалилась на реальных рыночных данных Binance</strong>.</p>
+<p><strong>Ключевые результаты:</strong>
+- ✅ Инфраструктура: Бесплатные данные + AI анализ работают отлично
+- ❌ Стратегия V3: -21.54% убыток (Win Rate 14.61%)
+- ❌ Стратегия V3.1 (AI-optimized): -17.62% убыток (Win Rate 8.77%)
+- 🤖 Groq AI интеграция: Успешно (14,400 req/day бесплатно)</p>
+<hr />
+<h2 id="task-1-real-data-download-completed">📥 Task 1: Real Data Download (✅ COMPLETED)<a class="headerlink" href="#task-1-real-data-download-completed" title="Permanent link">&para;</a></h2>
+<p><strong>Результат:</strong> Успешно скачали 7 дней реальных данных BTCUSDT</p>
+<p><strong>Источник:</strong> data.binance.vision (публичный, без API ключей)<br />
+<strong>Период:</strong> October 28 - November 3, 2024<br />
+<strong>Объем:</strong> 10,080 свечей (1-минутные) → 2,016 свечей (5-минутные)<br />
+<strong>Диапазон цен:</strong> $67,498.97 - $73,567.07  </p>
+<p><strong>Файлы:</strong>
+- <code>download_binance_data.py</code> - скрипт загрузки
+- <code>data/binance_historical/BTCUSDT_historical_2024-10-28_to_7days.csv</code></p>
+<hr />
+<h2 id="task-2-backtest-script-for-real-data-completed">🧪 Task 2: Backtest Script for Real Data (✅ COMPLETED)<a class="headerlink" href="#task-2-backtest-script-for-real-data-completed" title="Permanent link">&para;</a></h2>
+<p><strong>Создано:</strong> <code>run_backtest_v3_realdata.py</code></p>
+<p><strong>Функции:</strong>
+- <code>load_binance_historical_data()</code> - загрузка CSV
+- <code>resample_to_timeframe()</code> - конвертация 1m → 5m
+- <code>simulate_backtest()</code> - полная симуляция с SL/TP
+- <code>save_results()</code> - сохранение в JSON</p>
+<hr />
+<h2 id="task-3-v3-real-data-test-completed-critical-failure">📊 Task 3: V3 Real Data Test (✅ COMPLETED - CRITICAL FAILURE)<a class="headerlink" href="#task-3-v3-real-data-test-completed-critical-failure" title="Permanent link">&para;</a></h2>
+<h3 id="v3-results-original-strategy">🔴 V3 Results (Original Strategy)<a class="headerlink" href="#v3-results-original-strategy" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>💰 PERFORMANCE:
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>   Total Return: -21.54%
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>   Win Rate: 14.61%
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>   Profit Factor: 0.30
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>   Sharpe Ratio: -8.16
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>📈 TRADES:
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>   Total: 89
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>   Winning: 13 (14.61%)
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>   Losing: 76 (85.39%)
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>⚠️ RISK:
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>   Max Drawdown: 22.29%
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>   Best Trade: +1.89%
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>   Worst Trade: -1.06%
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>📊 DIRECTION:
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>   LONG: 45 trades, 17.8% win rate
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>   SHORT: 44 trades, 11.4% win rate
+</code></pre></div>
+<p><strong>Вывод:</strong> НЕПРИГОДНА для реального трейдинга!</p>
+<hr />
+<h2 id="task-4-groq-ai-analysis-completed">🤖 Task 4: Groq AI Analysis (✅ COMPLETED)<a class="headerlink" href="#task-4-groq-ai-analysis-completed" title="Permanent link">&para;</a></h2>
+<h3 id="ai-verdict-210">AI Verdict: 2/10 баллов<a class="headerlink" href="#ai-verdict-210" title="Permanent link">&para;</a></h3>
+<p><strong>Критические проблемы (по AI):</strong>
+1. Критически низкий Win Rate (14.61%)
+2. Негативный Sharpe Ratio (-8.16)
+3. Высокий максимальный откат (22.29%)
+4. Низкий Profit Factor (0.30) - теряем больше чем зарабатываем</p>
+<h3 id="ai-recommendations">AI Recommendations:<a class="headerlink" href="#ai-recommendations" title="Permanent link">&para;</a></h3>
+<p><strong>TOP-5 улучшений:</strong></p>
+<ol>
+<li><strong>Параметры:</strong></li>
+<li>Fast EMA: 9 → 12-15 (меньше ложных сигналов)</li>
+<li>RSI Overbought: 70 → 65-68 (больше LONG сигналов)</li>
+<li>
+<p>Take Profit: 4% → 5-6% (больше прибыль с выигрышей)</p>
+</li>
+<li>
+<p><strong>Фильтры:</strong></p>
+</li>
+<li>Добавить trend filter (EMA50/100)</li>
+<li>Торговать только по тренду</li>
+<li>
+<p>Фильтр по времени (избегать низкой ликвидности)</p>
+</li>
+<li>
+<p><strong>Risk Management:</strong></p>
+</li>
+<li>Stop Loss: 2% → 1.5% (быстрее выходить из убытков)</li>
+<li>
+<p>Позиционное управление (размер в зависимости от риска)</p>
+</li>
+<li>
+<p><strong>Сигналы:</strong></p>
+</li>
+<li>Убрать RSI сигналы в нейтральной зоне (30-70)</li>
+<li>Добавить дивергенции RSI</li>
+<li>
+<p>Усилить подтверждение входа</p>
+</li>
+<li>
+<p><strong>Другое:</strong></p>
+</li>
+<li>Методы машинного обучения для оптимизации</li>
+<li>Анализ объемов</li>
+<li>Более сложные методы определения тренда</li>
+</ol>
+<p><strong>AI Decision:</strong> ❌ НЕ запускать на реальных деньгах!</p>
+<hr />
+<h2 id="task-5-v31-ai-optimized-strategy-completed-still-failed">🔧 Task 5: V3.1 AI-Optimized Strategy (✅ COMPLETED - STILL FAILED)<a class="headerlink" href="#task-5-v31-ai-optimized-strategy-completed-still-failed" title="Permanent link">&para;</a></h2>
+<h3 id="changes-implemented">Changes Implemented:<a class="headerlink" href="#changes-implemented" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># V3 → V3.1</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">fast_ema</span><span class="p">:</span> <span class="mi">9</span> <span class="err">→</span> <span class="mi">12</span>          <span class="c1"># Меньше шума</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">rsi_overbought</span><span class="p">:</span> <span class="mi">70</span> <span class="err">→</span> <span class="mi">65</span>   <span class="c1"># Больше LONG сигналов  </span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">stop_loss</span><span class="p">:</span> <span class="mf">2.0</span><span class="o">%</span> <span class="err">→</span> <span class="mf">1.5</span><span class="o">%</span>    <span class="c1"># Быстрее выходы</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="o">+</span> <span class="n">EMA50</span> <span class="n">trend</span> <span class="nb">filter</span>      <span class="c1"># Только по тренду</span>
+</code></pre></div>
+<p><strong>Файл:</strong> <code>yunmin/strategy/ema_crossover_v31.py</code></p>
+<hr />
+<h2 id="task-6-v31-testing-comparison-completed-worse-results">📊 Task 6: V3.1 Testing &amp; Comparison (✅ COMPLETED - WORSE RESULTS!)<a class="headerlink" href="#task-6-v31-testing-comparison-completed-worse-results" title="Permanent link">&para;</a></h2>
+<h3 id="v31-results">🔴 V3.1 Results<a class="headerlink" href="#v31-results" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>💰 PERFORMANCE:
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>   Total Return: -17.62%  (vs V3: -21.54%, Δ: +3.92%)
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>   Win Rate: 8.77%        (vs V3: 14.61%, Δ: -5.84%)  ❌ ХУЖЕ!
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>   Profit Factor: 0.27    (vs V3: 0.30)
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>   Sharpe Ratio: -8.26    (vs V3: -8.16)
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>📈 TRADES:
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>   Total: 57 (vs V3: 89, Δ: -32)
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>   Winning: 5
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>   Losing: 52
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>💵 AVERAGE:
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>   Avg Win: 1.44%   (vs V3: 0.88%)  ✅ Лучше
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>   Avg Loss: -0.53% (vs V3: -0.48%)
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>⚠️ RISK:
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>   Max Drawdown: 19.94% (vs V3: 22.29%, Δ: -2.35%)  ✅ Лучше
+</code></pre></div>
+<h3 id="comparison-table">Comparison Table:<a class="headerlink" href="#comparison-table" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>V3</th>
+<th>V3.1</th>
+<th>Change</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Return</td>
+<td>-21.54%</td>
+<td>-17.62%</td>
+<td>+3.92%</td>
+<td>🟡 Better but still loss</td>
+</tr>
+<tr>
+<td>Win Rate</td>
+<td>14.61%</td>
+<td>8.77%</td>
+<td>-5.84%</td>
+<td>🔴 WORSE</td>
+</tr>
+<tr>
+<td>Trades</td>
+<td>89</td>
+<td>57</td>
+<td>-32</td>
+<td>🟡 Less noise</td>
+</tr>
+<tr>
+<td>Max DD</td>
+<td>22.29%</td>
+<td>19.94%</td>
+<td>-2.35%</td>
+<td>🟢 Better</td>
+</tr>
+<tr>
+<td>Avg Win</td>
+<td>0.88%</td>
+<td>1.44%</td>
+<td>+0.56%</td>
+<td>🟢 Better</td>
+</tr>
+<tr>
+<td>Sharpe</td>
+<td>-8.16</td>
+<td>-8.26</td>
+<td>-0.10</td>
+<td>🔴 Worse</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Вывод:</strong> Trend filter улучшил некоторые метрики, но <strong>Win Rate упал еще ниже</strong>!</p>
+<hr />
+<h2 id="critical-analysis">🚨 CRITICAL ANALYSIS<a class="headerlink" href="#critical-analysis" title="Permanent link">&para;</a></h2>
+<h3 id="why-strategies-failed-on-real-data">Why Strategies Failed on Real Data?<a class="headerlink" href="#why-strategies-failed-on-real-data" title="Permanent link">&para;</a></h3>
+<p><strong>Hypothesis 1: Overfitting на синтетических данных</strong>
+- Синтетические данные имели предсказуемые паттерны
+- Реальный рынок более хаотичен и имеет микроструктуру</p>
+<p><strong>Hypothesis 2: Проблема с бэктест-движком</strong>
+- Возможные ошибки в симуляции входов/выходов
+- Неправильный расчет комиссий/проскальзывания</p>
+<p><strong>Hypothesis 3: Неподходящая стратегия для периода</strong>
+- Oct 28 - Nov 3 был волатильным периодом (BTC $67k → $73k)
+- EMA crossover плохо работает в choppy markets</p>
+<p><strong>Hypothesis 4: Проблемы с timeframe</strong>
+- 5-минутный timeframe слишком шумный
+- Нужен переход на 15m/1h?</p>
+<h3 id="what-works">What Works:<a class="headerlink" href="#what-works" title="Permanent link">&para;</a></h3>
+<p>✅ <strong>Инфраструктура:</strong>
+- Скачивание реальных данных: работает
+- Бэктест-движок: функционирует
+- Groq AI интеграция: отлично
+- JSON сохранение результатов: ок</p>
+<p>✅ <strong>AI Анализ:</strong>
+- Groq дает профессиональные рекомендации
+- Быстро (500+ tok/sec)
+- Бесплатно (14,400 req/day)</p>
+<h3 id="what-doesnt-work">What Doesn't Work:<a class="headerlink" href="#what-doesnt-work" title="Permanent link">&para;</a></h3>
+<p>❌ <strong>Стратегия:</strong>
+- EMA Crossover не работает на этих данных
+- Win Rate &lt; 10% неприемлем
+- Оба варианта (V3, V3.1) убыточны</p>
+<hr />
+<h2 id="files-created">📁 Files Created:<a class="headerlink" href="#files-created" title="Permanent link">&para;</a></h2>
+<ol>
+<li><code>download_binance_data.py</code> - Free data downloader</li>
+<li><code>run_backtest_v3_realdata.py</code> - Real data backtest script</li>
+<li><code>test_groq_api.py</code> - Groq API tester</li>
+<li><code>analyze_strategy_with_ai.py</code> - AI strategy analyzer</li>
+<li><code>get_ai_suggestions.py</code> - AI improvement suggestions</li>
+<li><code>yunmin/strategy/ema_crossover_v31.py</code> - V3.1 AI-optimized</li>
+<li><code>test_v31_vs_v3.py</code> - V3 vs V3.1 comparison</li>
+<li><code>backtest_v3_realdata_20251104_142513.json</code> - V3 results</li>
+<li><code>backtest_v31_realdata_20251104_142857.json</code> - V3.1 results</li>
+<li><code>.env</code> - Updated with GROQ_API_KEY</li>
+</ol>
+<hr />
+<h2 id="recommendations-next-steps">🎯 Recommendations &amp; Next Steps<a class="headerlink" href="#recommendations-next-steps" title="Permanent link">&para;</a></h2>
+<h3 id="immediate-actions-needed">IMMEDIATE ACTIONS NEEDED:<a class="headerlink" href="#immediate-actions-needed" title="Permanent link">&para;</a></h3>
+<p><strong>Option A: Fix Strategy (RECOMMENDED)</strong>
+1. Попробовать другие стратегии (RSI, MACD, Bollinger Bands)
+2. Протестировать на разных периодах (не только Oct 28 - Nov 3)
+3. Использовать больший timeframe (15m, 1h)
+4. Добавить volume analysis
+5. Machine Learning подход?</p>
+<p><strong>Option B: Fix Backtest Engine</strong>
+1. Проверить корректность симуляции
+2. Валидация расчетов P&amp;L
+3. Сравнить с другими бэктест-фреймворками</p>
+<p><strong>Option C: Abandon EMA Strategy</strong>
+1. Принять что EMA Crossover не работает для BTC 5m
+2. Искать альтернативные подходы
+3. Возможно использовать ML/AI для генерации сигналов напрямую</p>
+<h3 id="recommendation">RECOMMENDATION:<a class="headerlink" href="#recommendation" title="Permanent link">&para;</a></h3>
+<p><strong>🎯 Option A + ML:</strong> 
+- Протестировать другие классические стратегии
+- Если они тоже провалятся → ML approach
+- Использовать Groq AI для генерации торговых идей</p>
+<hr />
+<h2 id="groq-ai-integration-success">📊 Groq AI Integration Success<a class="headerlink" href="#groq-ai-integration-success" title="Permanent link">&para;</a></h2>
+<h3 id="setup">Setup:<a class="headerlink" href="#setup" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>pip<span class="w"> </span>install<span class="w"> </span>groq
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nv">$env</span>:GROQ_API_KEY<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;gsk_YOUR_KEY_HERE&quot;</span>
+</code></pre></div>
+<h3 id="features">Features:<a class="headerlink" href="#features" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Detailed strategy analysis</li>
+<li>Strategy comparison (V3 vs V3.1)</li>
+<li>Improvement suggestions</li>
+<li>Professional recommendations</li>
+</ul>
+<h3 id="limits">Limits:<a class="headerlink" href="#limits" title="Permanent link">&para;</a></h3>
+<ul>
+<li>14,400 requests/day (бесплатно!)</li>
+<li>~500-800 tokens/sec (очень быстро)</li>
+<li>Model: Llama 3.3 70B Versatile</li>
+</ul>
+<hr />
+<h2 id="conclusion">🏁 Conclusion<a class="headerlink" href="#conclusion" title="Permanent link">&para;</a></h2>
+<h3 id="achievements">✅ Achievements:<a class="headerlink" href="#achievements" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Free Data Pipeline:</strong> Работает отлично (data.binance.vision)</li>
+<li><strong>AI Integration:</strong> Groq API успешно интегрирован</li>
+<li><strong>Real Data Testing:</strong> Впервые протестировали на реальных данных</li>
+<li><strong>Critical Discovery:</strong> Нашли фундаментальную проблему со стратегией</li>
+</ol>
+<h3 id="failures">❌ Failures:<a class="headerlink" href="#failures" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>V3 Strategy:</strong> Полностью провалилась (-21.54%)</li>
+<li><strong>V3.1 Optimized:</strong> Еще хуже по Win Rate (8.77%)</li>
+<li><strong>No Viable Strategy:</strong> Пока нет рабочей стратегии для продакшна</li>
+</ol>
+<h3 id="lessons-learned">🎓 Lessons Learned:<a class="headerlink" href="#lessons-learned" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Синтетические данные != Реальный рынок</strong></li>
+<li><strong>Win Rate &lt; 15% = не торговать</strong></li>
+<li><strong>AI анализ полезен, но не волшебная таблетка</strong></li>
+<li><strong>Trend filter может ухудшить Win Rate</strong></li>
+<li><strong>Нужно тестировать на разных периодах</strong></li>
+</ol>
+<hr />
+<h2 id="status">📝 Status:<a class="headerlink" href="#status" title="Permanent link">&para;</a></h2>
+<ul>
+<li>[x] Task 1: Download Real Data</li>
+<li>[x] Task 2: Create Backtest Script</li>
+<li>[x] Task 3: Test V3 on Real Data</li>
+<li>[x] Task 4: AI Analysis via Groq</li>
+<li>[x] Task 5: Create V3.1 (AI-optimized)</li>
+<li>[x] Task 6: Test V3.1 vs V3</li>
+<li>[ ] Task 7: Paper Trading Prep (BLOCKED - no viable strategy)</li>
+<li>[x] Task 8: Final Report</li>
+</ul>
+<p><strong>Overall Progress:</strong> 6/8 tasks completed (75%)</p>
+<p><strong>Blocker:</strong> Нет прибыльной стратегии для перехода к Paper Trading</p>
+<hr />
+<h2 id="path-forward">🚀 Path Forward:<a class="headerlink" href="#path-forward" title="Permanent link">&para;</a></h2>
+<p><strong>Next Phase:</strong> Стратегия Pivot Required</p>
+<ol>
+<li>Test alternative strategies (3-5 разных подходов)</li>
+<li>Expand test period (30+ days real data)</li>
+<li>Try different timeframes (15m, 1h, 4h)</li>
+<li>Consider ML/AI-generated signals</li>
+<li>Volume + price action analysis</li>
+</ol>
+<p><strong>DO NOT PROCEED</strong> to testnet/live trading until strategy shows:
+- Win Rate &gt; 50%
+- Positive return &gt; 5%
+- Max DD &lt; 10%
+- Sharpe &gt; 1.0</p>
+<hr />
+<p><strong>Generated:</strong> 2024-11-04 14:30:00<br />
+<strong>AI Model:</strong> Groq Llama 3.3 70B<br />
+<strong>Agent Mode:</strong> Full Autonomous Development</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/AgeeKey/yun_min" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://discord.gg/yunmin" target="_blank" rel="noopener" title="discord.gg" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M492.5 69.8c-.2-.3-.4-.6-.8-.7-38.1-17.5-78.4-30-119.7-37.1-.4-.1-.8 0-1.1.1s-.6.4-.8.8c-5.5 9.9-10.5 20.2-14.9 30.6-44.6-6.8-89.9-6.8-134.4 0-4.5-10.5-9.5-20.7-15.1-30.6-.2-.3-.5-.6-.8-.8s-.7-.2-1.1-.2C162.5 39 122.2 51.5 84.1 69c-.3.1-.6.4-.8.7C7.1 183.5-13.8 294.6-3.6 404.2c0 .3.1.5.2.8s.3.4.5.6c44.4 32.9 94 58 146.8 74.2.4.1.8.1 1.1 0s.7-.4.9-.7c11.3-15.4 21.4-31.8 30-48.8.1-.2.2-.5.2-.8s0-.5-.1-.8-.2-.5-.4-.6-.4-.3-.7-.4c-15.8-6.1-31.2-13.4-45.9-21.9-.3-.2-.5-.4-.7-.6s-.3-.6-.3-.9 0-.6.2-.9.3-.5.6-.7c3.1-2.3 6.2-4.7 9.1-7.1.3-.2.6-.4.9-.4s.7 0 1 .1c96.2 43.9 200.4 43.9 295.5 0 .3-.1.7-.2 1-.2s.7.2.9.4c2.9 2.4 6 4.9 9.1 7.2.2.2.4.4.6.7s.2.6.2.9-.1.6-.3.9-.4.5-.6.6c-14.7 8.6-30 15.9-45.9 21.8-.2.1-.5.2-.7.4s-.3.4-.4.7-.1.5-.1.8.1.5.2.8c8.8 17 18.8 33.3 30 48.8.2.3.6.6.9.7s.8.1 1.1 0c52.9-16.2 102.6-41.3 147.1-74.2.2-.2.4-.4.5-.6s.2-.5.2-.8c12.3-126.8-20.5-236.9-86.9-334.5zm-302 267.7c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.4 59.2-52.8 59.2m195.4 0c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.2 59.2-52.8 59.2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>

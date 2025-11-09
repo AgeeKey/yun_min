@@ -1,0 +1,2322 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="AI-powered cryptocurrency trading agent with ML and LLM capabilities">
+      
+      
+        <meta name="author" content="YunMin Team">
+      
+      
+        <link rel="canonical" href="https://ageekey.github.io/yun_min/reports/phase2-week2-complete/">
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
+    
+    
+      
+        <title>Phase 2 Week 2: Complete Summary - YunMin Trading Bot</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.84d31ad4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#phase-2-week-2-complete-summary" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="YunMin Trading Bot" class="md-header__button md-logo" aria-label="YunMin Trading Bot" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            YunMin Trading Bot
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Phase 2 Week 2: Complete Summary
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/AgeeKey/yun_min" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    AgeeKey/yun_min
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../getting-started/quickstart/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../strategies/custom-strategy/" class="md-tabs__link">
+          
+  
+  
+  Strategies
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../deployment/deployment-guide/" class="md-tabs__link">
+          
+  
+  
+  Deployment
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../advanced/advanced-ai-framework/" class="md-tabs__link">
+          
+  
+  
+  Advanced
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../testing/testnet-setup/" class="md-tabs__link">
+          
+  
+  
+  Testing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../completion-report/" class="md-tabs__link">
+          
+  
+  
+  Reports
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../API_DOCUMENTATION/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  API Reference
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../project-overview/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Project Overview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../CONTRIBUTING/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Contributing
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="YunMin Trading Bot" class="md-nav__button md-logo" aria-label="YunMin Trading Bot" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    YunMin Trading Bot
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/AgeeKey/yun_min" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    AgeeKey/yun_min
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Quickstart
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Installation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configuration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/ai-agents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    AI Agents
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/memory-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Memory System
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Strategies
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Strategies
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../strategies/custom-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Creating Custom
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../strategies/ai-strategies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    AI Strategies
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../strategies/backtesting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Backtesting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Deployment
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Deployment
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deployment/deployment-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Deployment Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deployment/monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Monitoring
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deployment/incident-response/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Incident Response
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deployment/scaling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Scaling
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Advanced
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Advanced
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/advanced-ai-framework/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    AI Framework
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/alert-rules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Alert Rules
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/runbook-live-safety/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Live Safety Runbook
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Testing
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Testing
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../testing/testnet-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Testnet Setup
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../testing/validation-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Validation Plan
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Reports
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Reports
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../completion-report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Completion Report
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../phase2-week2-analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Phase 2 Week 2 Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../phase2-week3-critical/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Phase 2 Week 3 Critical
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tasks-summary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tasks Summary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../API_DOCUMENTATION/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Project Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CONTRIBUTING/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#executive-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      📋 Executive Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tasks-completed-77" class="md-nav__link">
+    <span class="md-ellipsis">
+      ✅ Tasks Completed (7/7)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="✅ Tasks Completed (7/7)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-1-v4-failure-diagnosis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task 1: V4 Failure Diagnosis ✅
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-2-strategic-decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task 2: Strategic Decision ✅
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-3-v4-analysis-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task 3: V4 Analysis Documentation ✅
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-4-v3-testnet-readiness-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task 4: V3 Testnet Readiness Check ✅
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-5-testnet-deployment-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task 5: Testnet Deployment Script ✅
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-6-testnet-credentials-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task 6: Testnet Credentials Setup ✅
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-7-48h-validation-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task 7: 48h Validation Plan ✅
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#files-created" class="md-nav__link">
+    <span class="md-ellipsis">
+      📂 Files Created
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#success-criteria-testnet" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Success Criteria (Testnet)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎯 Success Criteria (Testnet)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tier-1-pass-mainnet-ready" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tier 1: PASS (Mainnet Ready)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-2-conditional-needs-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tier 2: CONDITIONAL (Needs Tuning)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-3-fail-rework-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tier 3: FAIL (Rework Strategy)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps-user-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      🚀 Next Steps (User Actions)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🚀 Next Steps (User Actions)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#immediate-before-launch" class="md-nav__link">
+    <span class="md-ellipsis">
+      Immediate (Before Launch)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#launch-48-hour-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      Launch (48 Hour Run)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monitoring-during-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoring (During Run)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-run-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Post-Run Analysis
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v3-backtest-baseline-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      📊 V3 Backtest Baseline (Reference)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v4-status-postponed" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔍 V4 Status (Postponed)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lessons-learned" class="md-nav__link">
+    <span class="md-ellipsis">
+      💡 Lessons Learned
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="💡 Lessons Learned">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#technical" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technical
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strategic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Strategic
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#project-health" class="md-nav__link">
+    <span class="md-ellipsis">
+      📈 Project Health
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📈 Project Health">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#code-quality" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code Quality
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documentation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#risk-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Risk Management
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#timeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Timeline
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#achievements" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎉 Achievements
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-2-week-2-goals-vs-actual" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Phase 2 Week 2 Goals vs Actual
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-3-preview-testnet-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⏭ Phase 3 Preview: Testnet Validation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#support-needed" class="md-nav__link">
+    <span class="md-ellipsis">
+      📞 Support Needed
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📞 Support Needed">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#from-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      From User:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#from-team" class="md-nav__link">
+    <span class="md-ellipsis">
+      From Team:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      🏁 Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="phase-2-week-2-complete-summary">Phase 2 Week 2: Complete Summary<a class="headerlink" href="#phase-2-week-2-complete-summary" title="Permanent link">&para;</a></h1>
+<p><strong>Date:</strong> 2025-11-04<br />
+<strong>Status:</strong> ✅ ALL 7 TASKS COMPLETED<br />
+<strong>Next Phase:</strong> Testnet Deployment Ready</p>
+<hr />
+<h2 id="executive-summary">📋 Executive Summary<a class="headerlink" href="#executive-summary" title="Permanent link">&para;</a></h2>
+<p>Phase 2 Week 2 completed with strategic pivot from V4 optimization to V3 testnet deployment. After discovering V4 incompatibility with synthetic data (0 LONG trades generated), made data-driven decision to validate V3 on real markets first.</p>
+<p><strong>Key Achievement:</strong> Complete testnet deployment infrastructure ready in ONE session.</p>
+<hr />
+<h2 id="tasks-completed-77">✅ Tasks Completed (7/7)<a class="headerlink" href="#tasks-completed-77" title="Permanent link">&para;</a></h2>
+<h3 id="task-1-v4-failure-diagnosis">Task 1: V4 Failure Diagnosis ✅<a class="headerlink" href="#task-1-v4-failure-diagnosis" title="Permanent link">&para;</a></h3>
+<p><strong>What:</strong> Analyzed V4 strategy showing 0 LONG trades<br />
+<strong>Finding:</strong> Trend filter (EMA50) incompatible with synthetic backtest data<br />
+<strong>Impact:</strong> V4 postponed until real market validation</p>
+<p><strong>Details:</strong>
+- 3 test runs conducted
+- All showed 0 LONG / 37-52 SHORT trades
+- SHORT WR degraded from 100% (V3) to 59.6% (V4)
+- Root cause: Random walk data ≠ real market structure</p>
+<h3 id="task-2-strategic-decision">Task 2: Strategic Decision ✅<a class="headerlink" href="#task-2-strategic-decision" title="Permanent link">&para;</a></h3>
+<p><strong>Decision:</strong> Skip V4, proceed with V3 testnet deployment<br />
+<strong>Rationale:</strong>
+- V3 proven in backtest (124 trades, 50.8% WR, positive P&amp;L)
+- Premature optimization without real data
+- Faster time-to-market for learning</p>
+<h3 id="task-3-v4-analysis-documentation">Task 3: V4 Analysis Documentation ✅<a class="headerlink" href="#task-3-v4-analysis-documentation" title="Permanent link">&para;</a></h3>
+<p><strong>File:</strong> <code>docs/PHASE2_WEEK2_V4_ANALYSIS.md</code><br />
+<strong>Content:</strong>
+- Full V4 test results (3 runs)
+- Root cause analysis
+- V3 vs V4 comparison
+- Lessons learned
+- Future V4 roadmap (after testnet)</p>
+<h3 id="task-4-v3-testnet-readiness-check">Task 4: V3 Testnet Readiness Check ✅<a class="headerlink" href="#task-4-v3-testnet-readiness-check" title="Permanent link">&para;</a></h3>
+<p><strong>Files Created:</strong>
+- <code>check_testnet_ready.py</code> - 5 automated checks
+- <code>.env.testnet.example</code> - Configuration template</p>
+<p><strong>Verification:</strong>
+- ✅ BinanceConnector supports <code>testnet=True</code>
+- ✅ Risk manager ready
+- ✅ V3 strategy validated
+- ✅ Integration tests exist</p>
+<h3 id="task-5-testnet-deployment-script">Task 5: Testnet Deployment Script ✅<a class="headerlink" href="#task-5-testnet-deployment-script" title="Permanent link">&para;</a></h3>
+<p><strong>File:</strong> <code>run_testnet.py</code><br />
+<strong>Features:</strong>
+- <code>TestnetMonitor</code> class (real-time stats)
+- Emergency shutdown (10% DD, 5 consecutive losses)
+- Graceful SIGINT/SIGTERM handling
+- Trade logging to JSON
+- Auto-status printing every 5min
+- Dry-run mode for testing</p>
+<p><strong>Usage:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python<span class="w"> </span>run_testnet.py<span class="w"> </span>--duration<span class="w"> </span><span class="m">48</span><span class="w"> </span>--dry-run
+</code></pre></div></p>
+<h3 id="task-6-testnet-credentials-setup">Task 6: Testnet Credentials Setup ✅<a class="headerlink" href="#task-6-testnet-credentials-setup" title="Permanent link">&para;</a></h3>
+<p><strong>File:</strong> <code>docs/TESTNET_SETUP_GUIDE.md</code><br />
+<strong>Covers:</strong>
+- Step-by-step API key generation
+- Testnet fund request
+- .env.testnet file creation
+- Verification instructions
+- Troubleshooting guide</p>
+<h3 id="task-7-48h-validation-plan">Task 7: 48h Validation Plan ✅<a class="headerlink" href="#task-7-48h-validation-plan" title="Permanent link">&para;</a></h3>
+<p><strong>File:</strong> <code>docs/TESTNET_48H_VALIDATION_PLAN.md</code><br />
+<strong>Includes:</strong>
+- Monitoring schedule (T+1h, T+6h, T+12h, T+24h, T+36h, T+48h)
+- Success criteria (3 tiers)
+- Emergency stop conditions
+- Metrics tracking
+- Go/No-Go decision matrix
+- Post-run analysis template</p>
+<hr />
+<h2 id="files-created">📂 Files Created<a class="headerlink" href="#files-created" title="Permanent link">&para;</a></h2>
+<ol>
+<li><code>docs/PHASE2_WEEK2_V4_ANALYSIS.md</code> - V4 analysis</li>
+<li><code>check_testnet_ready.py</code> - Readiness checker</li>
+<li><code>.env.testnet.example</code> - Config template</li>
+<li><code>run_testnet.py</code> - Deployment script</li>
+<li><code>docs/TESTNET_SETUP_GUIDE.md</code> - Setup instructions</li>
+<li><code>docs/TESTNET_48H_VALIDATION_PLAN.md</code> - Validation plan</li>
+</ol>
+<p><strong>Total:</strong> 6 new files, ~1500 lines of code + documentation</p>
+<hr />
+<h2 id="success-criteria-testnet">🎯 Success Criteria (Testnet)<a class="headerlink" href="#success-criteria-testnet" title="Permanent link">&para;</a></h2>
+<h3 id="tier-1-pass-mainnet-ready">Tier 1: PASS (Mainnet Ready)<a class="headerlink" href="#tier-1-pass-mainnet-ready" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Win Rate ≥ 60%</li>
+<li>Total Return ≥ +5%</li>
+<li>Profit Factor ≥ 2.0</li>
+<li>Max Drawdown ≤ 5%</li>
+<li>No emergency stops</li>
+</ul>
+<h3 id="tier-2-conditional-needs-tuning">Tier 2: CONDITIONAL (Needs Tuning)<a class="headerlink" href="#tier-2-conditional-needs-tuning" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Win Rate ≥ 50%</li>
+<li>Total Return ≥ 0%</li>
+<li>Profit Factor ≥ 1.5</li>
+<li>Max Drawdown ≤ 10%</li>
+<li>≤ 1 emergency stop</li>
+</ul>
+<h3 id="tier-3-fail-rework-strategy">Tier 3: FAIL (Rework Strategy)<a class="headerlink" href="#tier-3-fail-rework-strategy" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Win Rate &lt; 50%</li>
+<li>Negative return</li>
+<li>Profit Factor &lt; 1.0</li>
+<li>Max Drawdown &gt; 10%</li>
+</ul>
+<hr />
+<h2 id="next-steps-user-actions">🚀 Next Steps (User Actions)<a class="headerlink" href="#next-steps-user-actions" title="Permanent link">&para;</a></h2>
+<h3 id="immediate-before-launch">Immediate (Before Launch)<a class="headerlink" href="#immediate-before-launch" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Get Binance Testnet API Keys</strong></li>
+<li>Visit: https://testnet.binance.vision/</li>
+<li>Follow: <code>docs/TESTNET_SETUP_GUIDE.md</code></li>
+<li>
+<p>Create: <code>.env.testnet</code> file</p>
+</li>
+<li>
+<p><strong>Run Readiness Check</strong>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>python<span class="w"> </span>check_testnet_ready.py
+</code></pre></div></p>
+</li>
+<li>
+<p>All 5 checks must PASS</p>
+</li>
+<li>
+<p><strong>Dry Run Test (10 minutes)</strong>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>python<span class="w"> </span>run_testnet.py<span class="w"> </span>--dry-run<span class="w"> </span>--duration<span class="w"> </span><span class="m">0</span>.17
+</code></pre></div></p>
+</li>
+<li>Verify bot starts correctly</li>
+<li>Check logs are readable</li>
+</ol>
+<h3 id="launch-48-hour-run">Launch (48 Hour Run)<a class="headerlink" href="#launch-48-hour-run" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>python<span class="w"> </span>run_testnet.py<span class="w"> </span>--duration<span class="w"> </span><span class="m">48</span><span class="w"> </span>--symbol<span class="w"> </span>BTCUSDT<span class="w"> </span>--capital<span class="w"> </span><span class="m">10000</span>
+</code></pre></div>
+<h3 id="monitoring-during-run">Monitoring (During Run)<a class="headerlink" href="#monitoring-during-run" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Check bot status every 6 hours</li>
+<li>Review metrics at T+12h, T+24h, T+36h</li>
+<li>Watch for emergency stops</li>
+<li>Monitor drawdown</li>
+</ul>
+<h3 id="post-run-analysis">Post-Run Analysis<a class="headerlink" href="#post-run-analysis" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Load <code>testnet_trades_*.json</code></li>
+<li>Calculate all metrics</li>
+<li>Compare with V3 backtest</li>
+<li>Make Go/No-Go decision</li>
+<li>Plan next phase</li>
+</ol>
+<hr />
+<h2 id="v3-backtest-baseline-reference">📊 V3 Backtest Baseline (Reference)<a class="headerlink" href="#v3-backtest-baseline-reference" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>V3 Backtest</th>
+<th>Testnet Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Total Trades</td>
+<td>124</td>
+<td>50+</td>
+</tr>
+<tr>
+<td>Win Rate</td>
+<td>50.8%</td>
+<td>≥60%</td>
+</tr>
+<tr>
+<td>LONG WR</td>
+<td>38.7%</td>
+<td>≥50%</td>
+</tr>
+<tr>
+<td>SHORT WR</td>
+<td>100%</td>
+<td>≥80%</td>
+</tr>
+<tr>
+<td>Net P&amp;L</td>
+<td>Positive</td>
+<td>≥+5%</td>
+</tr>
+<tr>
+<td>Max DD</td>
+<td>Low</td>
+<td>&lt;10%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Goal:</strong> Real testnet performance matches or exceeds backtest.</p>
+<hr />
+<h2 id="v4-status-postponed">🔍 V4 Status (Postponed)<a class="headerlink" href="#v4-status-postponed" title="Permanent link">&para;</a></h2>
+<p><strong>Why Postponed:</strong>
+- Trend filter failed on synthetic data
+- Need real market validation first
+- Don't know if V3 LONG 38.7% WR is real problem</p>
+<p><strong>V4 Roadmap (After Testnet):</strong></p>
+<p><strong>IF</strong> testnet shows LONG WR &lt; 50%:
+→ V4 becomes priority
+→ Implement asymmetric SL/TP
+→ Test on real testnet data</p>
+<p><strong>IF</strong> testnet shows LONG WR ≥ 60%:
+→ V4 not needed
+→ Focus on execution optimization
+→ Deploy to mainnet</p>
+<hr />
+<h2 id="lessons-learned">💡 Lessons Learned<a class="headerlink" href="#lessons-learned" title="Permanent link">&para;</a></h2>
+<h3 id="technical">Technical<a class="headerlink" href="#technical" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Synthetic data limitations</strong></li>
+<li>Good for testing code paths</li>
+<li>Bad for validating trading logic</li>
+<li>
+<p>Always confirm on real markets</p>
+</li>
+<li>
+<p><strong>Trend filters need context</strong></p>
+</li>
+<li>EMA50 works in trending markets</li>
+<li>Fails in random walks</li>
+<li>
+<p>Requires multi-timeframe validation</p>
+</li>
+<li>
+<p><strong>Test incrementally</strong></p>
+</li>
+<li>V4 changed 3 things at once</li>
+<li>Couldn't isolate failure cause</li>
+<li>Next time: one change per test</li>
+</ol>
+<h3 id="strategic">Strategic<a class="headerlink" href="#strategic" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Premature optimization kills projects</strong></li>
+<li>V3 works → deploy it</li>
+<li>
+<p>Optimize after measuring reality</p>
+</li>
+<li>
+<p><strong>Data beats intuition</strong></p>
+</li>
+<li>V4 seemed logical</li>
+<li>Real test showed 0 LONG trades</li>
+<li>
+<p>Always validate assumptions</p>
+</li>
+<li>
+<p><strong>Fast iteration &gt; perfect planning</strong></p>
+</li>
+<li>Spent 3 tests on V4</li>
+<li>Could've been on testnet already</li>
+<li>Pivot quickly when data shows failure</li>
+</ol>
+<hr />
+<h2 id="project-health">📈 Project Health<a class="headerlink" href="#project-health" title="Permanent link">&para;</a></h2>
+<h3 id="code-quality">Code Quality<a class="headerlink" href="#code-quality" title="Permanent link">&para;</a></h3>
+<ul>
+<li>✅ 16/16 tests passing (from Phase 2 Week 1)</li>
+<li>✅ Clean codebase</li>
+<li>✅ Well-documented</li>
+<li>✅ Testnet-ready infrastructure</li>
+</ul>
+<h3 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">&para;</a></h3>
+<ul>
+<li>✅ V4 analysis complete</li>
+<li>✅ Testnet setup guide</li>
+<li>✅ Validation plan detailed</li>
+<li>✅ Troubleshooting covered</li>
+</ul>
+<h3 id="risk-management">Risk Management<a class="headerlink" href="#risk-management" title="Permanent link">&para;</a></h3>
+<ul>
+<li>✅ Emergency shutdown logic</li>
+<li>✅ Real-time monitoring</li>
+<li>✅ Trade logging</li>
+<li>✅ Clear success criteria</li>
+</ul>
+<h3 id="timeline">Timeline<a class="headerlink" href="#timeline" title="Permanent link">&para;</a></h3>
+<ul>
+<li>✅ On track for testnet launch</li>
+<li>✅ Can start deployment TODAY (pending API keys)</li>
+<li>✅ 48h results expected within week</li>
+</ul>
+<hr />
+<h2 id="achievements">🎉 Achievements<a class="headerlink" href="#achievements" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Rapid Diagnosis:</strong> V4 failure identified in 3 tests</li>
+<li><strong>Quick Pivot:</strong> Switched strategy in same session</li>
+<li><strong>Complete Infrastructure:</strong> Testnet deployment ready</li>
+<li><strong>Comprehensive Documentation:</strong> 6 new docs covering all aspects</li>
+<li><strong>Safety First:</strong> Emergency stops, monitoring, graceful shutdown</li>
+<li><strong>Data-Driven:</strong> Every decision backed by test results</li>
+</ol>
+<hr />
+<h2 id="phase-2-week-2-goals-vs-actual">🎯 Phase 2 Week 2 Goals vs Actual<a class="headerlink" href="#phase-2-week-2-goals-vs-actual" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Goal</th>
+<th>Planned</th>
+<th>Actual</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Implement V4</td>
+<td>✅</td>
+<td>✅</td>
+<td>Done (320 lines)</td>
+</tr>
+<tr>
+<td>V4 Backtest</td>
+<td>✅</td>
+<td>✅</td>
+<td>Done (3 runs)</td>
+</tr>
+<tr>
+<td>V4 Analysis</td>
+<td>✅</td>
+<td>✅</td>
+<td>Showed failure</td>
+</tr>
+<tr>
+<td>Testnet Prep</td>
+<td>❌</td>
+<td>✅</td>
+<td>Added proactively</td>
+</tr>
+<tr>
+<td>Deploy Script</td>
+<td>❌</td>
+<td>✅</td>
+<td>Bonus</td>
+</tr>
+<tr>
+<td>Validation Plan</td>
+<td>❌</td>
+<td>✅</td>
+<td>Bonus</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Result:</strong> Exceeded goals by pivoting to testnet readiness.</p>
+<hr />
+<h2 id="phase-3-preview-testnet-validation">⏭ Phase 3 Preview: Testnet Validation<a class="headerlink" href="#phase-3-preview-testnet-validation" title="Permanent link">&para;</a></h2>
+<p><strong>Duration:</strong> 48 hours<br />
+<strong>Objective:</strong> Validate V3 on real Binance testnet<br />
+<strong>Success:</strong> ≥50% WR, positive P&amp;L, &lt;10% DD</p>
+<p><strong>Possible Outcomes:</strong></p>
+<ol>
+<li><strong>V3 succeeds → Mainnet deployment</strong></li>
+<li><strong>V3 conditional → Implement V4 optimizations</strong></li>
+<li><strong>V3 fails → Strategy redesign</strong></li>
+</ol>
+<hr />
+<h2 id="support-needed">📞 Support Needed<a class="headerlink" href="#support-needed" title="Permanent link">&para;</a></h2>
+<h3 id="from-user">From User:<a class="headerlink" href="#from-user" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Generate Binance testnet API keys</li>
+<li>Create <code>.env.testnet</code> file</li>
+<li>Run readiness check</li>
+<li>Launch 48h testnet run</li>
+</ol>
+<h3 id="from-team">From Team:<a class="headerlink" href="#from-team" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Monitor testnet run</li>
+<li>Respond to alerts</li>
+<li>Analyze results</li>
+<li>Make Go/No-Go decision</li>
+</ul>
+<hr />
+<h2 id="conclusion">🏁 Conclusion<a class="headerlink" href="#conclusion" title="Permanent link">&para;</a></h2>
+<p>Phase 2 Week 2 delivered MORE than planned:
+- V4 tested (failed, but learned why)
+- V3 validated as testnet-ready
+- Complete deployment infrastructure
+- Safety mechanisms in place
+- Clear success criteria</p>
+<p><strong>Status:</strong> ✅ READY FOR TESTNET LAUNCH</p>
+<p><strong>Next Action:</strong> User creates <code>.env.testnet</code> and runs <code>python check_testnet_ready.py</code></p>
+<hr />
+<p><strong>Prepared by:</strong> YunMin AI Development Team<br />
+<strong>Date:</strong> 2025-11-04<br />
+<strong>Review:</strong> Phase 2 Week 2 Complete ✅</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/AgeeKey/yun_min" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://discord.gg/yunmin" target="_blank" rel="noopener" title="discord.gg" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M492.5 69.8c-.2-.3-.4-.6-.8-.7-38.1-17.5-78.4-30-119.7-37.1-.4-.1-.8 0-1.1.1s-.6.4-.8.8c-5.5 9.9-10.5 20.2-14.9 30.6-44.6-6.8-89.9-6.8-134.4 0-4.5-10.5-9.5-20.7-15.1-30.6-.2-.3-.5-.6-.8-.8s-.7-.2-1.1-.2C162.5 39 122.2 51.5 84.1 69c-.3.1-.6.4-.8.7C7.1 183.5-13.8 294.6-3.6 404.2c0 .3.1.5.2.8s.3.4.5.6c44.4 32.9 94 58 146.8 74.2.4.1.8.1 1.1 0s.7-.4.9-.7c11.3-15.4 21.4-31.8 30-48.8.1-.2.2-.5.2-.8s0-.5-.1-.8-.2-.5-.4-.6-.4-.3-.7-.4c-15.8-6.1-31.2-13.4-45.9-21.9-.3-.2-.5-.4-.7-.6s-.3-.6-.3-.9 0-.6.2-.9.3-.5.6-.7c3.1-2.3 6.2-4.7 9.1-7.1.3-.2.6-.4.9-.4s.7 0 1 .1c96.2 43.9 200.4 43.9 295.5 0 .3-.1.7-.2 1-.2s.7.2.9.4c2.9 2.4 6 4.9 9.1 7.2.2.2.4.4.6.7s.2.6.2.9-.1.6-.3.9-.4.5-.6.6c-14.7 8.6-30 15.9-45.9 21.8-.2.1-.5.2-.7.4s-.3.4-.4.7-.1.5-.1.8.1.5.2.8c8.8 17 18.8 33.3 30 48.8.2.3.6.6.9.7s.8.1 1.1 0c52.9-16.2 102.6-41.3 147.1-74.2.2-.2.4-.4.5-.6s.2-.5.2-.8c12.3-126.8-20.5-236.9-86.9-334.5zm-302 267.7c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.4 59.2-52.8 59.2m195.4 0c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.2 59.2-52.8 59.2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>
