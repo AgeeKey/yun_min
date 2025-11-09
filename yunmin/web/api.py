@@ -10,9 +10,10 @@ from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, asdict
 from pathlib import Path
 
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException, Request
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from loguru import logger
@@ -264,6 +265,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Setup static files and templates
+web_dir = Path(__file__).parent
+static_dir = web_dir / "static"
+templates_dir = web_dir / "templates"
+
+# Mount static files
+app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
+
+# Setup Jinja2 templates
+templates = Jinja2Templates(directory=str(templates_dir))
+
 # Global data provider and connection manager
 data_provider = DashboardDataProvider()
 ws_manager = ConnectionManager()
@@ -271,10 +283,10 @@ ws_manager = ConnectionManager()
 
 # ===== REST API Endpoints =====
 
-@app.get("/")
-async def root():
+@app.get("/", response_class=HTMLResponse)
+async def root(request: Request):
     """Root endpoint - serves dashboard HTML"""
-    return HTMLResponse(content=get_dashboard_html(), status_code=200)
+    return templates.TemplateResponse("index.html", {"request": request})
 
 
 @app.get("/health")
@@ -350,6 +362,55 @@ async def get_equity_curve(days: int = 7):
         return JSONResponse(content=data)
     except Exception as e:
         logger.error(f"Error getting equity curve: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/candles")
+async def get_candles(symbol: str = "BTC/USDT", interval: str = "5m", limit: int = 200):
+    """
+    Get historical candles for chart.
+    Returns: [{time, open, high, low, close, volume}, ...]
+    """
+    try:
+        # Generate mock candlestick data for demo
+        # In production, this would fetch from exchange or database
+        import time
+        now = int(time.time())
+        candles = []
+        price = 50000.0
+        
+        # Calculate interval in seconds
+        interval_seconds = {
+            '1m': 60,
+            '5m': 300,
+            '15m': 900,
+            '1h': 3600,
+            '4h': 14400,
+            '1d': 86400
+        }.get(interval, 300)
+        
+        for i in range(limit, 0, -1):
+            timestamp = now - (i * interval_seconds)
+            open_price = price
+            change = (hash(str(timestamp)) % 1000 - 500) / 100  # Deterministic "random"
+            close_price = open_price + change
+            high_price = max(open_price, close_price) + abs(hash(str(timestamp + 1)) % 100) / 10
+            low_price = min(open_price, close_price) - abs(hash(str(timestamp + 2)) % 100) / 10
+            volume = abs(hash(str(timestamp + 3)) % 100) + 50
+            
+            candles.append({
+                "time": timestamp,
+                "open": round(open_price, 2),
+                "high": round(high_price, 2),
+                "low": round(low_price, 2),
+                "close": round(close_price, 2),
+                "volume": round(volume, 2)
+            })
+            price = close_price
+        
+        return JSONResponse(content=candles)
+    except Exception as e:
+        logger.error(f"Error getting candles: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
