@@ -25,7 +25,7 @@ class OrderBookAnalyzer:
         
         Args:
             exchange_connector: Exchange connector for fetching order book
-            depth: Default depth for analysis (ignored if provided in analyze())
+            depth: Default depth for analysis (can be overridden in analyze_async())
         """
         self.exchange = exchange_connector
         self.default_depth = depth
@@ -33,13 +33,13 @@ class OrderBookAnalyzer:
     
     def analyze(self, order_book: Dict[str, Any]) -> Dict[str, Any]:
         """
-        Анализирует предоставленный order book (синхронная версия для тестов).
+        Analyze the provided order book (synchronous version for testing).
         
         Args:
-            order_book: Dict с 'bids' и 'asks' (список [price, volume])
+            order_book: Dict with 'bids' and 'asks' (list of [price, volume])
             
         Returns:
-            Анализ order book
+            Order book analysis
         """
         try:
             analysis = {
@@ -64,7 +64,7 @@ class OrderBookAnalyzer:
         depth: int = 50
     ) -> Dict[str, Any]:
         """
-        Analyze order book (async version для продакшена).
+        Analyze order book (async version for production).
         
         Args:
             symbol: Trading symbol

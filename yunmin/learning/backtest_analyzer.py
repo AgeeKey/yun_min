@@ -38,24 +38,24 @@ class BacktestAnalyzer:
     
     def analyze(self, trades: List[Dict[str, Any]]) -> Dict[str, Any]:
         """
-        Анализирует список сделок (alias для analyze_performance).
+        Analyze a list of trades (alias for analyze_performance).
         
         Args:
-            trades: Список сделок для анализа
+            trades: List of trades to analyze
             
         Returns:
-            Метрики производительности
+            Performance metrics
         """
-        # Временно сохраняем текущие сделки
+        # Temporarily save current trades
         old_trades = self.trade_results
         
-        # Устанавливаем новые
+        # Set new ones
         self.trade_results = trades
         
-        # Анализируем
+        # Analyze
         result = self.analyze_performance()
         
-        # Восстанавливаем старые
+        # Restore old ones
         self.trade_results = old_trades
         
         return result

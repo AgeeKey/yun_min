@@ -20,12 +20,12 @@ passed_tests = 0
 failed_tests = 0
 
 def test_component(name: str, test_func):
-    """Обертка для тестирования компонента"""
+    """Wrapper for testing component"""
     global total_tests, passed_tests, failed_tests
     total_tests += 1
     
     logger.info(f"\n{'='*70}")
-    logger.info(f"Тест {total_tests}: {name}")
+    logger.info(f"Test {total_tests}: {name}")
     logger.info(f"{'='*70}")
     
     try:
@@ -167,13 +167,13 @@ def test_vector_store():
     
     store = VectorStore(embedding_dim=10, use_faiss=False)
     
-    # Добавить эмбеддинги
+    # Add embeddings
     for i in range(5):
         embedding = np.random.rand(10).astype('float32')
         metadata = {'test_id': i, 'value': f'test_{i}'}
         store.add(embedding, metadata)
     
-    # Поиск
+    # Search
     query = np.random.rand(10).astype('float32')
     results = store.search(query, k=3)
     
@@ -187,7 +187,7 @@ def test_trade_history():
     
     history = TradeHistory(embedding_model='simple')
     
-    # Запомнить сделки
+    # Remember trades
     for i in range(3):
         trade_context = {
             'price': 50000.0 + i * 100,
