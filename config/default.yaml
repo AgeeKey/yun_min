@@ -55,7 +55,27 @@ database:
   db_url: sqlite:///data/yunmin.db
   redis_url: redis://localhost:6379/0
 
-# Notifications
+# Notifications - Telegram Bot for Real-time Alerts
+telegram:
+  enabled: false  # Set to true after setup
+  bot_token: "YOUR_BOT_TOKEN_HERE"  # Get from @BotFather
+  chat_id: "YOUR_CHAT_ID_HERE"      # Get from @userinfobot
+  
+  # Alert settings
+  alerts:
+    trade_execution: true      # Alert on every trade
+    daily_summary: true        # Send daily report (8am, 8pm)
+    critical_only: false       # Only send critical alerts
+    
+    # Thresholds
+    drawdown_threshold: 10.0   # Alert if drawdown > 10%
+    error_alerts: true         # Alert on errors
+    
+    # Bot lifecycle
+    startup_alert: true        # Alert when bot starts
+    shutdown_alert: true       # Alert when bot stops
+
+# Legacy notification config (deprecated)
 notification:
   telegram_enabled: false
 
