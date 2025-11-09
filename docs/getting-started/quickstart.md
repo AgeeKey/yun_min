@@ -155,10 +155,10 @@ yunmin --help
 
 ## Next Steps
 
-1. ✅ Read the [Development Guide](../DEVELOPMENT.md)
-2. ✅ Learn about [Advanced AI Framework](../ADVANCED_AI_FRAMEWORK_GUIDE.md)
-3. ✅ Create [Custom Strategies](../strategies/custom-strategy.md)
-4. ✅ Review [Testnet Setup Guide](../TESTNET_SETUP_GUIDE.md)
+1. ✅ Read the [Configuration Guide](configuration.md)
+2. ✅ Learn about [AI Trading Strategies](../strategies/ai-strategies.md)
+3. ✅ Explore [Architecture Overview](../architecture/overview.md)
+4. ✅ Review [Backtesting Guide](../strategies/backtesting.md)
 
 ## Getting Help
 

@@ -45,6 +45,11 @@ data/
 *.db
 *.sqlite
 
+# Keep data directory structure
+!data/.gitkeep
+!data/backtest_results/.gitkeep
+!data/market_data/.gitkeep
+
 # ML Models
 models/
 *.pkl

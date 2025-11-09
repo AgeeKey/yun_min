@@ -312,10 +312,10 @@ Recommended extensions:
 
 ## Additional Resources
 
-- [Advanced AI Framework Guide](ADVANCED_AI_FRAMEWORK_GUIDE.md)
-- [Custom Strategy Tutorial](strategies/custom-strategy.md)
-- [API Documentation](API_DOCUMENTATION.md)
-- [Deployment Guide](DEPLOYMENT.md)
+- [Architecture Documentation](../architecture/overview.md)
+- [API Reference](../API_DOCUMENTATION.md)
+- [AI Strategies Guide](../strategies/ai-strategies.md)
+- [Custom Strategy Guide](../strategies/custom-strategy.md)
 
 ## Getting Help
 

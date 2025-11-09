@@ -358,21 +358,21 @@ pytest tests/test_market_scenarios.py -v
 ## 📖 Документация
 
 ### Основные документы
-- [README.md](README.md) - Быстрый старт и обзор
-- [ARCHITECTURE.md](ARCHITECTURE.md) - Архитектура системы
-- [QUICKSTART.md](QUICKSTART.md) - 5-минутное руководство
-- [V3_FINAL_REPORT.md](V3_FINAL_REPORT.md) - Результаты V3 теста
+- [Home](index.md) - Быстрый старт и обзор
+- [Architecture Overview](architecture/overview.md) - Архитектура системы
+- [Quickstart](getting-started/quickstart.md) - 5-минутное руководство
+- [V3 Final Report](reports/v3-final-report.md) - Результаты V3 теста
 
 ### Production документация
-- [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) - Развёртывание
-- [docs/OPERATIONS.md](docs/OPERATIONS.md) - Эксплуатация
-- [docs/API_DOCUMENTATION.md](docs/API_DOCUMENTATION.md) - API reference
-- [docs/RUNBOOK_LIVE_SAFETY.md](docs/RUNBOOK_LIVE_SAFETY.md) - Безопасность live торговли
+- [Deployment Guide](deployment/deployment-guide.md) - Развёртывание
+- [Monitoring](deployment/monitoring.md) - Эксплуатация
+- [API Documentation](API_DOCUMENTATION.md) - API reference
+- [Live Safety Runbook](advanced/runbook-live-safety.md) - Безопасность live торговли
 
 ### Технические отчёты
-- [BOSS_FINAL_REPORT_2025.md](BOSS_FINAL_REPORT_2025.md) - Финальный отчёт
-- [ML_IMPLEMENTATION_SUMMARY.md](ML_IMPLEMENTATION_SUMMARY.md) - ML интеграция
-- [EPIC1-5_*.md](.) - Отчёты по этапам разработки
+- [Boss Final Report 2025](reports/boss-final-report-2025.md) - Финальный отчёт
+- [ML Implementation Summary](reports/ml-implementation-summary.md) - ML интеграция
+- [Reports Directory](reports/completion-report.md) - Отчёты по этапам разработки
 
 ## 🎯 Прогресс разработки
 

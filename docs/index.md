@@ -41,9 +41,10 @@ YunMin is a sophisticated trading bot that combines:
 ## Quick Links
 
 - [Quickstart Guide](getting-started/quickstart.md) - Get started in 15 minutes
-- [Advanced AI Framework](ADVANCED_AI_FRAMEWORK_GUIDE.md) - Learn about AI trading strategies
-- [Custom Strategy Guide](strategies/custom-strategy.md) - Create your own trading strategies
-- [Development Guide](DEVELOPMENT.md) - Contribute to YunMin
+- [Configuration](getting-started/configuration.md) - Configure your bot
+- [AI Strategies](strategies/ai-strategies.md) - Learn about AI trading strategies
+- [Architecture Overview](architecture/overview.md) - System architecture
+- [Contributing](CONTRIBUTING.md) - Contribute to YunMin
 
 ## Getting Help
 

@@ -8,7 +8,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Grok AI](https://img.shields.io/badge/Powered%20by-Grok%20AI-00ADD8.svg)](https://x.ai)
 
-📊 **[V3 Test Results](V3_FINAL_REPORT.md)** | 📚 **[Architecture](ARCHITECTURE.md)** | 🚀 **[Quick Start](QUICKSTART.md)**
+📊 **[V3 Test Results](docs/reports/v3-final-report.md)** | 📚 **[Architecture](ARCHITECTURE.md)** | 🚀 **[Quick Start](QUICKSTART.md)**
 
 </div>
 
@@ -302,20 +302,20 @@ Key metrics tracked:
 
 ### Main Documentation
 - 📖 [README.md](README.md) - Quick start and overview
-- 📊 [YUN_MIN_COMPLETE_REPORT.md](YUN_MIN_COMPLETE_REPORT.md) - Comprehensive project report
+- 📊 [Project Overview](docs/project-overview.md) - Comprehensive project overview
 - 🏗️ [ARCHITECTURE.md](ARCHITECTURE.md) - System architecture
 - 🚀 [QUICKSTART.md](QUICKSTART.md) - 5-minute setup guide
 - 🔗 [INTEGRATION_GUIDE.md](INTEGRATION_GUIDE.md) - Integration patterns
 - 🤝 [CONTRIBUTING.md](CONTRIBUTING.md) - Contribution guidelines
 
 ### Production Documentation (docs/)
-- 🚨 [ALERT_RULES.md](docs/ALERT_RULES.md) - Alert configuration
-- 🔒 [RUNBOOK_LIVE_SAFETY.md](docs/RUNBOOK_LIVE_SAFETY.md) - Live trading safety
-- 🚀 [PHASE4_DEPLOYMENT_GUIDE.md](docs/PHASE4_DEPLOYMENT_GUIDE.md) - Deployment guide
-- 🆘 [PHASE4_INCIDENT_RESPONSE.md](docs/PHASE4_INCIDENT_RESPONSE.md) - Incident response
-- 📊 [PHASE4_MONITORING_DASHBOARD.md](docs/PHASE4_MONITORING_DASHBOARD.md) - Monitoring setup
-- 📈 [PHASE4_SCALE_UP_ROADMAP.md](docs/PHASE4_SCALE_UP_ROADMAP.md) - Scaling roadmap
-- 📜 [ATTRIBUTION.md](docs/ATTRIBUTION.md) - License attribution
+- 🚨 [Alert Rules](docs/advanced/alert-rules.md) - Alert configuration
+- 🔒 [Live Safety Runbook](docs/advanced/runbook-live-safety.md) - Live trading safety
+- 🚀 [Deployment Guide](docs/deployment/deployment-guide.md) - Deployment guide
+- 🆘 [Incident Response](docs/deployment/incident-response.md) - Incident response
+- 📊 [Monitoring Dashboard](docs/deployment/monitoring-dashboard.md) - Monitoring setup
+- 📈 [Scaling Roadmap](docs/deployment/scaling.md) - Scaling roadmap
+- 📜 [Attribution](docs/reports/attribution.md) - License attribution
 
 ## ⚠️ Disclaimer
 
