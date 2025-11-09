@@ -9,4 +9,4 @@ Supports multiple notification channels:
 
 from yunmin.notifications.telegram_bot import TelegramBot, get_telegram_bot
 
-__all__ = ['TelegramBot', 'get_telegram_bot']
+__all__ = ["TelegramBot", "get_telegram_bot"]

@@ -24,10 +24,10 @@ logger = logging.getLogger(__name__)
 class TelegramBot:
     """
     Send trading alerts via Telegram.
-    
+
     Uses direct Telegram Bot API for minimal dependencies.
     Async implementation for non-blocking notifications.
-    
+
     Example:
         bot = TelegramBot(token="123:ABC", chat_id="456")
         await bot.alert_trade(
@@ -41,11 +41,11 @@ class TelegramBot:
             open_positions=1
         )
     """
-    
+
     def __init__(self, token: str, chat_id: str):
         """
         Initialize Telegram bot.
-        
+
         Args:
             token: Bot token from @BotFather
             chat_id: Your Telegram chat ID from @userinfobot
@@ -54,46 +54,41 @@ class TelegramBot:
         self.chat_id = chat_id
         self.base_url = f"https://api.telegram.org/bot{token}"
         self.enabled = bool(token and chat_id and not token.startswith("YOUR_"))
-        
+
         if not self.enabled:
             logger.warning("Telegram bot not configured - alerts disabled")
         else:
             logger.info(f"Telegram bot initialized for chat_id: {chat_id}")
-    
-    async def send_message(
-        self,
-        text: str,
-        parse_mode: str = "Markdown",
-        disable_notification: bool = False
-    ) -> bool:
+
+    async def send_message(self, text: str, parse_mode: str = "Markdown", disable_notification: bool = False) -> bool:
         """
         Send text message via Telegram.
-        
+
         Args:
             text: Message text (supports Markdown)
             parse_mode: Formatting mode (Markdown or HTML)
             disable_notification: Silent notification
-            
+
         Returns:
             True if sent successfully
         """
         if not self.enabled:
             logger.debug(f"Alert (not sent): {text[:100]}...")
             return False
-        
+
         try:
             # Import here to avoid issues if aiohttp not installed yet
             import aiohttp
-            
+
             async with aiohttp.ClientSession() as session:
                 url = f"{self.base_url}/sendMessage"
                 payload = {
                     "chat_id": self.chat_id,
                     "text": text,
                     "parse_mode": parse_mode,
-                    "disable_notification": disable_notification
+                    "disable_notification": disable_notification,
                 }
-                
+
                 async with session.post(url, json=payload, timeout=10) as resp:
                     if resp.status == 200:
                         logger.info("Telegram alert sent successfully")
@@ -102,7 +97,7 @@ class TelegramBot:
                         error = await resp.text()
                         logger.error(f"Failed to send Telegram alert: {error}")
                         return False
-        
+
         except ImportError:
             logger.error("aiohttp not installed - run: pip install aiohttp>=3.9.0")
             return False
@@ -112,7 +107,7 @@ class TelegramBot:
         except Exception as e:
             logger.error(f"Telegram send error: {e}")
             return False
-    
+
     async def alert_trade(
         self,
         side: str,
@@ -122,11 +117,11 @@ class TelegramBot:
         reason: str,
         portfolio_pnl: float,
         portfolio_pnl_pct: float,
-        open_positions: int
+        open_positions: int,
     ):
         """
         Send trade execution alert.
-        
+
         Args:
             side: BUY or SELL
             symbol: Trading pair (e.g., BTC/USDT)
@@ -139,7 +134,7 @@ class TelegramBot:
         """
         emoji = "🟢" if side == "BUY" else "🔴"
         sign = "+" if portfolio_pnl >= 0 else ""
-        
+
         text = f"""
 {emoji} *{side} EXECUTED*
 
@@ -155,16 +150,11 @@ class TelegramBot:
 _Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}_
 """
         await self.send_message(text.strip())
-    
-    async def alert_critical(
-        self,
-        title: str,
-        message: str,
-        action: Optional[str] = None
-    ):
+
+    async def alert_critical(self, title: str, message: str, action: Optional[str] = None):
         """
         Send critical alert with sound notification.
-        
+
         Args:
             title: Alert title
             message: Alert message
@@ -177,23 +167,18 @@ _Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}_
 """
         if action:
             text += f"\n*Action Taken:*\n{action}\n"
-        
+
         text += f"\n_Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}_"
-        
+
         # Critical alerts with sound
         await self.send_message(text.strip(), disable_notification=False)
-    
+
     async def alert_drawdown(
-        self,
-        current_drawdown: float,
-        threshold: float,
-        capital: float,
-        peak: float,
-        action_taken: str
+        self, current_drawdown: float, threshold: float, capital: float, peak: float, action_taken: str
     ):
         """
         Send drawdown warning alert.
-        
+
         Args:
             current_drawdown: Current drawdown percentage
             threshold: Drawdown threshold percentage
@@ -212,22 +197,19 @@ _Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}_
 • Peak: ${peak:,.2f}
 • Loss: ${peak - capital:,.2f}
 """,
-            action=action_taken
+            action=action_taken,
         )
-    
+
     async def alert_error(self, error_type: str, error_msg: str):
         """
         Send error alert.
-        
+
         Args:
             error_type: Type of error
             error_msg: Error message
         """
-        await self.alert_critical(
-            title=f"ERROR: {error_type}",
-            message=error_msg
-        )
-    
+        await self.alert_critical(title=f"ERROR: {error_type}", message=error_msg)
+
     async def alert_daily_summary(
         self,
         trades_today: int,
@@ -235,11 +217,11 @@ _Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}_
         pnl_today: float,
         pnl_today_pct: float,
         total_capital: float,
-        open_positions: int
+        open_positions: int,
     ):
         """
         Send daily performance summary.
-        
+
         Args:
             trades_today: Number of trades executed today
             win_rate: Win rate percentage
@@ -250,7 +232,7 @@ _Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}_
         """
         sign = "+" if pnl_today >= 0 else ""
         emoji = "🎉" if pnl_today > 0 else "😐" if pnl_today == 0 else "😞"
-        
+
         text = f"""
 {emoji} *Daily Summary*
 
@@ -266,11 +248,11 @@ _Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}_
 _Date: {datetime.now().strftime('%Y-%m-%d')}_
 """
         await self.send_message(text.strip(), disable_notification=True)
-    
+
     async def alert_bot_started(self, mode: str, symbol: str, capital: float):
         """
         Send bot startup notification.
-        
+
         Args:
             mode: Trading mode (dry_run, paper, live)
             symbol: Trading symbol
@@ -286,11 +268,11 @@ _Date: {datetime.now().strftime('%Y-%m-%d')}_
 _Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}_
 """
         await self.send_message(text.strip(), disable_notification=True)
-    
+
     async def alert_bot_stopped(self, reason: str = "Manual stop"):
         """
         Send bot shutdown notification.
-        
+
         Args:
             reason: Shutdown reason
         """
@@ -302,21 +284,20 @@ _Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}_
 _Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}_
 """
         await self.send_message(text.strip(), disable_notification=False)
-    
+
     async def test_connection(self) -> bool:
         """
         Test bot configuration by sending a test message.
-        
+
         Returns:
             True if test successful
         """
         if not self.enabled:
             logger.error("Telegram bot not configured")
             return False
-        
+
         success = await self.send_message(
-            "✅ *YunMin Trading Bot*\n\nTelegram alerts are working!",
-            disable_notification=True
+            "✅ *YunMin Trading Bot*\n\nTelegram alerts are working!", disable_notification=True
         )
         return success
 
@@ -328,17 +309,17 @@ _bot_instance: Optional[TelegramBot] = None
 def get_telegram_bot(token: str = None, chat_id: str = None) -> TelegramBot:
     """
     Get or create Telegram bot singleton instance.
-    
+
     Args:
         token: Bot token (optional, uses existing if not provided)
         chat_id: Chat ID (optional, uses existing if not provided)
-        
+
     Returns:
         TelegramBot instance
     """
     global _bot_instance
-    
+
     if _bot_instance is None:
         _bot_instance = TelegramBot(token or "", chat_id or "")
-    
+
     return _bot_instance

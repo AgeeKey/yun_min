@@ -7,6 +7,7 @@ for the YunMin Trading Bot in just a few minutes.
 Usage:
     python setup_telegram.py
 """
+
 import asyncio
 import sys
 import os
@@ -23,13 +24,13 @@ async def setup():
     print("📱 YunMin Trading Bot - Telegram Setup")
     print("=" * 60)
     print()
-    
+
     print("This wizard will help you set up Telegram notifications.")
     print("You'll need:")
     print("  1. A Telegram bot token (from @BotFather)")
     print("  2. Your Telegram chat ID (from @userinfobot)")
     print()
-    
+
     # Step 1: Bot Token
     print("-" * 60)
     print("STEP 1: Create Telegram Bot")
@@ -41,15 +42,15 @@ async def setup():
     print("4. Choose a username: 'yunmin_alerts_bot' (must end with 'bot')")
     print("5. Copy the bot token you receive")
     print()
-    
+
     token = input("Enter your bot token: ").strip()
-    
+
     if not token or token.startswith("YOUR_"):
         print("❌ Invalid token. Please get a valid token from @BotFather")
         return
-    
+
     print()
-    
+
     # Step 2: Chat ID
     print("-" * 60)
     print("STEP 2: Get Your Chat ID")
@@ -59,31 +60,31 @@ async def setup():
     print("2. Start a chat and send any message")
     print("3. Copy your 'Id' (the number)")
     print()
-    
+
     chat_id = input("Enter your chat ID: ").strip()
-    
-    if not chat_id or not chat_id.replace('-', '').isdigit():
+
+    if not chat_id or not chat_id.replace("-", "").isdigit():
         print("❌ Invalid chat ID. Please enter a valid numeric ID")
         return
-    
+
     print()
-    
+
     # Step 3: Test Connection
     print("-" * 60)
     print("STEP 3: Testing Connection")
     print("-" * 60)
     print()
     print("Sending test message to your Telegram...")
-    
+
     bot = TelegramBot(token, chat_id)
-    
+
     if not bot.enabled:
         print("❌ Bot not properly configured")
         return
-    
+
     try:
         success = await bot.test_connection()
-        
+
         if success:
             print()
             print("✅ SUCCESS! Check your Telegram for a test message!")
@@ -120,7 +121,7 @@ async def setup():
             print("     (search for your bot in Telegram and press START)")
             print("  4. Check your internet connection")
             print()
-    
+
     except Exception as e:
         print()
         print(f"❌ Error: {e}")
