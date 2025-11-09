@@ -283,14 +283,14 @@ class MarketDataProvider:
 
 class MarketDataCollector:
     """
-    Упрощенный сборщик рыночных данных для тестирования.
-    Хранит историю свечей и предоставляет контекст.
+    Simplified market data collector for testing.
+    Stores candle history and provides context.
     """
     
     def __init__(self, history_length: int = 500):
         """
         Args:
-            history_length: Максимальная длина истории
+            history_length: Maximum history length
         """
         self.history_length = history_length
         self.candles: Optional[pd.DataFrame] = None
@@ -298,10 +298,10 @@ class MarketDataCollector:
     
     def update(self, candles: pd.DataFrame):
         """
-        Обновляет историю свечей.
+        Updates the candle history.
         
         Args:
-            candles: DataFrame со свечами
+            candles: DataFrame with candles
         """
         if self.candles is None:
             self.candles = candles.tail(self.history_length).copy()
@@ -311,10 +311,10 @@ class MarketDataCollector:
     
     def get_context(self) -> Dict[str, Any]:
         """
-        Возвращает контекст рынка.
+        Returns market context.
         
         Returns:
-            Dict с данными рынка
+            Dict with market data
         """
         if self.candles is None or len(self.candles) == 0:
             return {
@@ -322,7 +322,7 @@ class MarketDataCollector:
                 'indicators': {}
             }
         
-        # Вычисляем базовые индикаторы
+        # Calculate basic indicators
         close = self.candles['close']
         
         indicators = {

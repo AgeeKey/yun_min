@@ -198,7 +198,7 @@ class StrategyOptimizer:
         
         for name, spec in param_space.items():
             if isinstance(spec, tuple) and len(spec) == 2:
-                # Tuple format (min, max) - добавлена поддержка
+                # Tuple format (min, max) - added support
                 start, end = spec
                 if isinstance(start, int) and isinstance(end, int):
                     params[name] = int(np.random.randint(start, end + 1))

@@ -1,16 +1,16 @@
 """
-Performance Tracker - отслеживание производительности торговой стратегии.
+Performance Tracker - tracking trading strategy performance.
 """
 
 from typing import List, Dict, Any
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime
 from loguru import logger
 
 
 @dataclass
 class TradeRecord:
-    """Запись о сделке"""
+    """Trade record"""
     timestamp: datetime
     pnl: float
     confidence: float
@@ -23,18 +23,18 @@ class TradeRecord:
 
 class PerformanceTracker:
     """
-    Отслеживает и анализирует производительность торговой стратегии.
+    Tracks and analyzes trading strategy performance.
     
-    Метрики:
+    Metrics:
     - Total PnL
     - Win rate
     - Average confidence
-    - Sharpe ratio (упрощенный)
+    - Sharpe ratio (simplified)
     - Max drawdown
     """
     
     def __init__(self):
-        """Инициализация трекера"""
+        """Initialize tracker"""
         self.trades: List[TradeRecord] = []
         logger.info("📊 Performance Tracker initialized")
     
@@ -46,13 +46,13 @@ class PerformanceTracker:
         timestamp: datetime = None
     ):
         """
-        Записывает результат сделки.
+        Records trade result.
         
         Args:
             pnl: Profit/Loss
-            confidence: Уверенность модели (0-1)
-            duration: Длительность сделки в секундах
-            timestamp: Время сделки (опционально)
+            confidence: Model confidence (0-1)
+            duration: Trade duration in seconds
+            timestamp: Trade timestamp (optional)
         """
         if timestamp is None:
             timestamp = datetime.now()
@@ -69,10 +69,10 @@ class PerformanceTracker:
     
     def get_metrics(self) -> Dict[str, Any]:
         """
-        Возвращает метрики производительности.
+        Returns performance metrics.
         
         Returns:
-            Dict с метриками
+            Dict with metrics
         """
         if not self.trades:
             return {
@@ -103,10 +103,10 @@ class PerformanceTracker:
     
     def get_sharpe_ratio(self, risk_free_rate: float = 0.0) -> float:
         """
-        Вычисляет упрощенный Sharpe ratio.
+        Calculates simplified Sharpe ratio.
         
         Args:
-            risk_free_rate: Безрисковая ставка
+            risk_free_rate: Risk-free rate
             
         Returns:
             Sharpe ratio
@@ -117,7 +117,7 @@ class PerformanceTracker:
         returns = [t.pnl for t in self.trades]
         avg_return = sum(returns) / len(returns)
         
-        # Стандартное отклонение
+        # Standard deviation
         variance = sum((r - avg_return) ** 2 for r in returns) / (len(returns) - 1)
         std_dev = variance ** 0.5
         
@@ -128,10 +128,10 @@ class PerformanceTracker:
     
     def get_max_drawdown(self) -> float:
         """
-        Вычисляет максимальную просадку.
+        Calculates maximum drawdown.
         
         Returns:
-            Max drawdown в процентах
+            Max drawdown in percentage
         """
         if not self.trades:
             return 0.0
@@ -149,14 +149,14 @@ class PerformanceTracker:
             if drawdown > max_dd:
                 max_dd = drawdown
         
-        return max_dd * 100  # В процентах
+        return max_dd * 100  # In percentage
     
     def get_report(self) -> str:
         """
-        Генерирует текстовый отчет.
+        Generates text report.
         
         Returns:
-            Отформатированный отчет
+            Formatted report
         """
         metrics = self.get_metrics()
         sharpe = self.get_sharpe_ratio()
@@ -181,10 +181,10 @@ Worst Trade:      ${metrics['worst_trade']:.2f}
 
 
 if __name__ == "__main__":
-    # Быстрый тест
+    # Quick test
     tracker = PerformanceTracker()
     
-    # Симулируем сделки
+    # Simulate trades
     tracker.record_trade(pnl=100.0, confidence=0.8, duration=60)
     tracker.record_trade(pnl=-50.0, confidence=0.7, duration=30)
     tracker.record_trade(pnl=150.0, confidence=0.85, duration=120)

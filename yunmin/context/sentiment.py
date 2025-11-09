@@ -1,5 +1,5 @@
 """
-Sentiment Analysis - анализ новостей и соцсетей для торговых решений.
+Sentiment Analysis - news and social media analysis for trading decisions.
 """
 
 from typing import List, Dict, Any
@@ -8,18 +8,18 @@ from loguru import logger
 
 class SentimentAnalyzer:
     """
-    Анализирует настроения рынка на основе новостей и соцсетей.
+    Analyzes market sentiment based on news and social media.
     
-    Упрощенная версия без внешних API (для демонстрации).
-    В продакшене можно использовать:
-    - Twitter/X API для крипто-твитов
-    - Reddit API для r/cryptocurrency
+    Simplified version without external APIs (for demonstration).
+    In production, can use:
+    - Twitter/X API for crypto tweets
+    - Reddit API for r/cryptocurrency
     - News APIs (CryptoPanic, CoinTelegraph)
     - Sentiment models (BERT, FinBERT)
     """
     
     def __init__(self):
-        """Инициализация анализатора настроений"""
+        """Initialize sentiment analyzer"""
         self.positive_keywords = [
             'bullish', 'moon', 'pump', 'breakout', 'rally', 'surge',
             'strong', 'gain', 'profit', 'buy', 'upturn', 'recovery'
@@ -34,13 +34,13 @@ class SentimentAnalyzer:
     
     def analyze_text(self, text: str) -> Dict[str, Any]:
         """
-        Анализирует один текст.
+        Analyzes a single text.
         
         Args:
-            text: Текст новости или поста
+            text: News or post text
             
         Returns:
-            Dict с оценкой sentiment
+            Dict with sentiment score
         """
         text_lower = text.lower()
         
@@ -62,13 +62,13 @@ class SentimentAnalyzer:
     
     def analyze_batch(self, texts: List[str]) -> Dict[str, Any]:
         """
-        Анализирует несколько текстов.
+        Analyzes multiple texts.
         
         Args:
-            texts: Список новостей/постов
+            texts: List of news/posts
             
         Returns:
-            Агрегированная оценка sentiment
+            Aggregated sentiment score
         """
         if not texts:
             return {
@@ -100,15 +100,15 @@ class SentimentAnalyzer:
     
     def get_market_sentiment(self, symbol: str = 'BTC') -> Dict[str, Any]:
         """
-        Получает текущий sentiment для символа.
+        Gets current sentiment for symbol.
         
-        В реальной системе здесь был бы API-вызов.
+        In a real system, this would be an API call.
         
         Args:
-            symbol: Торговый символ (BTC, ETH и т.д.)
+            symbol: Trading symbol (BTC, ETH, etc.)
             
         Returns:
-            Sentiment данные
+            Sentiment data
         """
         # Симулируем данные
         return {
@@ -121,7 +121,7 @@ class SentimentAnalyzer:
 
 
 if __name__ == "__main__":
-    # Быстрый тест
+    # Quick test
     analyzer = SentimentAnalyzer()
     
     news = [
