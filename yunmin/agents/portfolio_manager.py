@@ -420,7 +420,13 @@ class MultiSymbolPortfolioManager:
                     base_allocation = self.capital_allocation.get(symbol, 0.0)
                     
                     # Adjust by confidence
-                    confidence = getattr(signal, 'confidence', signal.get('confidence', 1.0))
+                    if hasattr(signal, 'confidence'):
+                        confidence = signal.confidence
+                    elif isinstance(signal, dict):
+                        confidence = signal.get('confidence', 1.0)
+                    else:
+                        confidence = 1.0
+                    
                     confidence_adjusted = base_allocation * confidence
                     
                     allocations[symbol] = confidence_adjusted
