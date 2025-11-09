@@ -13,6 +13,23 @@ trading:
   symbol: BTC/USDT
   timeframe: 5m
   initial_capital: 15000.0  # Increased for 3 symbols ($5k each)
+  
+  # Multi-Symbol Configuration
+  symbols:
+    - symbol: BTC/USDT
+      allocation: 0.4  # 40% of capital
+      risk_limit: 0.10  # 10% max position size
+    - symbol: ETH/USDT
+      allocation: 0.35  # 35% of capital
+      risk_limit: 0.10
+    - symbol: BNB/USDT
+      allocation: 0.25  # 25% of capital
+      risk_limit: 0.10
+  
+  portfolio:
+    total_capital: 10000
+    max_total_exposure: 0.50  # Max 50% in positions
+    rebalance_threshold: 0.10  # Rebalance if drift >10%
 
 # Risk Management (CRITICAL - DO NOT DISABLE)
 risk:

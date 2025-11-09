@@ -6,7 +6,16 @@ Handles diversification, rebalancing, and capital allocation.
 """
 
 from typing import Dict, Any, List, Optional
+import pandas as pd
 from loguru import logger
+
+# Import for Signal type hint
+try:
+    from yunmin.strategy.base import Signal, SignalType
+except ImportError:
+    # Fallback if not available
+    Signal = Any
+    SignalType = Any
 
 
 class PortfolioManagerAgent:
@@ -329,4 +338,266 @@ class PortfolioManagerAgent:
             'utilization': len(positions) / self.max_assets,
             'largest_position': largest_position.get('symbol'),
             'largest_position_weight': largest_position.get('value', 0) / total_value if total_value > 0 else 0
+        }
+
+
+class MultiSymbolPortfolioManager:
+    """
+    Enhanced portfolio manager for multi-symbol trading.
+    
+    Manages capital allocation across multiple trading symbols with
+    consideration for correlations and diversification.
+    """
+    
+    def __init__(self, config: Dict[str, Any] = None):
+        """
+        Initialize multi-symbol portfolio manager.
+        
+        Args:
+            config: Configuration dictionary with symbol allocations
+        """
+        if config and 'symbols' in config:
+            self.symbols = config['symbols']
+            self.capital_allocation = {
+                s['symbol']: s['allocation'] 
+                for s in self.symbols
+            }
+            self.risk_limits = {
+                s['symbol']: s.get('risk_limit', 0.10)
+                for s in self.symbols
+            }
+        else:
+            # Default configuration
+            self.symbols = [
+                {'symbol': 'BTC/USDT', 'allocation': 0.4, 'risk_limit': 0.10},
+                {'symbol': 'ETH/USDT', 'allocation': 0.35, 'risk_limit': 0.10},
+                {'symbol': 'BNB/USDT', 'allocation': 0.25, 'risk_limit': 0.10}
+            ]
+            self.capital_allocation = {s['symbol']: s['allocation'] for s in self.symbols}
+            self.risk_limits = {s['symbol']: s['risk_limit'] for s in self.symbols}
+        
+        # Portfolio settings
+        self.max_total_exposure = config.get('portfolio', {}).get('max_total_exposure', 0.50) if config else 0.50
+        self.rebalance_threshold = config.get('portfolio', {}).get('rebalance_threshold', 0.10) if config else 0.10
+        
+        logger.info(f"💼 Multi-Symbol Portfolio Manager initialized with {len(self.symbols)} symbols")
+    
+    def allocate_capital(
+        self, 
+        signals: Dict[str, Any],
+        current_positions: Dict[str, float] = None,
+        correlations: Dict[str, float] = None
+    ) -> Dict[str, float]:
+        """
+        Allocate capital across multiple symbols based on signals.
+        
+        Args:
+            signals: Dict of {symbol: Signal} with trading signals
+            current_positions: Dict of {symbol: current_position_size}
+            correlations: Dict of correlation pairs for adjustment
+            
+        Returns:
+            Dict of {symbol: position_size} allocations
+        """
+        allocations = {}
+        current_positions = current_positions or {}
+        
+        try:
+            for symbol, signal in signals.items():
+                # Check if this is a buy signal
+                if hasattr(signal, 'type'):
+                    signal_type = signal.type
+                    if hasattr(SignalType, 'BUY'):
+                        is_buy = signal_type == SignalType.BUY
+                    else:
+                        is_buy = str(signal_type).upper() == 'BUY'
+                else:
+                    # Fallback for dict-like signals
+                    is_buy = signal.get('action', '').upper() == 'BUY'
+                
+                if is_buy:
+                    # Get base allocation for this symbol
+                    base_allocation = self.capital_allocation.get(symbol, 0.0)
+                    
+                    # Adjust by confidence
+                    confidence = getattr(signal, 'confidence', signal.get('confidence', 1.0))
+                    confidence_adjusted = base_allocation * confidence
+                    
+                    allocations[symbol] = confidence_adjusted
+                    logger.debug(f"Allocated {confidence_adjusted:.2%} to {symbol}")
+            
+            # Normalize if total exceeds max exposure
+            total = sum(allocations.values())
+            if total > self.max_total_exposure:
+                scale_factor = self.max_total_exposure / total
+                allocations = {k: v * scale_factor for k, v in allocations.items()}
+                logger.info(f"Scaled allocations by {scale_factor:.2f} to respect max exposure")
+            
+            # Apply correlation adjustments if provided
+            if correlations:
+                allocations = self._adjust_for_correlations(allocations, correlations)
+            
+            return allocations
+            
+        except Exception as e:
+            logger.error(f"Error allocating capital: {e}")
+            return {}
+    
+    def _adjust_for_correlations(
+        self,
+        allocations: Dict[str, float],
+        correlations: Dict[str, float],
+        threshold: float = 0.8
+    ) -> Dict[str, float]:
+        """
+        Adjust allocations based on correlation to reduce concentration risk.
+        
+        Args:
+            allocations: Original allocation dict
+            correlations: Correlation pairs
+            threshold: Correlation threshold for adjustment
+            
+        Returns:
+            Adjusted allocations
+        """
+        adjusted = allocations.copy()
+        
+        for pair, corr in correlations.items():
+            if corr > threshold:
+                parts = pair.split('_')
+                if len(parts) == 2:
+                    sym1, sym2 = parts[0], parts[1]
+                    
+                    # If both are allocated, reduce the smaller one
+                    if sym1 in adjusted and sym2 in adjusted:
+                        if adjusted[sym1] > adjusted[sym2]:
+                            adjusted[sym2] *= 0.8  # Reduce by 20%
+                            logger.info(f"Reduced {sym2} allocation due to high correlation with {sym1}")
+                        else:
+                            adjusted[sym1] *= 0.8
+                            logger.info(f"Reduced {sym1} allocation due to high correlation with {sym2}")
+        
+        return adjusted
+    
+    def check_correlation(
+        self,
+        symbols: List[str],
+        data: Dict[str, pd.DataFrame]
+    ) -> pd.DataFrame:
+        """
+        Calculate correlation matrix to avoid over-concentration.
+        
+        Args:
+            symbols: List of symbols to analyze
+            data: Dict of {symbol: DataFrame with price data}
+            
+        Returns:
+            Correlation matrix as DataFrame
+        """
+        try:
+            # Build price dataframe
+            prices = {}
+            for symbol in symbols:
+                if symbol in data and 'close' in data[symbol].columns:
+                    prices[symbol] = data[symbol]['close']
+            
+            if len(prices) < 2:
+                logger.warning("Not enough data for correlation analysis")
+                return pd.DataFrame()
+            
+            # Calculate correlation
+            prices_df = pd.DataFrame(prices)
+            corr_matrix = prices_df.corr()
+            
+            logger.info(f"Calculated correlation matrix for {len(symbols)} symbols")
+            return corr_matrix
+            
+        except Exception as e:
+            logger.error(f"Error calculating correlation: {e}")
+            return pd.DataFrame()
+    
+    def suggest_rebalancing(
+        self,
+        current_allocations: Dict[str, float],
+        target_allocations: Dict[str, float]
+    ) -> List[Dict[str, Any]]:
+        """
+        Suggest rebalancing actions if portfolio drifted from targets.
+        
+        Args:
+            current_allocations: Current allocation percentages
+            target_allocations: Target allocation percentages
+            
+        Returns:
+            List of rebalancing suggestions
+        """
+        suggestions = []
+        
+        for symbol in target_allocations:
+            current = current_allocations.get(symbol, 0.0)
+            target = target_allocations[symbol]
+            
+            drift = abs(current - target)
+            
+            if drift > self.rebalance_threshold:
+                if current > target:
+                    action = 'reduce'
+                    amount = current - target
+                else:
+                    action = 'increase'
+                    amount = target - current
+                
+                suggestions.append({
+                    'symbol': symbol,
+                    'action': action,
+                    'current': current,
+                    'target': target,
+                    'drift': drift,
+                    'amount': amount,
+                    'reason': f'Allocation drift {drift:.1%} exceeds threshold {self.rebalance_threshold:.1%}'
+                })
+        
+        if suggestions:
+            logger.info(f"Generated {len(suggestions)} rebalancing suggestions")
+        
+        return suggestions
+    
+    def get_portfolio_metrics(
+        self,
+        positions: Dict[str, float],
+        total_capital: float
+    ) -> Dict[str, Any]:
+        """
+        Calculate portfolio-level metrics.
+        
+        Args:
+            positions: Dict of {symbol: position_value}
+            total_capital: Total portfolio capital
+            
+        Returns:
+            Portfolio metrics dictionary
+        """
+        if not positions:
+            return {
+                'total_exposure': 0.0,
+                'num_positions': 0,
+                'largest_position': None,
+                'smallest_position': None,
+                'average_position': 0.0
+            }
+        
+        total_value = sum(positions.values())
+        exposure = total_value / total_capital if total_capital > 0 else 0.0
+        
+        largest_symbol = max(positions.items(), key=lambda x: x[1])[0]
+        smallest_symbol = min(positions.items(), key=lambda x: x[1])[0]
+        
+        return {
+            'total_exposure': exposure,
+            'num_positions': len(positions),
+            'largest_position': largest_symbol,
+            'largest_position_value': positions[largest_symbol],
+            'smallest_position': smallest_symbol,
+            'smallest_position_value': positions[smallest_symbol],
+            'average_position': total_value / len(positions)
         }
