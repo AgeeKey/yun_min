@@ -1,0 +1,30 @@
+{
+  "period": "2025-01-01 to 2025-11-09",
+  "symbol": "BTC/USDT",
+  "timeframe": "5m",
+  "initial_capital": 10000.0,
+  "final_capital": 64.98,
+  "metrics": {
+    "win_rate": 0.0361,
+    "total_pnl": -9935.02,
+    "sharpe_ratio": -6.5795,
+    "sortino_ratio": -16.453,
+    "max_drawdown": 0.9938,
+    "profit_factor": 0.2022,
+    "total_trades": 3213,
+    "winning_trades": 116,
+    "losing_trades": 3097,
+    "avg_win": 21.71,
+    "avg_loss": -4.02,
+    "expectancy": -3.09,
+    "calmar_ratio": -1.1695,
+    "recovery_factor": -0.9997
+  },
+  "strategy_params": {
+    "fast_period": 9,
+    "slow_period": 21,
+    "rsi_period": 14,
+    "rsi_overbought": 70,
+    "rsi_oversold": 35
+  }
+}
