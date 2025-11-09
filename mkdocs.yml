@@ -65,33 +65,35 @@ nav:
   - Getting Started:
       - Quickstart: getting-started/quickstart.md
       - Installation: getting-started/installation.md
-      - First Run: getting-started/first-run.md
-  - Configuration:
-      - Overview: configuration/overview.md
-      - Exchange Setup: configuration/exchange.md
-      - Risk Management: configuration/risk-management.md
-      - Strategy Config: configuration/strategy.md
+      - Configuration: getting-started/configuration.md
+  - Architecture:
+      - Overview: architecture/overview.md
+      - AI Agents: architecture/ai-agents.md
+      - Memory System: architecture/memory-system.md
   - Strategies:
-      - Introduction: strategies/introduction.md
-      - AI Strategies: strategies/ai-strategies.md
-      - Rule-Based: strategies/rule-based.md
       - Creating Custom: strategies/custom-strategy.md
-  - Risk Management:
-      - Best Practices: risk/best-practices.md
-      - Position Sizing: risk/position-sizing.md
-      - Stop Loss & Take Profit: risk/stop-loss.md
-  - API Reference:
-      - Core: api/core.md
-      - Strategies: api/strategies.md
-      - Risk: api/risk.md
-      - Connectors: api/connectors.md
-  - Troubleshooting:
-      - Common Issues: troubleshooting/common-issues.md
-      - FAQ: troubleshooting/faq.md
-  - Development:
-      - Contributing: development/contributing.md
-      - Development Setup: development/setup.md
-      - Testing: development/testing.md
+      - AI Strategies: strategies/ai-strategies.md
+      - Backtesting: strategies/backtesting.md
+  - Deployment:
+      - Deployment Guide: deployment/deployment-guide.md
+      - Monitoring: deployment/monitoring.md
+      - Incident Response: deployment/incident-response.md
+      - Scaling: deployment/scaling.md
+  - Advanced:
+      - AI Framework: advanced/advanced-ai-framework.md
+      - Alert Rules: advanced/alert-rules.md
+      - Live Safety Runbook: advanced/runbook-live-safety.md
+  - Testing:
+      - Testnet Setup: testing/testnet-setup.md
+      - Validation Plan: testing/validation-plan.md
+  - Reports:
+      - Completion Report: reports/completion-report.md
+      - Phase 2 Week 2 Analysis: reports/phase2-week2-analysis.md
+      - Phase 2 Week 3 Critical: reports/phase2-week3-critical.md
+      - Tasks Summary: reports/tasks-summary.md
+  - API Reference: API_DOCUMENTATION.md
+  - Project Overview: project-overview.md
+  - Contributing: CONTRIBUTING.md
 
 extra:
   social:

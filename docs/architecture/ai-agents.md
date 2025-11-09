@@ -397,9 +397,9 @@ pattern_library.save()
 
 ## 📖 Further Reading
 
-- [ARCHITECTURE.md](../ARCHITECTURE.md) - Overall system design
-- [API Documentation](../docs/api/) - Detailed API reference
-- [Trading Strategies](../docs/strategies/) - Strategy documentation
+- [Architecture Overview](overview.md) - Overall system design
+- [Memory System](memory-system.md) - Learn about the memory system
+- [AI Strategies](../strategies/ai-strategies.md) - Strategy documentation
 
 ## 🙋 Support
 

@@ -155,10 +155,10 @@ yunmin --help
 
 ## Next Steps
 
-1. ✅ Read the [Configuration Guide](../configuration/overview.md)
-2. ✅ Learn about [Trading Strategies](../strategies/introduction.md)
-3. ✅ Understand [Risk Management](../risk/best-practices.md)
-4. ✅ Review [Common Issues](../troubleshooting/common-issues.md)
+1. ✅ Read the [Configuration Guide](configuration.md)
+2. ✅ Learn about [AI Trading Strategies](../strategies/ai-strategies.md)
+3. ✅ Explore [Architecture Overview](../architecture/overview.md)
+4. ✅ Review [Backtesting Guide](../strategies/backtesting.md)
 
 ## Getting Help
 

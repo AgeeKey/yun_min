@@ -196,8 +196,8 @@ def add_custom_indicator(self, df):
 ## Next Steps
 
 - Review [AI Strategies](ai-strategies.md) for advanced examples
-- Read [Risk Management](../risk/best-practices.md) guidelines
-- Check [API Reference](../api/strategies.md) for detailed documentation
+- Check [Architecture Overview](../architecture/overview.md) for system details
+- Explore [Backtesting](backtesting.md) to test your strategy
 
 ---
 

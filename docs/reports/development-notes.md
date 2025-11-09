@@ -312,10 +312,10 @@ Recommended extensions:
 
 ## Additional Resources
 
-- [Architecture Documentation](ARCHITECTURE.md)
-- [API Reference](docs/api-reference.md)
-- [Strategy Development Guide](docs/strategy-guide.md)
-- [Troubleshooting Guide](docs/troubleshooting.md)
+- [Architecture Documentation](../architecture/overview.md)
+- [API Reference](../API_DOCUMENTATION.md)
+- [AI Strategies Guide](../strategies/ai-strategies.md)
+- [Custom Strategy Guide](../strategies/custom-strategy.md)
 
 ## Getting Help
 
