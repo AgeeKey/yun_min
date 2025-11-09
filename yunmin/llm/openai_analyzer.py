@@ -23,13 +23,13 @@ class OpenAIAnalyzer:
     - Compatible interface with GrokAnalyzer
     """
     
-    def __init__(self, api_key: str = None, model: str = "gpt-5"):
+    def __init__(self, api_key: str = None, model: str = "gpt-4o-mini"):
         """
         Initialize OpenAI analyzer.
         
         Args:
             api_key: OpenAI API key (or from env OPENAI_API_KEY)
-            model: Model name (gpt-5, gpt-4o-mini, gpt-4o, etc.)
+            model: Model name (gpt-4o-mini, gpt-4o, etc.)
         """
         self.api_key = api_key or os.getenv("OPENAI_API_KEY")
         if not self.api_key:
@@ -74,6 +74,17 @@ class OpenAIAnalyzer:
         # Build comprehensive prompt
         prompt = self._build_market_prompt(market_data)
         
+        # ⚠️ DEBUG: Log request details
+        try:
+            with open("gpt_request_debug.txt", "w", encoding="utf-8") as f:
+                f.write(f"MODEL: {self.model}\n")
+                f.write(f"API KEY EXISTS: {bool(self.api_key)}\n")
+                f.write(f"ENABLED: {self.enabled}\n")
+                f.write(f"PROMPT:\n{prompt}\n")
+                f.write(f"{'='*60}\n")
+        except Exception as e:
+            logger.error(f"Debug request write failed: {e}")
+        
         try:
             response = self.client.chat.completions.create(
                 model=self.model,
@@ -91,7 +102,22 @@ class OpenAIAnalyzer:
             )
             
             # Parse response
-            content = response.choices[0].message.content.strip()
+            raw_content = response.choices[0].message.content
+            content = raw_content.strip() if raw_content else "EMPTY_RESPONSE"
+            
+            # ⚠️ TEMPORARY DEBUG: Save full response to file (avoid encoding issues)
+            try:
+                with open("gpt_response_debug.txt", "w", encoding="utf-8") as f:
+                    f.write(f"\n{'='*60}\n")
+                    f.write(f"RAW OPENAI RESPONSE (gpt-4o-mini):\n")
+                    f.write(f"{'='*60}\n")
+                    f.write(f"TYPE: {type(raw_content)}\n")
+                    f.write(f"LEN: {len(raw_content) if raw_content else 0}\n")
+                    f.write(f"CONTENT: {content}\n")
+                    f.write(f"{'='*60}\n")
+            except Exception as e:
+                logger.error(f"Debug file write failed: {e}")
+            
             result = self._parse_response(content)
             result['model_used'] = self.model
             
@@ -203,14 +229,54 @@ Provide a clear explanation covering:
             return f"Analysis failed: {str(e)}"
     
     def _build_market_prompt(self, market_data: dict) -> str:
-        """Build compact market analysis prompt."""
+        """Build compact market analysis prompt with trend awareness."""
+        price = market_data.get('price', 0)
+        rsi = market_data.get('rsi', 50)
+        ema_fast = market_data.get('ema_fast', 0)
+        ema_slow = market_data.get('ema_slow', 0)
+        trend = market_data.get('trend', 'unknown')
+        
+        # Calculate trend strength
+        trend_strength = "neutral"
+        if ema_fast and ema_slow and price:
+            price_above_slow = (price / ema_slow - 1) * 100 if ema_slow else 0
+            if price_above_slow > 2:
+                trend_strength = "strong uptrend"
+            elif price_above_slow > 0.5:
+                trend_strength = "moderate uptrend"
+            elif price_above_slow < -2:
+                trend_strength = "strong downtrend"
+            elif price_above_slow < -0.5:
+                trend_strength = "moderate downtrend"
+        
         return f"""BTC Market Analysis:
-Price: ${market_data.get('price', 'N/A')}
-RSI: {market_data.get('rsi', 'N/A')}
-EMA Fast: {market_data.get('ema_fast', 'N/A')}
-EMA Slow: {market_data.get('ema_slow', 'N/A')}
-Trend: {market_data.get('trend', 'unknown')}
+Price: ${price}
+RSI: {rsi}
+EMA Fast: {ema_fast}
+EMA Slow: {ema_slow}
+Trend: {trend} ({trend_strength})
 Volume: {market_data.get('volume', 'N/A')}
+
+TRADING RULES:
+1. BUY Signals:
+   - RSI < 35 (oversold) in any trend
+   - RSI 35-50 in moderate/strong uptrend
+   - Price near EMA Fast support in uptrend
+
+2. SELL Signals:
+   - RSI > 70 (overbought) in any trend
+   - RSI 60-70 in moderate/strong downtrend
+   - Price at resistance in downtrend
+
+3. HOLD Signals:
+   - Unclear signals or conflicting indicators
+   - RSI 45-60 in neutral/sideways market
+   - Waiting for better entry/exit
+
+4. Trend Considerations:
+   - In strong uptrend (>2% above slow EMA): Favor BUY on dips
+   - In strong downtrend (<-2% below slow EMA): Favor SELL on rallies
+   - In neutral: Use RSI primarily
 
 Analyze and decide: BUY/SELL/HOLD?"""
     
