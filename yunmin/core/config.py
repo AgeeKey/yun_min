@@ -82,10 +82,15 @@ class LLMConfig(BaseSettings):
     model_config = ConfigDict(env_prefix="YUNMIN_LLM_")
     
     enabled: bool = Field(default=False, description="Enable LLM features")
-    provider: str = Field(default="openai", description="LLM provider: openai, anthropic")
+    provider: str = Field(default="openai", description="LLM provider: openai, grok")
     api_key: str = Field(default="", description="LLM API key")
-    model: str = Field(default="gpt-4", description="Model name")
+    model: str = Field(default="gpt-5", description="Model name (gpt-5, gpt-4o-mini, llama-3.3, etc.)")
     explain_trades: bool = Field(default=True, description="Generate trade explanations")
+    
+    # OpenAI cascade strategy (optional)
+    fallback_model: Optional[str] = Field(default=None, description="Fallback model when limits exceeded")
+    max_daily_tokens_gpt5: Optional[int] = Field(default=250000, description="Daily token limit for GPT-5")
+    max_daily_tokens_mini: Optional[int] = Field(default=2500000, description="Daily token limit for mini models")
 
 
 class DatabaseConfig(BaseSettings):

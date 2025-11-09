@@ -4,6 +4,7 @@ Yun Min Trading Bot - Main Entry Point
 Coordinates all components: data ingestion, strategy, risk management, and execution.
 """
 
+import os
 import time
 from typing import Optional
 import pandas as pd
@@ -18,6 +19,7 @@ from yunmin.risk.manager import RiskManager
 from yunmin.risk.policies import OrderRequest, PositionInfo
 from yunmin.execution.order_manager import OrderManager
 from yunmin.llm.grok_analyzer import GrokAnalyzer
+from yunmin.llm.openai_analyzer import OpenAIAnalyzer
 from yunmin.core.pnl_tracker import PnLTracker
 from yunmin.store import (
     init_db, get_session, close_db,
@@ -57,19 +59,43 @@ class YunMinBot:
             logger.warning("No exchange API credentials - running without exchange connection")
             self.exchange = None
         
-        # Grok AI analyzer (инициализируем ПЕРВЫМ!)
+        # LLM Analyzer - ВЫБОР ПО ПРОВАЙДЕРУ (OpenAI или Groq)
+        self.llm_analyzer = None
         if config.llm.enabled:
-            self.grok = GrokAnalyzer()
-            if self.grok.enabled:
-                logger.info("🤖 Grok AI analyzer enabled")
-        else:
-            self.grok = None
+            provider = config.llm.provider.lower()
+            
+            if provider == "openai":
+                # 🚀 OPENAI: GPT-5, GPT-4O-MINI, GPT-4O
+                # Priority: 1) config.llm.api_key, 2) OPENAI_API_KEY env, 3) YUNMIN_LLM_API_KEY env
+                api_key = (
+                    config.llm.api_key 
+                    if config.llm.api_key and not config.llm.api_key.startswith("${") 
+                    else os.getenv("OPENAI_API_KEY") or os.getenv("YUNMIN_LLM_API_KEY")
+                )
+                model = config.llm.model or "gpt-5"
+                self.llm_analyzer = OpenAIAnalyzer(api_key=api_key, model=model)
+                if self.llm_analyzer.enabled:
+                    logger.info(f"🚀 OpenAI analyzer enabled: {model}")
+                else:
+                    logger.warning("⚠️ OpenAI analyzer failed to initialize")
+                    self.llm_analyzer = None
+            
+            elif provider == "grok":
+                # 🤖 GROQ: Llama 3.3 70B
+                self.llm_analyzer = GrokAnalyzer()
+                if self.llm_analyzer.enabled:
+                    logger.info("🤖 Groq AI analyzer enabled")
+                else:
+                    logger.warning("⚠️ Groq analyzer failed to initialize")
+                    self.llm_analyzer = None
+            else:
+                logger.warning(f"❌ Unknown LLM provider: {provider}")
         
-        # Strategy - выбираем на основе конфига
-        if self.grok and self.grok.enabled and config.llm.provider == 'grok':
-            # 🤖 AI-DRIVEN TRADING: Grok принимает решения!
-            self.strategy = GrokAIStrategy(grok_analyzer=self.grok)
-            logger.info("🤖 Using GROK AI STRATEGY - AI will make all trading decisions!")
+        # Strategy - выбираем на основе LLM
+        if self.llm_analyzer and self.llm_analyzer.enabled:
+            # 🤖 AI-DRIVEN TRADING: LLM принимает решения!
+            self.strategy = GrokAIStrategy(grok_analyzer=self.llm_analyzer)
+            logger.info(f"🤖 Using AI STRATEGY with {config.llm.provider.upper()}")
         else:
             # Fallback: традиционная стратегия
             self.strategy = EMACrossoverStrategy(
@@ -216,20 +242,23 @@ class YunMinBot:
     def process_signal(self, signal, current_price: Optional[float]):
         """Process trading signal and execute if validated."""
         
-        # Get Grok analysis if enabled
-        if self.grok and self.grok.enabled:
+        # Get LLM analysis if enabled
+        if self.llm_analyzer and self.llm_analyzer.enabled:
             market_data = {
                 'price': current_price,
                 'rsi': getattr(signal, 'rsi', None),
                 'trend': getattr(signal, 'trend', 'unknown'),
                 'signal_type': signal.type.value
             }
-            grok_insight = self.grok.explain_signal(
-                signal.type.value, 
-                signal.reason, 
-                market_data
-            )
-            logger.info(f"🤖 Grok: {grok_insight}")
+            
+            # Use explain_signal if available (both OpenAI and Groq have it)
+            if hasattr(self.llm_analyzer, 'explain_signal'):
+                llm_insight = self.llm_analyzer.explain_signal(
+                    signal.type.value, 
+                    signal.reason, 
+                    market_data
+                )
+                logger.info(f"🤖 AI: {llm_insight}")
         
         logger.info(f"Signal: {signal}")
         

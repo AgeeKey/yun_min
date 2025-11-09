@@ -226,3 +226,48 @@ Rate the risk (Low/Medium/High) and suggest adjustments if needed. 1 sentence.""
         except Exception as e:
             logger.error(f"Grok text analysis failed: {e}")
             return f"Analysis failed: {str(e)}"
+    
+    def analyze_market(self, market_data: dict) -> dict:
+        """
+        Unified interface compatible with OpenAIAnalyzer.
+        
+        Args:
+            market_data: Market conditions
+            
+        Returns:
+            {
+                'signal': 'BUY' | 'SELL' | 'HOLD',
+                'confidence': float,
+                'reasoning': str,
+                'model_used': str
+            }
+        """
+        if not self.enabled:
+            return {
+                'signal': 'HOLD',
+                'confidence': 0.0,
+                'reasoning': 'Groq AI disabled',
+                'model_used': None
+            }
+        
+        # Use existing analyze_market_conditions method
+        analysis = self.analyze_market_conditions(market_data)
+        
+        # Parse text response into structured format
+        signal = 'HOLD'
+        confidence = 0.5
+        
+        analysis_upper = analysis.upper()
+        if 'BUY' in analysis_upper or 'LONG' in analysis_upper:
+            signal = 'BUY'
+            confidence = 0.7
+        elif 'SELL' in analysis_upper or 'SHORT' in analysis_upper:
+            signal = 'SELL'
+            confidence = 0.7
+        
+        return {
+            'signal': signal,
+            'confidence': confidence,
+            'reasoning': analysis,
+            'model_used': 'llama-3.3-70b-versatile'
+        }

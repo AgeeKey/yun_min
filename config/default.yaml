@@ -22,13 +22,6 @@ risk:
   stop_loss_pct: 0.025  # 2.5% stop loss
   take_profit_pct: 0.04  # 4% take profit (better R/R ratio)
   enable_circuit_breaker: true
-  
-  # Separate parameters for SHORT positions (more conservative)
-  short:
-    stop_loss_pct: 0.03  # 3% stop loss (shorts are riskier)
-    take_profit_pct: 0.05  # 5% take profit (larger target)
-    max_position_size: 0.06  # 6% of capital (smaller size)
-    trailing_stop_pct: 2.5  # 2.5% trailing stop
 
 # Strategy Configuration
 strategy:
@@ -46,10 +39,15 @@ ml:
   retrain_interval: 86400  # 24 hours
   feature_lookback: 100
 
-# LLM Integration
+# LLM Integration - OPENAI GPT-4O-MINI (OPTIMAL FREE MODEL)
 llm:
   enabled: true
-  provider: grok
+  provider: openai  # openai | grok
+  model: gpt-4o-mini  # BEST FREE: 2.5M tokens/day, fast, smart
+  # api_key loaded from environment: OPENAI_API_KEY
+  fallback_model: gpt-4o  # Fallback to paid model if needed
+  max_daily_tokens_gpt5: 250000  # 250k tokens/day FREE
+  max_daily_tokens_mini: 2500000  # 2.5M tokens/day FREE
   explain_trades: true
 
 # Database

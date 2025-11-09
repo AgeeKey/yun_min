@@ -1,7 +1,7 @@
 """
-Grok AI Trading Strategy - AI-Driven Decision Making
+AI Trading Strategy - Multi-Provider LLM Support
 
-Использует Grok AI для принятия торговых решений на основе:
+Использует LLM (OpenAI, Groq, etc.) для принятия торговых решений на основе:
 - Технического анализа
 - Рыночных условий
 - Исторической статистики
@@ -17,9 +17,14 @@ from yunmin.strategy.base import BaseStrategy, Signal, SignalType
 
 class GrokAIStrategy(BaseStrategy):
     """
-    AI-driven trading strategy powered by Grok.
+    AI-driven trading strategy with multi-provider support.
     
-    Grok анализирует рынок и принимает решения:
+    Works with:
+    - OpenAI (GPT-5, GPT-4O-MINI, GPT-4O)
+    - Groq (Llama 3.3 70B, Mixtral)
+    - Any LLM analyzer with compatible interface
+    
+    AI анализирует рынок и принимает решения:
     - BUY: открыть LONG позицию
     - SELL: открыть SHORT позицию
     - HOLD: ждать
@@ -27,20 +32,22 @@ class GrokAIStrategy(BaseStrategy):
     
     def __init__(self, grok_analyzer=None):
         """
-        Initialize Grok AI strategy.
+        Initialize AI trading strategy.
         
         Args:
-            grok_analyzer: GrokAnalyzer instance
+            grok_analyzer: Any LLM analyzer (OpenAIAnalyzer, GrokAnalyzer, etc.)
+                          Compatible interface: analyze_market(), analyze_text()
         """
-        super().__init__("GrokAI")
-        self.grok = grok_analyzer
+        super().__init__("AI")
+        self.grok = grok_analyzer  # Generic LLM analyzer
         
         if not self.grok or not self.grok.enabled:
-            logger.warning("⚠️  Grok AI not available - strategy will use fallback logic")
+            logger.warning("⚠️  LLM AI not available - strategy will use fallback logic")
         else:
-            logger.info("🤖 Grok AI Strategy initialized - AI will make all trading decisions")
+            analyzer_type = self.grok.__class__.__name__
+            logger.info(f"🤖 AI Strategy initialized with {analyzer_type}")
         
-        # Параметры для fallback (если Grok недоступен)
+        # Параметры для fallback (если LLM недоступен)
         self.fallback_rsi_oversold = 30
         self.fallback_rsi_overbought = 70
         
@@ -136,7 +143,7 @@ class GrokAIStrategy(BaseStrategy):
         price_change: float
     ) -> Signal:
         """
-        Получить торговое решение от Grok AI.
+        Получить торговое решение от LLM (OpenAI/Grok).
         
         Args:
             price: Текущая цена
@@ -148,132 +155,57 @@ class GrokAIStrategy(BaseStrategy):
             price_change: Изменение цены за последний период (%)
             
         Returns:
-            Signal from Grok AI
+            Signal from AI analyzer
         """
-        # Составить промпт для Grok
-        prompt = f"""АКТИВНЫЙ ТРЕЙДИНГ - Bitcoin (BTC/USDT)
-
-📊 РЫНОЧНЫЕ ДАННЫЕ:
-💰 Цена: ${price:.2f}
-📈 RSI: {rsi:.1f}
-🔵 EMA Fast: ${ema_fast:.2f}
-🔴 EMA Slow: ${ema_slow:.2f}
-📊 Тренд: {trend}
-📉 Изменение: {price_change:+.2f}%
-📦 Объём: {volume:.0f}
-
-🎯 ТЫ - АКТИВНЫЙ AI ТРЕЙДЕР!
-
-Твоя цель: Найти торговые возможности и зарабатывать.
-
-✅ ТОРГУЙ АКТИВНО:
-- Даже движения 0.3-0.5% - это возможности!
-- Короткие позиции (scalping) - твой друг
-- Не бойся рисковать при хорошем соотношении риск/прибыль
-
-📋 РЕШЕНИЯ:
-1. BUY (LONG) - если ожидаешь рост (уверенность ≥50%)
-2. SELL (SHORT) - если ожидаешь падение (уверенность ≥50%)  
-3. HOLD - только если действительно НЕТ сигналов
-
-🎓 КОГДА ТОРГОВАТЬ:
-✅ RSI < 45 и тренд меняется → BUY
-✅ RSI > 55 и тренд меняется → SELL
-✅ Цена отскочила от EMA → ТОРГУЙ
-✅ Изменение > 0.3% → ИСПОЛЬЗУЙ импульс
-✅ EMA Fast пересекает EMA Slow → СИЛЬНЫЙ сигнал
-
-⚠️ НЕ ТОРГОВАТЬ только если:
-❌ RSI ровно 50 И нет движения И EMA плоские
-❌ Волатильность < 0.1% И нет объёма
-
-📝 ОТВЕТ (СТРОГО в формате):
-DECISION: [BUY/SELL/HOLD]
-CONFIDENCE: [50-95]%
-REASON: [Почему торгуем, 1 предложение]
-
-Решение:"""
-
         try:
-            # Вызвать Grok AI
-            logger.info("🤖 Asking Grok AI for trading decision...")
-            response = self.grok.analyze_text(prompt, max_tokens=150)
+            # Подготовить рыночные данные
+            market_data = {
+                'symbol': 'BTC/USDT',
+                'price': price,
+                'rsi': rsi,
+                'ema_fast': ema_fast,
+                'ema_slow': ema_slow,
+                'trend': trend,
+                'volume': volume,
+                'price_change': price_change
+            }
             
-            if not response:
-                logger.warning("Grok returned empty response, using fallback")
-                return self._fallback_logic(price, rsi, trend)
+            # Определить тип анализатора для логирования
+            analyzer_type = self.grok.__class__.__name__
+            analyzer_name = "OpenAI" if "OpenAI" in analyzer_type else "Groq"
             
-            # Парсить ответ Grok
-            decision_type, confidence, reason = self._parse_grok_response(response)
+            logger.info(f"🤖 Asking {analyzer_name} for trading decision...")
             
-            logger.info(f"🤖 Grok Decision: {decision_type} (confidence: {confidence}%)")
-            logger.info(f"   Reason: {reason}")
+            # Вызвать универсальный метод analyze_market()
+            result = self.grok.analyze_market(market_data)
+            
+            # Обработать результат
+            signal_str = result.get('signal', 'HOLD').upper()
+            confidence = result.get('confidence', 0.5)
+            reasoning = result.get('reasoning', 'No reasoning provided')
+            model_used = result.get('model_used', 'unknown')
+            
+            # Конвертировать строку сигнала в SignalType
+            if signal_str == 'BUY':
+                signal_type = SignalType.BUY
+            elif signal_str == 'SELL':
+                signal_type = SignalType.SELL
+            else:
+                signal_type = SignalType.HOLD
+            
+            logger.info(f"📊 {analyzer_name} {model_used}: {signal_str} (confidence={confidence:.0%}, tokens=unknown)")
+            logger.info(f"   💡 Reasoning: {reasoning[:100]}...")
             
             return Signal(
-                type=decision_type,
-                confidence=confidence / 100.0,
-                reason=f"🤖 Grok AI: {reason}"
+                type=signal_type,
+                confidence=confidence,
+                reason=f"🤖 {analyzer_name} ({model_used}): {reasoning}"
             )
             
         except Exception as e:
-            logger.error(f"Grok AI decision failed: {e}", exc_info=True)
+            logger.error(f"AI decision failed: {e}", exc_info=True)
             logger.warning("Falling back to simple logic")
             return self._fallback_logic(price, rsi, trend)
-    
-    def _parse_grok_response(self, response: str) -> tuple:
-        """
-        Парсить ответ Grok AI.
-        
-        Args:
-            response: Текст ответа от Grok
-            
-        Returns:
-            (SignalType, confidence, reason)
-        """
-        # Поиск ключевых слов
-        response_upper = response.upper()
-        
-        # Определить тип решения
-        if "DECISION: BUY" in response_upper or "DECISION:BUY" in response_upper:
-            decision_type = SignalType.BUY
-        elif "DECISION: SELL" in response_upper or "DECISION:SELL" in response_upper:
-            decision_type = SignalType.SELL
-        elif "DECISION: HOLD" in response_upper or "DECISION:HOLD" in response_upper:
-            decision_type = SignalType.HOLD
-        else:
-            # Попробовать найти по содержанию
-            if "BUY" in response_upper and "LONG" in response_upper:
-                decision_type = SignalType.BUY
-            elif "SELL" in response_upper and "SHORT" in response_upper:
-                decision_type = SignalType.SELL
-            else:
-                decision_type = SignalType.HOLD
-        
-        # Извлечь уверенность (confidence)
-        confidence = 50  # default
-        try:
-            if "CONFIDENCE:" in response_upper:
-                conf_line = [line for line in response.split('\n') if 'CONFIDENCE' in line.upper()][0]
-                # Найти число
-                import re
-                numbers = re.findall(r'(\d+)', conf_line)
-                if numbers:
-                    confidence = int(numbers[0])
-                    confidence = max(0, min(100, confidence))  # clamp 0-100
-        except:
-            pass
-        
-        # Извлечь причину (reason)
-        reason = "AI decision"
-        try:
-            if "REASON:" in response_upper:
-                reason_lines = response.split("REASON:")
-                if len(reason_lines) > 1:
-                    reason = reason_lines[1].strip().split('\n')[0][:200]  # Первая строка, макс 200 символов
-        except:
-            pass
-        
-        return decision_type, confidence, reason
     
     def _fallback_logic(self, price: float, rsi: float, trend: str) -> Signal:
         """
