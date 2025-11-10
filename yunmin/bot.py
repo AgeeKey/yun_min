@@ -6,6 +6,7 @@ Coordinates all components: data ingestion, strategy, risk management, and execu
 
 import os
 import time
+import asyncio
 from typing import Optional
 import pandas as pd
 from loguru import logger
@@ -26,6 +27,7 @@ from yunmin.store import (
     PositionRepository, TradeRepository, PortfolioRepository,
     PositionSide, StateManager
 )
+from yunmin.notifications.telegram_bot import get_telegram_bot
 
 
 class YunMinBot:
@@ -140,6 +142,23 @@ class YunMinBot:
         # �🔄 Restore open positions from database (crash recovery)
         self._restore_positions()
         
+        # 📱 Initialize Telegram Bot for alerts
+        telegram_config = getattr(config, 'telegram', {})
+        if isinstance(telegram_config, dict):
+            token = telegram_config.get('bot_token', '')
+            chat_id = telegram_config.get('chat_id', '')
+            self.telegram_enabled = telegram_config.get('enabled', False)
+        else:
+            token = getattr(telegram_config, 'bot_token', '')
+            chat_id = getattr(telegram_config, 'chat_id', '')
+            self.telegram_enabled = getattr(telegram_config, 'enabled', False)
+        
+        self.telegram = get_telegram_bot(token, chat_id)
+        if self.telegram.enabled and self.telegram_enabled:
+            logger.info("📱 Telegram alerts enabled")
+        else:
+            logger.info("📱 Telegram alerts disabled")
+        
         # State
         self.capital = config.trading.initial_capital
         self.current_position: Optional[PositionInfo] = None
@@ -150,6 +169,32 @@ class YunMinBot:
             f"Symbol: {config.trading.symbol}, "
             f"Capital: ${self.capital:.2f}"
         )
+    
+    def _send_telegram_alert(self, coro):
+        """
+        Helper to send Telegram alerts synchronously.
+        
+        Args:
+            coro: Async coroutine to execute (telegram alert method)
+        """
+        if not self.telegram.enabled or not self.telegram_enabled:
+            return
+        
+        try:
+            # Create new event loop if needed
+            try:
+                loop = asyncio.get_event_loop()
+                if loop.is_closed():
+                    loop = asyncio.new_event_loop()
+                    asyncio.set_event_loop(loop)
+            except RuntimeError:
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+            
+            # Run the coroutine
+            loop.run_until_complete(coro)
+        except Exception as e:
+            logger.error(f"Failed to send Telegram alert: {e}")
         
     def fetch_market_data(self) -> pd.DataFrame:
         """Fetch and prepare market data for analysis."""
@@ -401,6 +446,21 @@ class YunMinBot:
                     f"SL {monitor_pos.stop_loss:.2f} (-{self.config.risk.stop_loss_pct*100:.1f}%), "
                     f"TP {monitor_pos.take_profit:.2f} (+{self.config.risk.take_profit_pct*100:.1f}%)"
                 )
+            
+            # 📱 Send Telegram alert
+            summary = self.pnl_tracker.get_summary()
+            self._send_telegram_alert(
+                self.telegram.alert_trade(
+                    side='BUY',
+                    symbol=self.config.trading.symbol,
+                    price=current_price,
+                    size=amount,
+                    reason=signal.reason,
+                    portfolio_pnl=summary.get('realized_pnl', 0),
+                    portfolio_pnl_pct=(summary.get('realized_pnl', 0) / self.capital * 100) if self.capital > 0 else 0,
+                    open_positions=len(self.pnl_tracker.open_positions)
+                )
+            )
         else:
             logger.warning("Order rejected by risk manager")
             
@@ -537,6 +597,21 @@ class YunMinBot:
                     f"SL {monitor_pos.stop_loss:.2f} (+{stop_loss_pct:.1f}%), "
                     f"TP {monitor_pos.take_profit:.2f} (-{take_profit_pct:.1f}%)"
                 )
+            
+            # 📱 Send Telegram alert
+            summary = self.pnl_tracker.get_summary()
+            self._send_telegram_alert(
+                self.telegram.alert_trade(
+                    side='SELL',
+                    symbol=self.config.trading.symbol,
+                    price=current_price,
+                    size=amount,
+                    reason=signal.reason,
+                    portfolio_pnl=summary.get('realized_pnl', 0),
+                    portfolio_pnl_pct=(summary.get('realized_pnl', 0) / self.capital * 100) if self.capital > 0 else 0,
+                    open_positions=len(self.pnl_tracker.open_positions)
+                )
+            )
         else:
             logger.warning("SHORT order rejected by risk manager")
         
@@ -618,6 +693,15 @@ class YunMinBot:
         
         logger.info(f"Starting Yun Min bot - interval: {interval}s")
         
+        # Send startup alert
+        self._send_telegram_alert(
+            self.telegram.alert_bot_started(
+                mode=self.config.trading.mode,
+                symbol=self.config.trading.symbol,
+                capital=self.capital
+            )
+        )
+        
         try:
             while self.is_running:
                 self.run_once()
@@ -632,8 +716,17 @@ class YunMinBot:
                 
         except KeyboardInterrupt:
             logger.info("Bot stopped by user")
+            self._send_telegram_alert(
+                self.telegram.alert_bot_stopped(reason="Manual stop by user")
+            )
         except Exception as e:
             logger.error(f"Bot error: {e}")
+            self._send_telegram_alert(
+                self.telegram.alert_error(
+                    error_type="Bot Crash",
+                    error_msg=str(e)
+                )
+            )
             raise
         finally:
             self.stop()
