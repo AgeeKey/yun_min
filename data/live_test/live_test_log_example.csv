@@ -1,0 +1,7 @@
+timestamp,iteration,signal,confidence,price,action,pnl,reason
+2025-11-09 10:05:00,1,HOLD,0.70,103500,,,RSI neutral waiting for confirmation
+2025-11-09 10:10:00,2,BUY,0.85,103400,OPEN,,Oversold bounce detected - strong buy signal
+2025-11-09 10:15:00,3,HOLD,0.60,103450,,,Position open - monitoring
+2025-11-09 10:20:00,4,HOLD,0.55,103500,,,Price moving favorably
+2025-11-09 10:25:00,5,HOLD,0.50,103650,,,Approaching take profit
+2025-11-09 10:30:00,6,SELL,0.75,103800,CLOSE,+400,Take profit hit - closing LONG

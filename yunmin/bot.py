@@ -673,6 +673,32 @@ class YunMinBot:
         if self.exchange:
             self.exchange.close()
     
+    def get_statistics(self) -> dict:
+        """
+        Get current bot statistics.
+        
+        Returns:
+            Dictionary with current trading statistics including P&L,
+            trades, win rate, and open positions
+        """
+        summary = self.pnl_tracker.get_summary()
+        
+        return {
+            'total_trades': summary['total_trades'],
+            'winning_trades': summary['winning_trades'],
+            'losing_trades': summary['losing_trades'],
+            'win_rate': summary['win_rate'],
+            'total_pnl': summary['total_pnl'],
+            'realized_pnl': summary['total_realized_pnl'],
+            'unrealized_pnl': summary['total_unrealized_pnl'],
+            'total_fees': summary['total_fees'],
+            'open_positions': summary['open_positions'],
+            'avg_win': summary['avg_win'],
+            'avg_loss': summary['avg_loss'],
+            'profit_factor': summary['profit_factor'],
+            'current_capital': self.capital + summary['total_pnl']
+        }
+    
     def _restore_positions(self):
         """
         🔄 Restore open positions from database (crash recovery).
