@@ -223,6 +223,58 @@ response = client.chat.completions.create(
 decision = response.choices[0].message.content
 ```
 
+## 🧪 Phase 1.4: Extended Testing (November 2025)
+
+**Status:** ✅ Test infrastructure ready
+
+After implementing critical fixes (margin monitoring, risk reduction, entry filters), Phase 1.4 focuses on comprehensive validation:
+
+### Critical Fixes Implemented:
+- ✅ **Phase 1.1:** Margin level & funding rate monitoring
+- ✅ **Phase 1.2:** Risk reduced from 16% to 6% exposure (2% × 3x leverage)
+- ✅ **Phase 1.3:** Added 4 entry filters (volume, EMA, divergence, distance)
+- 🧪 **Phase 1.4:** Extended testing & validation
+
+### Test Suite:
+
+**Test 1: Sideways Market (200 iterations)**
+```bash
+python run_futures_test.py 200 60
+# Expected: Win Rate > 40%, 0 liquidations, margin > 200%
+```
+
+**Test 2: Historical Backtest - Bull Market**
+```bash
+python backtest_historical.py --period bull-market --lookback 3m
+# Expected: Win Rate 40-50%, Profit Factor > 1.5
+```
+
+**Test 3: Historical Backtest - Bear Market**
+```bash
+python backtest_historical.py --period bear-market --lookback 3m
+# Expected: Win Rate 40-50%, Max Drawdown < 15%
+```
+
+**Test 4: Stress Test - Market Crash**
+```bash
+python stress_test.py --crash-scenario --volatility extreme
+# Expected: 0 liquidations, safe position closure
+```
+
+### Success Criteria:
+
+| Metric | Target | Status |
+|--------|--------|--------|
+| Win Rate | > 40% | ⏳ Testing |
+| Liquidations | 0 | ⏳ Testing |
+| Margin Level | > 200% | ⏳ Testing |
+| Max Drawdown | < 15% | ⏳ Testing |
+| Profit Factor | > 1.5 | ⏳ Testing |
+
+📚 **Full Testing Guide:** [PHASE_1_4_TESTING_GUIDE.md](./PHASE_1_4_TESTING_GUIDE.md)  
+📊 **Test Results:** [TEST_RESULTS_NOV2025.md](./TEST_RESULTS_NOV2025.md)  
+🔍 **Critical Analysis:** [CRITICAL_ANALYSIS_REPORT.md](./CRITICAL_ANALYSIS_REPORT.md)
+
 ## 🎯 Roadmap
 
 ### ✅ Completed (V1-V3)
