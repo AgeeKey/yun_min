@@ -2,190 +2,202 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://ageekey.github.io/yun_min/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/API_DOCUMENTATION/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/CONTRIBUTING/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
+    </url>
+    <url>
+         <loc>https://ageekey.github.io/yun_min/IMPLEMENTATION_SUMMARY/</loc>
+         <lastmod>2025-11-10</lastmod>
+    </url>
+    <url>
+         <loc>https://ageekey.github.io/yun_min/TELEGRAM_SETUP/</loc>
+         <lastmod>2025-11-10</lastmod>
+    </url>
+    <url>
+         <loc>https://ageekey.github.io/yun_min/WEBSOCKET_INTEGRATION/</loc>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/project-overview/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/start-here/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/advanced/advanced-ai-framework/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/advanced/alert-rules/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/advanced/runbook-live-safety/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/architecture/ai-agents/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/architecture/memory-system/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/architecture/overview/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/deployment/deployment-guide/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/deployment/incident-response/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/deployment/monitoring-dashboard/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/deployment/monitoring/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/deployment/phase4-deployment-guide/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/deployment/scaling/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/getting-started/configuration/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/getting-started/installation/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/getting-started/quickstart/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/reports/advanced-ai-framework-complete/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/reports/ai-reconstruction-complete/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/reports/ai-strategy-analysis/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/reports/attribution/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/reports/boss-final-report-2025/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/reports/boss-strategy-testing-complete/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/reports/completion-report/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/reports/copilot-agent-120h-plan/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/reports/development-notes/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/reports/epic1-final-summary/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/reports/epic2-completion-summary/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/reports/epic4-risk-management/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/reports/epic5-completion-report/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/reports/ml-implementation-summary/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/reports/phase2-week2-analysis/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/reports/phase2-week2-complete/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/reports/phase2-week3-critical/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/reports/tasks-summary/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/reports/v3-final-report/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/reports/v4-backtest-20251104-051029/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/reports/v4-backtest-20251104-051102/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/reports/v4-backtest-20251104-051154/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/strategies/ai-strategies/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/strategies/backtesting/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/strategies/custom-strategy/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/testing/testnet-setup/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
     <url>
          <loc>https://ageekey.github.io/yun_min/testing/validation-plan/</loc>
-         <lastmod>2025-11-09</lastmod>
+         <lastmod>2025-11-10</lastmod>
     </url>
 </urlset>
