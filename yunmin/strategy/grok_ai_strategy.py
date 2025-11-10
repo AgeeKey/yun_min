@@ -48,13 +48,18 @@ class GrokAIStrategy(BaseStrategy):
             logger.info(f"🤖 AI Strategy initialized with {analyzer_type}")
         
         # Параметры для fallback (если LLM недоступен)
-        self.fallback_rsi_oversold = 30
-        self.fallback_rsi_overbought = 70
+        # PHASE 2.1: Relaxed thresholds for increased trading frequency (4% → 15-20%)
+        self.fallback_rsi_oversold = 35  # Was 30 - more lenient for LONG entries
+        self.fallback_rsi_overbought = 65  # Was 70 - more lenient for SHORT entries
         
         # Параметры индикаторов
         self.rsi_period = 14
         self.ema_fast_period = 9
         self.ema_slow_period = 21
+        
+        # PHASE 2.1: Relaxed filters for entry conditions
+        self.volume_multiplier = 1.2  # Was 1.5 - easier volume threshold
+        self.min_ema_distance = 0.003  # Was 0.005 (0.5%) - now 0.3%
     
     def _calculate_indicators(self, df: pd.DataFrame) -> pd.DataFrame:
         """
@@ -234,8 +239,9 @@ class GrokAIStrategy(BaseStrategy):
         price_change = ((current_price - prev['close']) / prev['close']) * 100
         
         # 🔥 НОВЫЕ ФИЛЬТРЫ (Critical Fix for Problem #4)
+        # PHASE 2.1: Using relaxed thresholds for increased trading frequency
         # Check volume confirmation
-        volume_ok = self._check_volume_confirmation(volume, avg_volume, multiplier=1.5)
+        volume_ok = self._check_volume_confirmation(volume, avg_volume, multiplier=self.volume_multiplier)
         
         # Check EMA crossover
         has_crossover, crossover_direction = self._check_ema_crossover(df_with_indicators)
@@ -244,7 +250,7 @@ class GrokAIStrategy(BaseStrategy):
         has_divergence, divergence_type = self._check_divergence(df_with_indicators)
         
         # Check EMA distance
-        ema_distance_ok = self._check_ema_distance(ema_fast, ema_slow, min_distance=0.005)
+        ema_distance_ok = self._check_ema_distance(ema_fast, ema_slow, min_distance=self.min_ema_distance)
         
         # Prepare enhanced market data with filters
         enhanced_data = {
@@ -321,10 +327,11 @@ class GrokAIStrategy(BaseStrategy):
             model_used = result.get('model_used', 'unknown')
             
             # 🔥 КРИТИЧЕСКОЕ ИСПРАВЛЕНИЕ: Применить фильтры к AI решению
+            # PHASE 2.1: Using relaxed RSI thresholds (35/65) for increased trading frequency
             # AI может предложить сделку, но мы проверим её через фильтры
             if signal_str == 'BUY':
-                # Фильтры для LONG
-                if enhanced_data['rsi'] >= 30 and enhanced_data['rsi'] < 70:  # RSI не в экстремальной зоне
+                # Фильтры для LONG (relaxed RSI range: 35-65)
+                if enhanced_data['rsi'] >= self.fallback_rsi_oversold and enhanced_data['rsi'] < self.fallback_rsi_overbought:
                     if enhanced_data['volume_ok']:  # Высокий объём
                         if enhanced_data['crossover_direction'] == 'bullish' or enhanced_data['trend'] == 'bullish':
                             if enhanced_data['ema_distance_ok']:  # EMA достаточно разошлись
@@ -344,12 +351,12 @@ class GrokAIStrategy(BaseStrategy):
                         logger.warning("❌ BUY signal rejected: low volume")
                 else:
                     signal_type = SignalType.HOLD
-                    reasoning = f"BUY rejected: RSI not in valid range (30-70). {reasoning}"
+                    reasoning = f"BUY rejected: RSI not in valid range ({self.fallback_rsi_oversold}-{self.fallback_rsi_overbought}). {reasoning}"
                     logger.warning(f"❌ BUY signal rejected: RSI={enhanced_data['rsi']:.1f}")
             
             elif signal_str == 'SELL':
-                # Фильтры для SHORT
-                if enhanced_data['rsi'] > 30 and enhanced_data['rsi'] <= 70:  # RSI не в экстремальной зоне
+                # Фильтры для SHORT (relaxed RSI range: 35-65)
+                if enhanced_data['rsi'] > self.fallback_rsi_oversold and enhanced_data['rsi'] <= self.fallback_rsi_overbought:
                     if enhanced_data['volume_ok']:  # Высокий объём
                         if enhanced_data['crossover_direction'] == 'bearish' or enhanced_data['trend'] == 'bearish':
                             if enhanced_data['ema_distance_ok']:  # EMA достаточно разошлись
@@ -369,7 +376,7 @@ class GrokAIStrategy(BaseStrategy):
                         logger.warning("❌ SELL signal rejected: low volume")
                 else:
                     signal_type = SignalType.HOLD
-                    reasoning = f"SELL rejected: RSI not in valid range (30-70). {reasoning}"
+                    reasoning = f"SELL rejected: RSI not in valid range ({self.fallback_rsi_oversold}-{self.fallback_rsi_overbought}). {reasoning}"
                     logger.warning(f"❌ SELL signal rejected: RSI={enhanced_data['rsi']:.1f}")
             else:
                 signal_type = SignalType.HOLD
@@ -415,8 +422,9 @@ class GrokAIStrategy(BaseStrategy):
         ema_distance_ok = enhanced_data['ema_distance_ok']
         crossover_direction = enhanced_data['crossover_direction']
         
-        # SELL сигнал (SHORT) - только при РЕАЛЬНОЙ перекупленности
-        if rsi > 70:  # Фактическая перекупленность (was 70, but enforcing strictly)
+        # PHASE 2.1: Using relaxed thresholds for increased trading frequency
+        # SELL сигнал (SHORT) - relaxed overbought threshold (65)
+        if rsi > self.fallback_rsi_overbought:
             if volume_ok and ema_distance_ok:
                 if crossover_direction == 'bearish' or trend == 'bearish':
                     return Signal(
@@ -425,8 +433,8 @@ class GrokAIStrategy(BaseStrategy):
                         reason=f"Fallback: RSI overbought ({rsi:.1f}) + bearish trend + volume confirmation"
                     )
         
-        # BUY сигнал (LONG) - только при РЕАЛЬНОЙ перепроданности  
-        if rsi < 30:  # Фактическая перепроданность (was 30, but enforcing strictly)
+        # BUY сигнал (LONG) - relaxed oversold threshold (35)
+        if rsi < self.fallback_rsi_oversold:
             if volume_ok and ema_distance_ok:
                 if crossover_direction == 'bullish' or trend == 'bullish':
                     return Signal(

@@ -53,19 +53,21 @@ risk:
 
 # Strategy Configuration
 # UPDATED: More conservative entry conditions based on security audit (Nov 2025)
+# PHASE 2.1: Relaxed thresholds for increased trading frequency (4% → 15-20%)
 strategy:
   name: ema_crossover
   fast_ema: 12  # Optimized for 5m timeframe
   slow_ema: 26  # Better signal quality
   rsi_period: 14
-  rsi_overbought: 70.0  # Changed from 68 to actual overbought level (CRITICAL FIX)
-  rsi_oversold: 30.0  # Changed from 32 to actual oversold level (CRITICAL FIX)
+  rsi_overbought: 65.0  # PHASE 2.1: Relaxed from 70 to 65 (more lenient)
+  rsi_oversold: 35.0    # PHASE 2.1: Relaxed from 30 to 35 (more lenient)
   
   # Additional filters for entry confirmation
-  volume_multiplier: 1.5  # Require volume > 1.5x average
+  # PHASE 2.1: Relaxed filters for increased trading frequency
+  volume_multiplier: 1.2  # Relaxed from 1.5 to 1.2 (easier volume threshold)
   require_ema_crossover: true  # Require EMA confirmation
   require_divergence: false  # Divergence detection (experimental)
-  min_ema_distance: 0.005  # Minimum 0.5% distance between EMAs
+  min_ema_distance: 0.003  # Relaxed from 0.5% to 0.3% distance between EMAs
 
 # Machine Learning
 ml:
