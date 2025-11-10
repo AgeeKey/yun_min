@@ -6,6 +6,11 @@ AI Trading Strategy - Multi-Provider LLM Support
 - Рыночных условий
 - Исторической статистики
 - Паттернов поведения цены
+
+PHASE 2 Enhancements:
+- Relaxed entry conditions for 15-20% trading frequency
+- Advanced indicators (MACD, Bollinger Bands, ATR, OBV, Ichimoku)
+- Hybrid approach: Classical analysis + AI confirmation
 """
 
 from typing import Dict, Any, Optional
@@ -13,6 +18,7 @@ import pandas as pd
 from loguru import logger
 
 from yunmin.strategy.base import BaseStrategy, Signal, SignalType
+from yunmin.strategy.indicators import TechnicalIndicators, calculate_all_indicators
 
 
 class GrokAIStrategy(BaseStrategy):
@@ -30,22 +36,31 @@ class GrokAIStrategy(BaseStrategy):
     - HOLD: ждать
     """
     
-    def __init__(self, grok_analyzer=None):
+    def __init__(self, grok_analyzer=None, use_advanced_indicators=True, hybrid_mode=True):
         """
         Initialize AI trading strategy.
         
         Args:
             grok_analyzer: Any LLM analyzer (OpenAIAnalyzer, GrokAnalyzer, etc.)
                           Compatible interface: analyze_market(), analyze_text()
+            use_advanced_indicators: Enable MACD, Bollinger Bands, ATR, OBV, Ichimoku (Phase 2.3)
+            hybrid_mode: Use classical analysis + AI confirmation (Phase 2.2)
         """
         super().__init__("AI")
         self.grok = grok_analyzer  # Generic LLM analyzer
+        
+        # PHASE 2 Configuration
+        self.use_advanced_indicators = use_advanced_indicators
+        self.hybrid_mode = hybrid_mode
+        self.indicators = TechnicalIndicators()
         
         if not self.grok or not self.grok.enabled:
             logger.warning("⚠️  LLM AI not available - strategy will use fallback logic")
         else:
             analyzer_type = self.grok.__class__.__name__
-            logger.info(f"🤖 AI Strategy initialized with {analyzer_type}")
+            mode_str = "Hybrid" if hybrid_mode else "AI-only"
+            indicators_str = "Advanced" if use_advanced_indicators else "Basic"
+            logger.info(f"🤖 AI Strategy initialized: {analyzer_type}, Mode={mode_str}, Indicators={indicators_str}")
         
         # Параметры для fallback (если LLM недоступен)
         # PHASE 2.1: Relaxed thresholds for increased trading frequency (4% → 15-20%)
@@ -65,11 +80,14 @@ class GrokAIStrategy(BaseStrategy):
         """
         Вычислить технические индикаторы.
         
+        PHASE 2.3: Includes advanced indicators when enabled.
+        
         Args:
             df: DataFrame with OHLCV data
             
         Returns:
             DataFrame с добавленными индикаторами (rsi, ema_fast, ema_slow, avg_volume)
+            + advanced indicators if enabled (MACD, BB, ATR, OBV, Ichimoku)
         """
         data = df.copy()
         
@@ -86,6 +104,14 @@ class GrokAIStrategy(BaseStrategy):
         
         # Вычислить среднюю громкость за последние 20 периодов
         data['avg_volume'] = data['volume'].rolling(window=20).mean()
+        
+        # PHASE 2.3: Add advanced indicators if enabled
+        if self.use_advanced_indicators and len(df) >= 52:
+            try:
+                data = calculate_all_indicators(data)
+                logger.debug("✅ Advanced indicators calculated")
+            except Exception as e:
+                logger.warning(f"Failed to calculate advanced indicators: {e}")
         
         return data
     
@@ -189,22 +215,194 @@ class GrokAIStrategy(BaseStrategy):
             return False
         distance = abs(ema_fast - ema_slow) / ema_slow
         return distance >= min_distance
+    
+    def _classical_analysis(self, df_with_indicators: pd.DataFrame) -> Signal:
+        """
+        PHASE 2.2: Classical technical analysis without AI.
+        
+        Uses voting system from multiple indicators to generate signal.
+        
+        Args:
+            df_with_indicators: DataFrame with all calculated indicators
+            
+        Returns:
+            Signal based on classical technical analysis
+        """
+        if df_with_indicators.empty:
+            return Signal(type=SignalType.HOLD, confidence=0.0, reason="No data")
+        
+        latest = df_with_indicators.iloc[-1]
+        current_price = latest['close']
+        
+        # Initialize voting system
+        votes = {'buy': 0.0, 'sell': 0.0, 'hold': 0.0}
+        reasons = []
+        
+        # 1. RSI Vote (weight: 1.0)
+        rsi = latest.get('rsi', 50)
+        if rsi < self.fallback_rsi_oversold:
+            votes['buy'] += 1.0
+            reasons.append(f"RSI oversold ({rsi:.1f})")
+        elif rsi > self.fallback_rsi_overbought:
+            votes['sell'] += 1.0
+            reasons.append(f"RSI overbought ({rsi:.1f})")
+        else:
+            votes['hold'] += 0.5
+        
+        # 2. EMA Trend Vote (weight: 1.0)
+        ema_fast = latest.get('ema_fast', current_price)
+        ema_slow = latest.get('ema_slow', current_price)
+        if ema_fast > ema_slow:
+            votes['buy'] += 1.0
+            reasons.append("EMA bullish")
+        elif ema_fast < ema_slow:
+            votes['sell'] += 1.0
+            reasons.append("EMA bearish")
+        
+        # 3. MACD Vote (weight: 1.0) - if available
+        if self.use_advanced_indicators and 'macd_histogram' in latest:
+            macd_hist = latest.get('macd_histogram', 0)
+            if not pd.isna(macd_hist):
+                if macd_hist > 0:
+                    votes['buy'] += 1.0
+                    reasons.append("MACD bullish")
+                elif macd_hist < 0:
+                    votes['sell'] += 1.0
+                    reasons.append("MACD bearish")
+        
+        # 4. Bollinger Bands Vote (weight: 1.0) - if available
+        if self.use_advanced_indicators and 'bb_upper' in latest and 'bb_lower' in latest:
+            bb_upper = latest.get('bb_upper')
+            bb_lower = latest.get('bb_lower')
+            if not pd.isna(bb_upper) and not pd.isna(bb_lower):
+                if current_price <= bb_lower:
+                    votes['buy'] += 1.0
+                    reasons.append("Price at BB lower (oversold)")
+                elif current_price >= bb_upper:
+                    votes['sell'] += 1.0
+                    reasons.append("Price at BB upper (overbought)")
+        
+        # 5. OBV Trend Vote (weight: 0.5) - if available
+        if self.use_advanced_indicators and 'obv' in latest:
+            obv = df_with_indicators['obv']
+            if len(obv) >= 10:
+                obv_trend, obv_strength = self.indicators.analyze_obv_trend(obv, period=10)
+                if obv_trend == 'bullish':
+                    votes['buy'] += 0.5
+                    reasons.append("OBV bullish")
+                elif obv_trend == 'bearish':
+                    votes['sell'] += 0.5
+                    reasons.append("OBV bearish")
+        
+        # 6. Ichimoku Vote (weight: 1.0) - if available
+        if self.use_advanced_indicators and 'ichimoku_cloud_top' in latest:
+            cloud_top = latest.get('ichimoku_cloud_top')
+            cloud_bottom = latest.get('ichimoku_cloud_bottom')
+            if not pd.isna(cloud_top) and not pd.isna(cloud_bottom):
+                if current_price > cloud_top:
+                    votes['buy'] += 1.0
+                    reasons.append("Price above Ichimoku cloud")
+                elif current_price < cloud_bottom:
+                    votes['sell'] += 1.0
+                    reasons.append("Price below Ichimoku cloud")
+        
+        # 7. Volume Confirmation (weight: 0.5)
+        volume = latest.get('volume', 0)
+        avg_volume = latest.get('avg_volume', volume)
+        if self._check_volume_confirmation(volume, avg_volume, self.volume_multiplier):
+            # Boost the leading vote
+            max_vote = max(votes, key=votes.get)
+            if max_vote != 'hold':
+                votes[max_vote] += 0.5
+                reasons.append("Volume confirmed")
+        
+        # Determine winner
+        total_votes = sum(votes.values())
+        if total_votes == 0:
+            return Signal(
+                type=SignalType.HOLD,
+                confidence=0.5,
+                reason="Classical: No clear signal"
+            )
+        
+        max_action = max(votes, key=votes.get)
+        confidence = votes[max_action] / total_votes
+        
+        # Require minimum confidence threshold
+        if confidence >= 0.55:  # At least 55% confidence
+            signal_type = SignalType.BUY if max_action == 'buy' else (
+                SignalType.SELL if max_action == 'sell' else SignalType.HOLD
+            )
+            reason = f"Classical: {', '.join(reasons[:3])}"  # Top 3 reasons
+            
+            logger.info(f"📊 Classical Analysis: {signal_type.value.upper()} "
+                       f"(confidence={confidence:.0%}, votes={votes})")
+            
+            return Signal(
+                type=signal_type,
+                confidence=confidence,
+                reason=reason
+            )
+        else:
+            return Signal(
+                type=SignalType.HOLD,
+                confidence=0.5,
+                reason=f"Classical: Low confidence ({confidence:.0%})"
+            )
+    
+    def _merge_signals(self, classical: Signal, ai: Signal) -> Signal:
+        """
+        PHASE 2.2: Merge classical and AI signals.
+        
+        Strategy:
+        - If both agree: High confidence
+        - If disagree: Take higher confidence signal
+        - If both HOLD: HOLD
+        
+        Args:
+            classical: Signal from classical analysis
+            ai: Signal from AI analysis
+            
+        Returns:
+            Merged signal
+        """
+        # Both agree
+        if classical.type == ai.type:
+            merged_confidence = (classical.confidence + ai.confidence) / 2
+            return Signal(
+                type=classical.type,
+                confidence=min(merged_confidence * 1.2, 1.0),  # Boost agreement
+                reason=f"Classical + AI agree: {classical.reason[:50]} | {ai.reason[:50]}"
+            )
+        
+        # Disagreement: take higher confidence
+        if classical.confidence > ai.confidence:
+            return Signal(
+                type=classical.type,
+                confidence=classical.confidence * 0.9,  # Slight penalty for disagreement
+                reason=f"Classical stronger: {classical.reason[:80]}"
+            )
+        else:
+            return Signal(
+                type=ai.type,
+                confidence=ai.confidence * 0.9,
+                reason=f"AI stronger: {ai.reason[:80]}"
+            )
         
     def analyze(self, df: pd.DataFrame) -> Signal:
         """
-        Analyze market data using Grok AI with enhanced filters.
+        Analyze market data using enhanced strategy.
         
-        UPDATED (Nov 2025): Added multiple confirmation filters to prevent false signals:
-        - RSI must be at actual overbought/oversold levels (70/30, not 68/32)
-        - Volume must be > 1.5x average
-        - EMA crossover confirmation
-        - Optional: Divergence detection
+        PHASE 2 UPDATES:
+        - Relaxed thresholds (RSI 35/65, volume 1.2x, EMA 0.3%)
+        - Advanced indicators (MACD, Bollinger Bands, ATR, OBV, Ichimoku)
+        - Hybrid mode: Classical analysis + AI confirmation
         
         Args:
             df: DataFrame with OHLCV data
             
         Returns:
-            Trading signal from Grok AI or fallback logic
+            Trading signal (classical, AI, or hybrid)
         """
         if df.empty or len(df) < max(self.rsi_period, self.ema_slow_period) + 1:
             return Signal(
@@ -213,21 +411,59 @@ class GrokAIStrategy(BaseStrategy):
                 reason="Insufficient data for indicators"
             )
         
-        # 🔥 КРИТИЧЕСКОЕ ИСПРАВЛЕНИЕ: Вычислить индикаторы!
+        # Calculate all indicators (basic + advanced if enabled)
         df_with_indicators = self._calculate_indicators(df)
         
-        # Получить последние данные
+        # PHASE 2.2: Hybrid Mode
+        if self.hybrid_mode:
+            # Step 1: Get classical analysis
+            classical_signal = self._classical_analysis(df_with_indicators)
+            
+            # Step 2: If classical is high confidence, use it directly
+            if classical_signal.confidence >= 0.70:
+                logger.info(f"🎯 High-confidence classical signal, skipping AI: {classical_signal.type.value.upper()}")
+                return classical_signal
+            
+            # Step 3: Otherwise, get AI opinion and merge
+            if self.grok and self.grok.enabled:
+                logger.info(f"🤔 Classical confidence low ({classical_signal.confidence:.0%}), consulting AI...")
+                # Use the existing AI analysis path
+                enhanced_data = self._prepare_enhanced_data(df_with_indicators)
+                ai_signal = self._get_grok_decision_with_filters(enhanced_data, df_with_indicators)
+                
+                # Merge signals
+                merged_signal = self._merge_signals(classical_signal, ai_signal)
+                logger.info(f"🔀 Hybrid decision: {merged_signal.type.value.upper()} (confidence={merged_signal.confidence:.0%})")
+                return merged_signal
+            else:
+                # No AI available, use classical
+                return classical_signal
+        
+        # Non-hybrid mode: original AI-first approach with filters
+        return self._analyze_original_mode(df_with_indicators)
+    
+    def _prepare_enhanced_data(self, df_with_indicators: pd.DataFrame) -> Dict[str, Any]:
+        """
+        Prepare enhanced market data with all indicators and filters.
+        
+        Args:
+            df_with_indicators: DataFrame with calculated indicators
+            
+        Returns:
+            Dictionary with all market data, indicators, and filter results
+        """
+        # Get latest and previous data
         latest = df_with_indicators.iloc[-1]
         prev = df_with_indicators.iloc[-2]
         
         current_price = latest['close']
-        rsi = latest.get('rsi', 50)  # Теперь RSI будет реальным!
+        rsi = latest.get('rsi', 50)
         ema_fast = latest.get('ema_fast', current_price)
         ema_slow = latest.get('ema_slow', current_price)
         volume = latest.get('volume', 0)
         avg_volume = latest.get('avg_volume', volume)
         
-        # Определить тренд
+        # Determine trend
         if ema_fast > ema_slow:
             trend = "bullish"
         elif ema_fast < ema_slow:
@@ -235,25 +471,16 @@ class GrokAIStrategy(BaseStrategy):
         else:
             trend = "neutral"
         
-        # Изменение цены
+        # Price change
         price_change = ((current_price - prev['close']) / prev['close']) * 100
         
-        # 🔥 НОВЫЕ ФИЛЬТРЫ (Critical Fix for Problem #4)
-        # PHASE 2.1: Using relaxed thresholds for increased trading frequency
-        # Check volume confirmation
+        # Apply filters
         volume_ok = self._check_volume_confirmation(volume, avg_volume, multiplier=self.volume_multiplier)
-        
-        # Check EMA crossover
         has_crossover, crossover_direction = self._check_ema_crossover(df_with_indicators)
-        
-        # Check divergence (optional, experimental)
         has_divergence, divergence_type = self._check_divergence(df_with_indicators)
-        
-        # Check EMA distance
         ema_distance_ok = self._check_ema_distance(ema_fast, ema_slow, min_distance=self.min_ema_distance)
         
-        # Prepare enhanced market data with filters
-        enhanced_data = {
+        return {
             'price': current_price,
             'rsi': rsi,
             'ema_fast': ema_fast,
@@ -268,16 +495,31 @@ class GrokAIStrategy(BaseStrategy):
             'divergence_type': divergence_type,
             'ema_distance_ok': ema_distance_ok
         }
+    
+    def _analyze_original_mode(self, df_with_indicators: pd.DataFrame) -> Signal:
+        """
+        Original AI-first analysis mode (non-hybrid).
+        
+        Args:
+            df_with_indicators: DataFrame with calculated indicators
+            
+        Returns:
+            Signal from AI or fallback logic
+        """
+        # Prepare enhanced data
+        enhanced_data = self._prepare_enhanced_data(df_with_indicators)
         
         # Log filter status
-        logger.debug(f"📊 Filters: volume={volume_ok}, crossover={has_crossover}({crossover_direction}), "
-                    f"divergence={has_divergence}({divergence_type}), ema_dist={ema_distance_ok}")
+        logger.debug(f"📊 Filters: volume={enhanced_data['volume_ok']}, "
+                    f"crossover={enhanced_data['has_crossover']}({enhanced_data['crossover_direction']}), "
+                    f"divergence={enhanced_data['has_divergence']}({enhanced_data['divergence_type']}), "
+                    f"ema_dist={enhanced_data['ema_distance_ok']}")
         
-        # Если Grok доступен - спросить его (но с учётом фильтров)
+        # If AI available, use it with filters
         if self.grok and self.grok.enabled:
             return self._get_grok_decision_with_filters(enhanced_data, df_with_indicators)
         else:
-            # Fallback: улучшенная логика с фильтрами
+            # Fallback: enhanced logic with filters
             return self._fallback_logic_with_filters(enhanced_data, df_with_indicators)
     
     def _get_grok_decision_with_filters(
