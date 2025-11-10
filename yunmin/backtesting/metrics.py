@@ -103,6 +103,9 @@ class PerformanceMetrics:
         # Sharpe Ratio (annualized)
         sharpe = self._calculate_sharpe_ratio(equity_curve, initial_capital)
         
+        # Sortino Ratio (annualized)
+        sortino = self._calculate_sortino_ratio(equity_curve, initial_capital)
+        
         # Trading stats
         avg_trade = net_pnl / len(self.trades) if self.trades else 0
         
@@ -140,6 +143,7 @@ class PerformanceMetrics:
             # Risk metrics
             'profit_factor': profit_factor,
             'sharpe_ratio': sharpe,
+            'sortino_ratio': sortino,
             'max_drawdown': max_dd,
             'max_drawdown_pct': max_dd_pct,
             'recovery_factor': recovery_factor,
@@ -221,6 +225,57 @@ class PerformanceMetrics:
         
         return sharpe
     
+    def _calculate_sortino_ratio(
+        self,
+        equity_curve: List[float],
+        initial_capital: float,
+        risk_free_rate: float = 0.02  # 2% годовых
+    ) -> float:
+        """
+        Рассчитать Sortino Ratio (annualized).
+        
+        Sortino Ratio похож на Sharpe Ratio, но использует только downside volatility
+        (учитывает только отрицательные returns).
+        
+        Sortino Ratio = (Return - Risk Free Rate) / Downside Deviation
+        """
+        if len(equity_curve) < 2:
+            return 0.0
+        
+        # Рассчитать returns
+        returns = []
+        for i in range(1, len(equity_curve)):
+            ret = (equity_curve[i] - equity_curve[i-1]) / equity_curve[i-1]
+            returns.append(ret)
+        
+        if not returns:
+            return 0.0
+        
+        # Среднее
+        mean_return = np.mean(returns)
+        
+        # Downside returns (только отрицательные)
+        downside_returns = [r for r in returns if r < 0]
+        
+        if not downside_returns:
+            # Нет отрицательных returns - бесконечный Sortino
+            return float('inf') if mean_return > 0 else 0.0
+        
+        # Downside deviation
+        downside_std = np.std(downside_returns)
+        
+        if downside_std == 0:
+            return 0.0
+        
+        # Annualize (предполагаем дневные returns)
+        # 252 торговых дня в году
+        annualized_return = mean_return * 252
+        annualized_downside_std = downside_std * np.sqrt(252)
+        
+        sortino = (annualized_return - risk_free_rate) / annualized_downside_std
+        
+        return sortino
+    
     def _empty_metrics(self) -> Dict[str, float]:
         """Метрики для пустого бэктеста"""
         return {
@@ -238,6 +293,7 @@ class PerformanceMetrics:
             'worst_trade': 0.0,
             'profit_factor': 0.0,
             'sharpe_ratio': 0.0,
+            'sortino_ratio': 0.0,
             'max_drawdown': 0.0,
             'max_drawdown_pct': 0.0,
             'recovery_factor': 0.0,
