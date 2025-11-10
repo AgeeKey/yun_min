@@ -17,7 +17,9 @@ from yunmin.risk.policies import (
     MaxDailyDrawdownPolicy,
     StopLossPolicy,
     MarginCheckPolicy,
-    CircuitBreakerPolicy
+    CircuitBreakerPolicy,
+    ExchangeMarginLevelPolicy,
+    FundingRateLimitPolicy
 )
 from yunmin.risk.dynamic_limits import DynamicRiskLimits
 from yunmin.core.config import RiskConfig
@@ -64,6 +66,23 @@ class RiskManager:
             StopLossPolicy(self.config.stop_loss_pct),
             MarginCheckPolicy(),
         ]
+        
+        # Add exchange margin level monitoring (CRITICAL - Problem #2 fix)
+        if hasattr(self.config, 'min_margin_level') and hasattr(self.config, 'critical_margin_level'):
+            self.policies.append(
+                ExchangeMarginLevelPolicy(
+                    min_margin_level=self.config.min_margin_level,
+                    critical_margin_level=self.config.critical_margin_level
+                )
+            )
+            logger.info("Exchange margin level monitoring enabled")
+        
+        # Add funding rate limit (CRITICAL - Problem #2 fix)
+        if hasattr(self.config, 'max_funding_rate'):
+            self.policies.append(
+                FundingRateLimitPolicy(max_funding_rate=self.config.max_funding_rate)
+            )
+            logger.info("Funding rate limit policy enabled")
         
         # Circuit breaker is always enabled if configured
         if self.config.enable_circuit_breaker:

@@ -18,36 +18,54 @@ trading:
   symbols:
     - symbol: BTC/USDT
       allocation: 0.4  # 40% of capital
-      risk_limit: 0.10  # 10% max position size
+      risk_limit: 0.02  # 2% max position size (aligned with risk.max_position_size)
     - symbol: ETH/USDT
       allocation: 0.35  # 35% of capital
-      risk_limit: 0.10
+      risk_limit: 0.02  # 2% max position size
     - symbol: BNB/USDT
       allocation: 0.25  # 25% of capital
-      risk_limit: 0.10
+      risk_limit: 0.02  # 2% max position size
   
   portfolio:
     total_capital: 10000
-    max_total_exposure: 0.50  # Max 50% in positions
+    max_total_exposure: 0.15  # Max 15% in positions (aligned with risk.max_total_exposure)
     rebalance_threshold: 0.10  # Rebalance if drift >10%
 
 # Risk Management (CRITICAL - DO NOT DISABLE)
+# UPDATED: Reduced risk parameters based on security audit (Nov 2025)
+# Previous: 8% position × 2x leverage = 16% exposure (TOO HIGH)
+# Current: 2% position × 3x leverage = 6% exposure per trade (SAFE)
 risk:
-  max_position_size: 0.08  # 8% of capital per position (more conservative)
-  max_leverage: 2.0  # Reduced leverage for safety
+  max_position_size: 0.02  # 2% of capital per position (was 8% - CRITICAL FIX)
+  max_leverage: 3.0  # 3x leverage for controlled risk (was 2.0x)
+  max_total_exposure: 0.15  # Maximum 15% of capital in ALL positions combined
   max_daily_drawdown: 0.04  # 4% max daily loss (tighter)
-  stop_loss_pct: 0.025  # 2.5% stop loss
-  take_profit_pct: 0.04  # 4% take profit (better R/R ratio)
+  stop_loss_pct: 0.02  # 2% stop loss (tighter protection)
+  take_profit_pct: 0.05  # 5% take profit (better R/R ratio: 2.5:1)
   enable_circuit_breaker: true
+  
+  # Margin safety thresholds
+  min_margin_level: 200  # Close positions if margin level < 200%
+  critical_margin_level: 150  # Emergency exit if < 150%
+  
+  # Funding rate limits (for futures)
+  max_funding_rate: 0.001  # Avoid positions with funding > 0.1%
 
 # Strategy Configuration
+# UPDATED: More conservative entry conditions based on security audit (Nov 2025)
 strategy:
   name: ema_crossover
   fast_ema: 12  # Optimized for 5m timeframe
   slow_ema: 26  # Better signal quality
   rsi_period: 14
-  rsi_overbought: 68.0  # Slightly more sensitive
-  rsi_oversold: 32.0  # Earlier entry signals
+  rsi_overbought: 70.0  # Changed from 68 to actual overbought level (CRITICAL FIX)
+  rsi_oversold: 30.0  # Changed from 32 to actual oversold level (CRITICAL FIX)
+  
+  # Additional filters for entry confirmation
+  volume_multiplier: 1.5  # Require volume > 1.5x average
+  require_ema_crossover: true  # Require EMA confirmation
+  require_divergence: false  # Divergence detection (experimental)
+  min_ema_distance: 0.005  # Minimum 0.5% distance between EMAs
 
 # Machine Learning
 ml:

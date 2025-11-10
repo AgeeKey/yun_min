@@ -46,10 +46,18 @@ class RiskConfig(BaseSettings):
     
     max_position_size: float = Field(default=0.1, description="Max position size (fraction of capital)")
     max_leverage: float = Field(default=3.0, description="Maximum leverage allowed")
+    max_total_exposure: float = Field(default=0.15, description="Max total exposure across all positions")
     max_daily_drawdown: float = Field(default=0.05, description="Max daily drawdown (5%)")
     stop_loss_pct: float = Field(default=0.02, description="Stop loss percentage")
     take_profit_pct: float = Field(default=0.03, description="Take profit percentage")
     enable_circuit_breaker: bool = Field(default=True, description="Enable emergency circuit breaker")
+    
+    # Margin safety thresholds (CRITICAL - Problem #2 fix)
+    min_margin_level: float = Field(default=200.0, description="Minimum safe margin level (%)")
+    critical_margin_level: float = Field(default=150.0, description="Critical margin level (%) - emergency exit")
+    
+    # Funding rate limits (CRITICAL - Problem #2 fix)
+    max_funding_rate: float = Field(default=0.001, description="Maximum acceptable funding rate (0.001 = 0.1%)")
 
 
 class StrategyConfig(BaseSettings):

@@ -232,3 +232,124 @@ class CircuitBreakerPolicy(RiskPolicy):
             )
             
         return RiskCheckResult.APPROVED, "Circuit breaker not triggered"
+
+
+class ExchangeMarginLevelPolicy(RiskPolicy):
+    """
+    Monitors actual margin level from exchange to prevent liquidation.
+    
+    CRITICAL (Nov 2025): Added to address Problem #2 - missing margin monitoring.
+    Checks real margin level from exchange, not just theoretical calculations.
+    """
+    
+    def __init__(self, min_margin_level: float = 200.0, critical_margin_level: float = 150.0):
+        """
+        Initialize exchange margin level policy.
+        
+        Args:
+            min_margin_level: Minimum safe margin level (%) - warn if below
+            critical_margin_level: Critical margin level (%) - reject if below
+        """
+        super().__init__("exchange_margin_level")
+        self.min_margin_level = min_margin_level
+        self.critical_margin_level = critical_margin_level
+        
+    def check(self, order: OrderRequest, context: Dict[str, Any]) -> tuple[RiskCheckResult, str]:
+        """
+        Check if exchange margin level is safe for new orders.
+        
+        Args:
+            order: Order request
+            context: Must include 'exchange_balance' from ExchangeAdapter.get_balance()
+            
+        Returns:
+            Tuple of (result, message)
+        """
+        # Get balance data from context (should include margin_level)
+        exchange_balance = context.get('exchange_balance')
+        
+        if not exchange_balance:
+            # If no exchange balance data, approve but warn
+            return (
+                RiskCheckResult.WARNING,
+                "No exchange balance data available - cannot check margin level"
+            )
+        
+        margin_level = exchange_balance.get('margin_level')
+        
+        if margin_level is None:
+            # Exchange doesn't provide margin level (spot trading or no positions)
+            return RiskCheckResult.APPROVED, "Margin level not applicable"
+        
+        # Critical: Reject if margin level is dangerously low
+        if margin_level < self.critical_margin_level:
+            return (
+                RiskCheckResult.REJECTED,
+                f"🔴 CRITICAL margin level: {margin_level:.2f}% (min: {self.critical_margin_level:.2f}%). "
+                "Risk of liquidation! Close positions or add margin."
+            )
+        
+        # Warning: Warn if margin level is low
+        if margin_level < self.min_margin_level:
+            return (
+                RiskCheckResult.WARNING,
+                f"⚠️  Low margin level: {margin_level:.2f}% (recommended: {self.min_margin_level:.2f}%). "
+                "Consider reducing position size."
+            )
+        
+        return RiskCheckResult.APPROVED, f"Margin level healthy: {margin_level:.2f}%"
+
+
+class FundingRateLimitPolicy(RiskPolicy):
+    """
+    Prevents opening positions with excessive funding rates.
+    
+    CRITICAL (Nov 2025): Added to address Problem #2 - missing funding rate monitoring.
+    High funding rates can significantly reduce profitability over time.
+    """
+    
+    def __init__(self, max_funding_rate: float = 0.001):
+        """
+        Initialize funding rate limit policy.
+        
+        Args:
+            max_funding_rate: Maximum acceptable funding rate (e.g., 0.001 = 0.1%)
+        """
+        super().__init__("funding_rate_limit")
+        self.max_funding_rate = max_funding_rate
+        
+    def check(self, order: OrderRequest, context: Dict[str, Any]) -> tuple[RiskCheckResult, str]:
+        """
+        Check if funding rate is acceptable for new positions.
+        
+        Args:
+            order: Order request
+            context: Must include 'funding_rate' from ExchangeAdapter.get_funding_rate()
+            
+        Returns:
+            Tuple of (result, message)
+        """
+        # Get funding rate from context
+        funding_data = context.get('funding_rate')
+        
+        if not funding_data:
+            # If no funding data, approve but warn
+            return (
+                RiskCheckResult.WARNING,
+                "No funding rate data available"
+            )
+        
+        funding_rate = funding_data.get('rate', 0.0)
+        
+        # Check if funding rate is too high (in absolute terms)
+        if abs(funding_rate) > self.max_funding_rate:
+            rate_pct = funding_rate * 100
+            max_pct = self.max_funding_rate * 100
+            
+            return (
+                RiskCheckResult.REJECTED,
+                f"Funding rate too high: {rate_pct:.4f}% (max: {max_pct:.4f}%). "
+                "High funding costs will reduce profitability."
+            )
+        
+        return RiskCheckResult.APPROVED, f"Funding rate acceptable: {funding_rate*100:.4f}%"
