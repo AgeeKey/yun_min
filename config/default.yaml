@@ -53,19 +53,41 @@ risk:
 
 # Strategy Configuration
 # UPDATED: More conservative entry conditions based on security audit (Nov 2025)
+# PHASE 2.1: Relaxed thresholds for increased trading frequency (4% → 15-20%)
+# PHASE 2.2: Hybrid mode - classical analysis + AI confirmation
+# PHASE 2.3: Advanced indicators for better signal quality
 strategy:
   name: ema_crossover
   fast_ema: 12  # Optimized for 5m timeframe
   slow_ema: 26  # Better signal quality
   rsi_period: 14
-  rsi_overbought: 70.0  # Changed from 68 to actual overbought level (CRITICAL FIX)
-  rsi_oversold: 30.0  # Changed from 32 to actual oversold level (CRITICAL FIX)
+  rsi_overbought: 65.0  # PHASE 2.1: Relaxed from 70 to 65 (more lenient)
+  rsi_oversold: 35.0    # PHASE 2.1: Relaxed from 30 to 35 (more lenient)
   
   # Additional filters for entry confirmation
-  volume_multiplier: 1.5  # Require volume > 1.5x average
+  # PHASE 2.1: Relaxed filters for increased trading frequency
+  volume_multiplier: 1.2  # Relaxed from 1.5 to 1.2 (easier volume threshold)
   require_ema_crossover: true  # Require EMA confirmation
   require_divergence: false  # Divergence detection (experimental)
-  min_ema_distance: 0.005  # Minimum 0.5% distance between EMAs
+  min_ema_distance: 0.003  # Relaxed from 0.5% to 0.3% distance between EMAs
+  
+  # PHASE 2.2: Hybrid mode configuration
+  hybrid_mode: true  # Use classical analysis + AI confirmation
+  classical_confidence_threshold: 0.70  # If classical >= 70%, skip AI
+  
+  # PHASE 2.3: Advanced indicators
+  use_advanced_indicators: true  # Enable MACD, Bollinger Bands, ATR, OBV, Ichimoku
+  
+  # Advanced indicator parameters
+  macd_fast: 12
+  macd_slow: 26
+  macd_signal: 9
+  bollinger_period: 20
+  bollinger_std: 2.0
+  atr_period: 14
+  ichimoku_tenkan: 9
+  ichimoku_kijun: 26
+  ichimoku_senkou_b: 52
 
 # Machine Learning
 ml:
