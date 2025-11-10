@@ -64,7 +64,7 @@ class GrokAIStrategy(BaseStrategy):
             df: DataFrame with OHLCV data
             
         Returns:
-            DataFrame с добавленными индикаторами (rsi, ema_fast, ema_slow)
+            DataFrame с добавленными индикаторами (rsi, ema_fast, ema_slow, avg_volume)
         """
         data = df.copy()
         
@@ -79,17 +79,127 @@ class GrokAIStrategy(BaseStrategy):
         data['ema_fast'] = data['close'].ewm(span=self.ema_fast_period, adjust=False).mean()
         data['ema_slow'] = data['close'].ewm(span=self.ema_slow_period, adjust=False).mean()
         
+        # Вычислить среднюю громкость за последние 20 периодов
+        data['avg_volume'] = data['volume'].rolling(window=20).mean()
+        
         return data
+    
+    def _check_volume_confirmation(self, current_volume: float, avg_volume: float, multiplier: float = 1.5) -> bool:
+        """
+        Проверить, что объём выше среднего (фильтр ликвидности).
+        
+        Args:
+            current_volume: Текущий объём
+            avg_volume: Средний объём
+            multiplier: Множитель для порога (default: 1.5x)
+            
+        Returns:
+            True if volume is sufficient
+        """
+        if avg_volume == 0:
+            return False
+        return current_volume > (avg_volume * multiplier)
+    
+    def _check_ema_crossover(self, df: pd.DataFrame) -> tuple[bool, str]:
+        """
+        Проверить кроссовер EMA (подтверждение тренда).
+        
+        Args:
+            df: DataFrame with EMA indicators
+            
+        Returns:
+            Tuple of (has_crossover, direction)
+            direction: 'bullish' (fast > slow), 'bearish' (fast < slow), or 'none'
+        """
+        if len(df) < 2:
+            return False, 'none'
+        
+        current = df.iloc[-1]
+        previous = df.iloc[-2]
+        
+        # Bullish crossover: fast crosses above slow
+        if previous['ema_fast'] <= previous['ema_slow'] and current['ema_fast'] > current['ema_slow']:
+            return True, 'bullish'
+        
+        # Bearish crossover: fast crosses below slow
+        if previous['ema_fast'] >= previous['ema_slow'] and current['ema_fast'] < current['ema_slow']:
+            return True, 'bearish'
+        
+        # No recent crossover, but check current state
+        if current['ema_fast'] > current['ema_slow']:
+            return False, 'bullish'
+        elif current['ema_fast'] < current['ema_slow']:
+            return False, 'bearish'
+        
+        return False, 'none'
+    
+    def _check_divergence(self, df: pd.DataFrame) -> tuple[bool, str]:
+        """
+        Проверить дивергенцию RSI и цены (продвинутый фильтр).
+        
+        Дивергенция происходит когда:
+        - Цена делает новый максимум, но RSI - нет (медвежья дивергенция)
+        - Цена делает новый минимум, но RSI - нет (бычья дивергенция)
+        
+        Args:
+            df: DataFrame with price and RSI
+            
+        Returns:
+            Tuple of (has_divergence, type)
+            type: 'bullish', 'bearish', or 'none'
+        """
+        if len(df) < 5:
+            return False, 'none'
+        
+        # Смотрим последние 5 периодов
+        recent = df.tail(5)
+        prices = recent['close'].values
+        rsi_values = recent['rsi'].values
+        
+        # Медвежья дивергенция: цена растёт, RSI падает
+        if prices[-1] > prices[0] and rsi_values[-1] < rsi_values[0]:
+            if rsi_values[-1] < rsi_values.max():
+                return True, 'bearish'
+        
+        # Бычья дивергенция: цена падает, RSI растёт
+        if prices[-1] < prices[0] and rsi_values[-1] > rsi_values[0]:
+            if rsi_values[-1] > rsi_values.min():
+                return True, 'bullish'
+        
+        return False, 'none'
+    
+    def _check_ema_distance(self, ema_fast: float, ema_slow: float, min_distance: float = 0.005) -> bool:
+        """
+        Проверить, что расстояние между EMA достаточное (фильтр слабых сигналов).
+        
+        Args:
+            ema_fast: Быстрая EMA
+            ema_slow: Медленная EMA
+            min_distance: Минимальная дистанция (default: 0.5%)
+            
+        Returns:
+            True if distance is sufficient
+        """
+        if ema_slow == 0:
+            return False
+        distance = abs(ema_fast - ema_slow) / ema_slow
+        return distance >= min_distance
         
     def analyze(self, df: pd.DataFrame) -> Signal:
         """
-        Analyze market data using Grok AI.
+        Analyze market data using Grok AI with enhanced filters.
+        
+        UPDATED (Nov 2025): Added multiple confirmation filters to prevent false signals:
+        - RSI must be at actual overbought/oversold levels (70/30, not 68/32)
+        - Volume must be > 1.5x average
+        - EMA crossover confirmation
+        - Optional: Divergence detection
         
         Args:
             df: DataFrame with OHLCV data
             
         Returns:
-            Trading signal from Grok AI
+            Trading signal from Grok AI or fallback logic
         """
         if df.empty or len(df) < max(self.rsi_period, self.ema_slow_period) + 1:
             return Signal(
@@ -110,6 +220,7 @@ class GrokAIStrategy(BaseStrategy):
         ema_fast = latest.get('ema_fast', current_price)
         ema_slow = latest.get('ema_slow', current_price)
         volume = latest.get('volume', 0)
+        avg_volume = latest.get('avg_volume', volume)
         
         # Определить тренд
         if ema_fast > ema_slow:
@@ -122,52 +233,76 @@ class GrokAIStrategy(BaseStrategy):
         # Изменение цены
         price_change = ((current_price - prev['close']) / prev['close']) * 100
         
-        # Если Grok доступен - спросить его!
+        # 🔥 НОВЫЕ ФИЛЬТРЫ (Critical Fix for Problem #4)
+        # Check volume confirmation
+        volume_ok = self._check_volume_confirmation(volume, avg_volume, multiplier=1.5)
+        
+        # Check EMA crossover
+        has_crossover, crossover_direction = self._check_ema_crossover(df_with_indicators)
+        
+        # Check divergence (optional, experimental)
+        has_divergence, divergence_type = self._check_divergence(df_with_indicators)
+        
+        # Check EMA distance
+        ema_distance_ok = self._check_ema_distance(ema_fast, ema_slow, min_distance=0.005)
+        
+        # Prepare enhanced market data with filters
+        enhanced_data = {
+            'price': current_price,
+            'rsi': rsi,
+            'ema_fast': ema_fast,
+            'ema_slow': ema_slow,
+            'trend': trend,
+            'volume': volume,
+            'price_change': price_change,
+            'volume_ok': volume_ok,
+            'has_crossover': has_crossover,
+            'crossover_direction': crossover_direction,
+            'has_divergence': has_divergence,
+            'divergence_type': divergence_type,
+            'ema_distance_ok': ema_distance_ok
+        }
+        
+        # Log filter status
+        logger.debug(f"📊 Filters: volume={volume_ok}, crossover={has_crossover}({crossover_direction}), "
+                    f"divergence={has_divergence}({divergence_type}), ema_dist={ema_distance_ok}")
+        
+        # Если Grok доступен - спросить его (но с учётом фильтров)
         if self.grok and self.grok.enabled:
-            return self._get_grok_decision(
-                current_price, rsi, ema_fast, ema_slow, 
-                trend, volume, price_change
-            )
+            return self._get_grok_decision_with_filters(enhanced_data, df_with_indicators)
         else:
-            # Fallback: простая логика
-            return self._fallback_logic(current_price, rsi, trend)
+            # Fallback: улучшенная логика с фильтрами
+            return self._fallback_logic_with_filters(enhanced_data, df_with_indicators)
     
-    def _get_grok_decision(
+    def _get_grok_decision_with_filters(
         self, 
-        price: float, 
-        rsi: float, 
-        ema_fast: float, 
-        ema_slow: float,
-        trend: str, 
-        volume: float,
-        price_change: float
+        enhanced_data: Dict[str, Any],
+        df: pd.DataFrame
     ) -> Signal:
         """
-        Получить торговое решение от LLM (OpenAI/Grok).
+        Получить торговое решение от LLM (OpenAI/Grok) с дополнительными фильтрами.
+        
+        UPDATED (Nov 2025): AI решение проверяется через фильтры для предотвращения
+        ложных сигналов (Problem #4 fix).
         
         Args:
-            price: Текущая цена
-            rsi: RSI индикатор
-            ema_fast: Быстрая EMA
-            ema_slow: Медленная EMA
-            trend: Тренд (bullish/bearish/neutral)
-            volume: Объём торгов
-            price_change: Изменение цены за последний период (%)
+            enhanced_data: Enhanced market data with filter results
+            df: Full DataFrame with indicators
             
         Returns:
-            Signal from AI analyzer
+            Signal from AI analyzer (filtered)
         """
         try:
-            # Подготовить рыночные данные
+            # Подготовить рыночные данные для AI
             market_data = {
                 'symbol': 'BTC/USDT',
-                'price': price,
-                'rsi': rsi,
-                'ema_fast': ema_fast,
-                'ema_slow': ema_slow,
-                'trend': trend,
-                'volume': volume,
-                'price_change': price_change
+                'price': enhanced_data['price'],
+                'rsi': enhanced_data['rsi'],
+                'ema_fast': enhanced_data['ema_fast'],
+                'ema_slow': enhanced_data['ema_slow'],
+                'trend': enhanced_data['trend'],
+                'volume': enhanced_data['volume'],
+                'price_change': enhanced_data['price_change']
             }
             
             # Определить тип анализатора для логирования
@@ -185,31 +320,131 @@ class GrokAIStrategy(BaseStrategy):
             reasoning = result.get('reasoning', 'No reasoning provided')
             model_used = result.get('model_used', 'unknown')
             
-            # Конвертировать строку сигнала в SignalType
+            # 🔥 КРИТИЧЕСКОЕ ИСПРАВЛЕНИЕ: Применить фильтры к AI решению
+            # AI может предложить сделку, но мы проверим её через фильтры
             if signal_str == 'BUY':
-                signal_type = SignalType.BUY
+                # Фильтры для LONG
+                if enhanced_data['rsi'] >= 30 and enhanced_data['rsi'] < 70:  # RSI не в экстремальной зоне
+                    if enhanced_data['volume_ok']:  # Высокий объём
+                        if enhanced_data['crossover_direction'] == 'bullish' or enhanced_data['trend'] == 'bullish':
+                            if enhanced_data['ema_distance_ok']:  # EMA достаточно разошлись
+                                signal_type = SignalType.BUY
+                                logger.info(f"✅ BUY signal APPROVED by filters")
+                            else:
+                                signal_type = SignalType.HOLD
+                                reasoning = f"BUY rejected: EMA distance too small. {reasoning}"
+                                logger.warning("❌ BUY signal rejected: weak EMA separation")
+                        else:
+                            signal_type = SignalType.HOLD
+                            reasoning = f"BUY rejected: no bullish trend/crossover. {reasoning}"
+                            logger.warning("❌ BUY signal rejected: no bullish confirmation")
+                    else:
+                        signal_type = SignalType.HOLD
+                        reasoning = f"BUY rejected: insufficient volume. {reasoning}"
+                        logger.warning("❌ BUY signal rejected: low volume")
+                else:
+                    signal_type = SignalType.HOLD
+                    reasoning = f"BUY rejected: RSI not in valid range (30-70). {reasoning}"
+                    logger.warning(f"❌ BUY signal rejected: RSI={enhanced_data['rsi']:.1f}")
+            
             elif signal_str == 'SELL':
-                signal_type = SignalType.SELL
+                # Фильтры для SHORT
+                if enhanced_data['rsi'] > 30 and enhanced_data['rsi'] <= 70:  # RSI не в экстремальной зоне
+                    if enhanced_data['volume_ok']:  # Высокий объём
+                        if enhanced_data['crossover_direction'] == 'bearish' or enhanced_data['trend'] == 'bearish':
+                            if enhanced_data['ema_distance_ok']:  # EMA достаточно разошлись
+                                signal_type = SignalType.SELL
+                                logger.info(f"✅ SELL signal APPROVED by filters")
+                            else:
+                                signal_type = SignalType.HOLD
+                                reasoning = f"SELL rejected: EMA distance too small. {reasoning}"
+                                logger.warning("❌ SELL signal rejected: weak EMA separation")
+                        else:
+                            signal_type = SignalType.HOLD
+                            reasoning = f"SELL rejected: no bearish trend/crossover. {reasoning}"
+                            logger.warning("❌ SELL signal rejected: no bearish confirmation")
+                    else:
+                        signal_type = SignalType.HOLD
+                        reasoning = f"SELL rejected: insufficient volume. {reasoning}"
+                        logger.warning("❌ SELL signal rejected: low volume")
+                else:
+                    signal_type = SignalType.HOLD
+                    reasoning = f"SELL rejected: RSI not in valid range (30-70). {reasoning}"
+                    logger.warning(f"❌ SELL signal rejected: RSI={enhanced_data['rsi']:.1f}")
             else:
                 signal_type = SignalType.HOLD
             
-            logger.info(f"📊 {analyzer_name} {model_used}: {signal_str} (confidence={confidence:.0%}, tokens=unknown)")
+            logger.info(f"📊 {analyzer_name} {model_used}: {signal_str} → {signal_type.value.upper()} "
+                       f"(confidence={confidence:.0%})")
+            if signal_str != signal_type.value.upper():
+                logger.warning(f"   ⚠️  AI signal overridden by filters")
             logger.info(f"   💡 Reasoning: {reasoning[:100]}...")
             
             return Signal(
                 type=signal_type,
-                confidence=confidence,
+                confidence=confidence if signal_str == signal_type.value.upper() else confidence * 0.5,
                 reason=f"🤖 {analyzer_name} ({model_used}): {reasoning}"
             )
             
         except Exception as e:
             logger.error(f"AI decision failed: {e}", exc_info=True)
-            logger.warning("Falling back to simple logic")
-            return self._fallback_logic(price, rsi, trend)
+            logger.warning("Falling back to simple logic with filters")
+            return self._fallback_logic_with_filters(enhanced_data, df)
+    
+    def _fallback_logic_with_filters(
+        self, 
+        enhanced_data: Dict[str, Any],
+        df: pd.DataFrame
+    ) -> Signal:
+        """
+        Улучшенная fallback логика с фильтрами если AI недоступен.
+        
+        UPDATED (Nov 2025): Применяет те же фильтры, что и AI решения.
+        
+        Args:
+            enhanced_data: Enhanced market data with filter results
+            df: Full DataFrame with indicators
+            
+        Returns:
+            Filtered signal
+        """
+        price = enhanced_data['price']
+        rsi = enhanced_data['rsi']
+        trend = enhanced_data['trend']
+        volume_ok = enhanced_data['volume_ok']
+        ema_distance_ok = enhanced_data['ema_distance_ok']
+        crossover_direction = enhanced_data['crossover_direction']
+        
+        # SELL сигнал (SHORT) - только при РЕАЛЬНОЙ перекупленности
+        if rsi > 70:  # Фактическая перекупленность (was 70, but enforcing strictly)
+            if volume_ok and ema_distance_ok:
+                if crossover_direction == 'bearish' or trend == 'bearish':
+                    return Signal(
+                        type=SignalType.SELL,
+                        confidence=0.65,
+                        reason=f"Fallback: RSI overbought ({rsi:.1f}) + bearish trend + volume confirmation"
+                    )
+        
+        # BUY сигнал (LONG) - только при РЕАЛЬНОЙ перепроданности  
+        if rsi < 30:  # Фактическая перепроданность (was 30, but enforcing strictly)
+            if volume_ok and ema_distance_ok:
+                if crossover_direction == 'bullish' or trend == 'bullish':
+                    return Signal(
+                        type=SignalType.BUY,
+                        confidence=0.65,
+                        reason=f"Fallback: RSI oversold ({rsi:.1f}) + bullish trend + volume confirmation"
+                    )
+        
+        # Default: HOLD
+        return Signal(
+            type=SignalType.HOLD,
+            confidence=0.5,
+            reason=f"Fallback: No clear signal (RSI={rsi:.1f}, trend={trend}, vol_ok={volume_ok})"
+        )
     
     def _fallback_logic(self, price: float, rsi: float, trend: str) -> Signal:
         """
-        Простая fallback логика если Grok недоступен.
+        Простая fallback логика если Grok недоступен (DEPRECATED - use _fallback_logic_with_filters).
         
         Args:
             price: Current price

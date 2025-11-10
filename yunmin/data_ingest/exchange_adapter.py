@@ -306,6 +306,139 @@ class ExchangeAdapter:
         except Exception as e:
             logger.error(f"Failed to set leverage: {e}")
             raise
+    
+    def get_balance(self, asset: str = 'USDT') -> Dict[str, Any]:
+        """
+        Get balance and margin level for futures trading.
+        
+        CRITICAL: Monitors margin level to prevent liquidation.
+        Should be called every iteration to track account health.
+        
+        Args:
+            asset: Asset to check (default: 'USDT')
+            
+        Returns:
+            Dictionary with:
+            - free: Available balance
+            - used: Balance in open positions
+            - total: Total balance
+            - margin_level: Margin level percentage (if available)
+            - liquidation_price: Estimated liquidation price (if positions exist)
+        """
+        try:
+            balance = self.exchange.fetch_balance()
+            
+            result = {
+                'free': balance.get(asset, {}).get('free', 0.0),
+                'used': balance.get(asset, {}).get('used', 0.0),
+                'total': balance.get(asset, {}).get('total', 0.0),
+                'margin_level': None,
+                'liquidation_price': None
+            }
+            
+            # Get margin level for futures (if available)
+            if 'info' in balance and self.config.name == 'binance':
+                info = balance.get('info', {})
+                
+                # Binance futures provides totalMarginBalance and totalMaintMargin
+                total_margin = float(info.get('totalMarginBalance', 0))
+                maint_margin = float(info.get('totalMaintMargin', 0))
+                
+                if maint_margin > 0:
+                    # Margin level = (equity / maintenance margin) * 100
+                    result['margin_level'] = (total_margin / maint_margin) * 100
+                    logger.debug(f"Margin level: {result['margin_level']:.2f}%")
+                    
+                    # Warning if margin level is low
+                    if result['margin_level'] < 200:  # < 200% is risky
+                        logger.warning(f"⚠️  Low margin level: {result['margin_level']:.2f}%")
+                    if result['margin_level'] < 150:  # < 150% is critical
+                        logger.error(f"🔴 CRITICAL margin level: {result['margin_level']:.2f}%")
+            
+            # Get liquidation price from positions
+            positions = self.fetch_positions()
+            if positions:
+                for pos in positions:
+                    if float(pos.get('contracts', 0)) != 0:
+                        liq_price = pos.get('liquidationPrice')
+                        if liq_price:
+                            result['liquidation_price'] = float(liq_price)
+                            logger.debug(f"Liquidation price for {pos.get('symbol')}: {liq_price}")
+            
+            logger.debug(f"Balance {asset}: free={result['free']}, used={result['used']}, total={result['total']}")
+            return result
+            
+        except Exception as e:
+            logger.error(f"Failed to get balance: {e}")
+            # Return safe defaults instead of raising
+            return {
+                'free': 0.0,
+                'used': 0.0,
+                'total': 0.0,
+                'margin_level': None,
+                'liquidation_price': None
+            }
+    
+    def get_funding_rate(self, symbol: str) -> Dict[str, Any]:
+        """
+        Get current funding rate for futures.
+        
+        CRITICAL: Monitors funding costs to avoid expensive long-term positions.
+        Funding is paid every 8 hours and can significantly impact P&L.
+        
+        Args:
+            symbol: Trading pair symbol (e.g., 'BTC/USDT')
+            
+        Returns:
+            Dictionary with:
+            - rate: Current funding rate (e.g., 0.0001 = 0.01%)
+            - next_funding_time: Timestamp of next funding payment
+            - estimated_cost: Estimated cost for current position (if any)
+        """
+        try:
+            result = {
+                'rate': 0.0,
+                'next_funding_time': None,
+                'estimated_cost': 0.0
+            }
+            
+            # Fetch funding rate
+            if hasattr(self.exchange, 'fetch_funding_rate'):
+                funding = self.exchange.fetch_funding_rate(symbol)
+                
+                result['rate'] = funding.get('fundingRate', 0.0)
+                result['next_funding_time'] = funding.get('fundingTimestamp')
+                
+                # Calculate estimated cost for current positions
+                positions = self.fetch_positions([symbol])
+                if positions:
+                    for pos in positions:
+                        if pos.get('symbol') == symbol:
+                            notional = float(pos.get('notional', 0))
+                            result['estimated_cost'] = notional * result['rate']
+                            break
+                
+                # Log warnings for extreme funding rates
+                rate_pct = result['rate'] * 100
+                if abs(rate_pct) > 0.1:  # > 0.1% is expensive
+                    logger.warning(f"⚠️  High funding rate for {symbol}: {rate_pct:.4f}%")
+                if abs(rate_pct) > 0.3:  # > 0.3% is extreme
+                    logger.error(f"🔴 EXTREME funding rate for {symbol}: {rate_pct:.4f}%")
+                
+                logger.debug(f"Funding rate {symbol}: {rate_pct:.4f}%, next at {result['next_funding_time']}")
+            else:
+                logger.warning(f"{self.config.name} does not support fetch_funding_rate")
+            
+            return result
+            
+        except Exception as e:
+            logger.error(f"Failed to get funding rate for {symbol}: {e}")
+            # Return safe defaults instead of raising
+            return {
+                'rate': 0.0,
+                'next_funding_time': None,
+                'estimated_cost': 0.0
+            }
             
     def close(self):
         """Close exchange connection."""
