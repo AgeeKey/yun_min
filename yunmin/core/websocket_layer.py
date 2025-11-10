@@ -115,6 +115,52 @@ class KlineUpdateEvent:
         )
 
 
+@dataclass
+class TradeUpdateEvent:
+    """Trade update event."""
+    symbol: str
+    price: float
+    quantity: float
+    timestamp: datetime
+    is_buyer_maker: bool  # True if the buyer is the market maker
+    
+    @classmethod
+    def from_binance_trade(cls, data: Dict) -> "TradeUpdateEvent":
+        """Parse Binance trade stream update."""
+        return cls(
+            symbol=data.get("s", ""),
+            price=float(data.get("p", 0)),
+            quantity=float(data.get("q", 0)),
+            timestamp=datetime.utcfromtimestamp(data.get("T", 0) / 1000),
+            is_buyer_maker=data.get("m", False)
+        )
+
+
+@dataclass
+class TickerUpdateEvent:
+    """24hr ticker update event."""
+    symbol: str
+    price: float
+    price_change: float
+    price_change_pct: float
+    volume: float
+    quote_volume: float
+    timestamp: datetime
+    
+    @classmethod
+    def from_binance_ticker(cls, data: Dict) -> "TickerUpdateEvent":
+        """Parse Binance 24hr ticker stream update."""
+        return cls(
+            symbol=data.get("s", ""),
+            price=float(data.get("c", 0)),
+            price_change=float(data.get("p", 0)),
+            price_change_pct=float(data.get("P", 0)),
+            volume=float(data.get("v", 0)),
+            quote_volume=float(data.get("q", 0)),
+            timestamp=datetime.utcfromtimestamp(data.get("E", 0) / 1000)
+        )
+
+
 class WebSocketLayer:
     """
     Real-time WebSocket layer for Binance.
@@ -181,6 +227,8 @@ class WebSocketLayer:
         # Event callbacks
         self.order_update_callbacks: List[Callable] = []
         self.kline_callbacks: List[Callable] = []
+        self.trade_callbacks: List[Callable] = []
+        self.ticker_callbacks: List[Callable] = []
         self.error_callbacks: List[Callable] = []
         
         # Connection management
@@ -204,7 +252,21 @@ class WebSocketLayer:
     def register_kline_callback(self, callback: Callable[[KlineUpdateEvent], None]):
         """Register callback for kline updates."""
         self.kline_callbacks.append(callback)
-        logger.debug(f"Registered kline callback: {callback.__name__}")
+        callback_name = getattr(callback, '__name__', repr(callback))
+        logger.debug(f"Registered kline callback: {callback_name}")
+    
+    def register_trade_callback(self, callback: Callable[[TradeUpdateEvent], None]):
+        """Register callback for trade updates."""
+        self.trade_callbacks.append(callback)
+        callback_name = getattr(callback, '__name__', repr(callback))
+        logger.debug(f"Registered trade callback: {callback_name}")
+    
+    def register_ticker_callback(self, callback: Callable[[TickerUpdateEvent], None]):
+        """Register callback for ticker updates."""
+        self.ticker_callbacks.append(callback)
+        callback_name = getattr(callback, '__name__', repr(callback))
+        logger.debug(f"Registered ticker callback: {callback_name}")
+    
     
     def register_error_callback(self, callback: Callable[[Exception], None]):
         """Register callback for errors."""
@@ -272,6 +334,42 @@ class WebSocketLayer:
         
         logger.info(f"Subscribing to kline stream: {symbol} {timeframe}")
         self.subscribed_streams[f"kline_{symbol}_{timeframe}"] = stream_name
+    
+    async def subscribe_trades(self, symbol: str):
+        """
+        Subscribe to real-time trade stream.
+        
+        Args:
+            symbol: Trading pair (BTCUSDT)
+        
+        Example:
+            async def on_trade(trade):
+                print(f"Trade: {trade['price']}")
+            
+            await ws.subscribe_trades('BTCUSDT')
+        """
+        stream_name = f"{symbol.lower()}@trade"
+        
+        logger.info(f"Subscribing to trade stream: {symbol}")
+        self.subscribed_streams[f"trade_{symbol}"] = stream_name
+    
+    async def subscribe_ticker(self, symbol: str):
+        """
+        Subscribe to 24hr ticker stream.
+        
+        Args:
+            symbol: Trading pair (BTCUSDT)
+        
+        Example:
+            async def on_ticker(ticker):
+                print(f"24hr ticker: {ticker['price']}")
+            
+            await ws.subscribe_ticker('BTCUSDT')
+        """
+        stream_name = f"{symbol.lower()}@ticker"
+        
+        logger.info(f"Subscribing to ticker stream: {symbol}")
+        self.subscribed_streams[f"ticker_{symbol}"] = stream_name
     
     async def _refresh_listen_key(self):
         """
@@ -356,15 +454,25 @@ class WebSocketLayer:
                     # Order update
                     event = OrderUpdateEvent.from_binance_update(data)
                     await self._emit_order_update(event)
+                
+                elif event_type == "kline":
+                    # Kline/Candle update
+                    event = KlineUpdateEvent.from_binance_kline(data)
+                    await self._emit_kline_update(event)
+                    
+                elif event_type == "trade":
+                    # Trade update
+                    event = TradeUpdateEvent.from_binance_trade(data)
+                    await self._emit_trade_update(event)
+                
+                elif event_type == "24hrTicker":
+                    # Ticker update
+                    event = TickerUpdateEvent.from_binance_ticker(data)
+                    await self._emit_ticker_update(event)
                     
                 elif event_type == "outbidEvent":
                     # Outbid notification
                     pass
-                    
-            # Handle kline stream updates
-            elif "k" in data:
-                event = KlineUpdateEvent.from_binance_kline(data)
-                await self._emit_kline_update(event)
             
         except json.JSONDecodeError as e:
             logger.error(f"Invalid JSON from WebSocket: {e}")
@@ -394,6 +502,30 @@ class WebSocketLayer:
                     callback(event)
             except Exception as e:
                 logger.error(f"Error in kline callback: {e}")
+                await self._emit_error(e)
+    
+    async def _emit_trade_update(self, event: TradeUpdateEvent):
+        """Emit trade update event to all registered callbacks."""
+        for callback in self.trade_callbacks:
+            try:
+                if asyncio.iscoroutinefunction(callback):
+                    await callback(event)
+                else:
+                    callback(event)
+            except Exception as e:
+                logger.error(f"Error in trade callback: {e}")
+                await self._emit_error(e)
+    
+    async def _emit_ticker_update(self, event: TickerUpdateEvent):
+        """Emit ticker update event to all registered callbacks."""
+        for callback in self.ticker_callbacks:
+            try:
+                if asyncio.iscoroutinefunction(callback):
+                    await callback(event)
+                else:
+                    callback(event)
+            except Exception as e:
+                logger.error(f"Error in ticker callback: {e}")
                 await self._emit_error(e)
     
     async def _emit_event(self, event: WebSocketEvent):
