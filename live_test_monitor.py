@@ -397,7 +397,7 @@ class LiveTestMonitor:
 - Progress to paper trading with real capital simulation
 """
         
-        with open(output_path, 'w') as f:
+        with open(output_path, 'w', encoding='utf-8') as f:
             f.write(report)
             
         print(f"📊 Report generated: {output_path}")

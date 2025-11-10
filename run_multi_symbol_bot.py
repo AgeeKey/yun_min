@@ -368,7 +368,7 @@ class MultiSymbolBot:
         
         # Save markdown report
         md_path = Path('MULTI_SYMBOL_REPORT.md')
-        with open(md_path, 'w') as f:
+        with open(md_path, 'w', encoding='utf-8') as f:
             f.write(md_content)
         
         logger.info(f"📄 Markdown report saved to {md_path}")
