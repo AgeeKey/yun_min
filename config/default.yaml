@@ -96,6 +96,22 @@ ml:
   retrain_interval: 86400  # 24 hours
   feature_lookback: 100
 
+# Backtesting Configuration
+backtest:
+  initial_capital: 100000.0
+  position_size_pct: 0.01  # 1% of capital per trade
+  leverage: 1.0  # 1x leverage (no leverage)
+  maker_fee: 0.0002  # 0.02% maker fee
+  taker_fee: 0.0004  # 0.04% taker fee
+  slippage: 0.0002  # 0.02% slippage
+  stop_loss_pct: 0.02  # 2% stop loss
+  take_profit_pct: 0.05  # 5% take profit
+  
+  # Trade frequency controls (Issue #39)
+  cooldown_bars: 5  # Minimum bars between trades
+  confirmation_bars: 2  # Bars to confirm signal
+  min_holding_bars: 10  # Minimum bars to hold position
+
 # LLM Integration - OPENAI GPT-4O-MINI (OPTIMAL FREE MODEL)
 llm:
   enabled: true
