@@ -1,16 +1,18 @@
 ﻿"""Backtesting engine for strategy testing"""
 import pandas as pd
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 from loguru import logger
 from yunmin.strategy.base import BaseStrategy, SignalType
 from yunmin.risk.manager import RiskManager
 from yunmin.risk.policies import OrderRequest
 from .metrics import PerformanceMetrics, TradeResult
+from .telemetry import BacktestTelemetry
 
 class Backtester:
     def __init__(self, strategy: BaseStrategy, initial_capital: float = 100000.0,
                  commission_rate: float = 0.001, slippage_rate: float = 0.0005,
-                 use_risk_manager: bool = True):
+                 use_risk_manager: bool = True, save_artifacts: bool = True,
+                 artifacts_dir: str = "artifacts"):
         self.strategy = strategy
         self.initial_capital = initial_capital
         self.commission_rate = commission_rate
@@ -18,6 +20,11 @@ class Backtester:
         self.capital = initial_capital
         self.current_position = None
         self.metrics = PerformanceMetrics()
+        self.save_artifacts = save_artifacts
+        if save_artifacts:
+            self.telemetry = BacktestTelemetry(output_dir=artifacts_dir)
+        else:
+            self.telemetry = None
         if use_risk_manager:
             from yunmin.core.config import RiskConfig
             self.risk_manager = RiskManager(RiskConfig())
@@ -61,6 +68,11 @@ class Backtester:
         
         results = self.metrics.calculate_metrics(self.initial_capital)
         logger.info(f"Backtest done - {results['total_trades']} trades, {results['win_rate']:.1f}% WR")
+        
+        # Save artifacts if enabled
+        if self.save_artifacts and self.telemetry:
+            self._save_artifacts(results)
+        
         return results
 
     def _open_long(self, price, ts, symbol, pct):
@@ -138,3 +150,30 @@ class Backtester:
             'pnl': t.pnl, 'pnl_pct': t.pnl_pct, 'fees': t.fees,
             'duration_hours': (t.exit_time - t.entry_time).total_seconds() / 3600
         } for t in self.metrics.trades])
+    
+    def _save_artifacts(self, results: Dict[str, Any]) -> None:
+        """Save backtest artifacts to disk."""
+        try:
+            # Convert trades to list of dicts
+            trades = [{
+                'entry_time': t.entry_time,
+                'entry_price': t.entry_price,
+                'exit_time': t.exit_time,
+                'exit_price': t.exit_price,
+                'amount': t.amount,
+                'pnl': t.pnl,
+                'pnl_pct': t.pnl_pct,
+                'fees': t.fees,
+                'side': t.side,
+                'confidence': 0.0,  # Not available in TradeResult
+                'reasons': ''  # Not available in TradeResult
+            } for t in self.metrics.trades]
+            
+            # Save all artifacts
+            self.telemetry.save_all(
+                trades=trades,
+                equity_curve=self.metrics.equity_curve,
+                summary=results
+            )
+        except Exception as e:
+            logger.error(f"Failed to save artifacts: {e}")
