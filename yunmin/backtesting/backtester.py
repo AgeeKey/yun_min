@@ -5,7 +5,7 @@ from loguru import logger
 from yunmin.strategy.base import BaseStrategy, SignalType
 from yunmin.risk.manager import RiskManager
 from yunmin.risk.policies import OrderRequest
-from .metrics import PerformanceMetrics, TradeResult
+from .metrics import PerformanceMetrics, TradeResult, RejectedTrade
 
 class Backtester:
     def __init__(self, strategy: BaseStrategy, initial_capital: float = 100000.0,
@@ -30,7 +30,7 @@ class Backtester:
         logger.info(f"Starting backtest for {symbol} ({len(data)} candles)")
         self.capital = self.initial_capital
         self.current_position = None
-        self.metrics = PerformanceMetrics()
+        self.metrics = PerformanceMetrics(initial_capital=self.initial_capital)
         
         for idx in range(len(data)):
             if idx < 50:
@@ -71,8 +71,19 @@ class Backtester:
         if self.risk_manager:
             order = OrderRequest(symbol=symbol, side='buy', order_type='market',
                                amount=amt, price=exe_price, leverage=1.0)
-            ok, _ = self.risk_manager.validate_order(order, {'capital': self.capital, 'current_price': price})
+            ok, messages = self.risk_manager.validate_order(order, {'capital': self.capital, 'current_price': price})
             if not ok:
+                # Log and track rejected trade
+                logger.warning(f"LONG trade rejected at {ts}: {', '.join(messages)}")
+                rejected = RejectedTrade(
+                    timestamp=ts,
+                    symbol=symbol,
+                    side='LONG',
+                    amount=amt,
+                    price=exe_price,
+                    rejection_reasons=messages
+                )
+                self.metrics.add_rejected_trade(rejected)
                 return
         self.capital -= (val + fee)
         self.current_position = {'side': 'LONG', 'entry_price': exe_price, 'entry_time': ts,
@@ -87,8 +98,19 @@ class Backtester:
         if self.risk_manager:
             order = OrderRequest(symbol=symbol, side='sell', order_type='market',
                                amount=amt, price=exe_price, leverage=1.0)
-            ok, _ = self.risk_manager.validate_order(order, {'capital': self.capital, 'current_price': price})
+            ok, messages = self.risk_manager.validate_order(order, {'capital': self.capital, 'current_price': price})
             if not ok:
+                # Log and track rejected trade
+                logger.warning(f"SHORT trade rejected at {ts}: {', '.join(messages)}")
+                rejected = RejectedTrade(
+                    timestamp=ts,
+                    symbol=symbol,
+                    side='SHORT',
+                    amount=amt,
+                    price=exe_price,
+                    rejection_reasons=messages
+                )
+                self.metrics.add_rejected_trade(rejected)
                 return
         self.capital -= (val + fee)
         self.current_position = {'side': 'SHORT', 'entry_price': exe_price, 'entry_time': ts,
@@ -138,3 +160,16 @@ class Backtester:
             'pnl': t.pnl, 'pnl_pct': t.pnl_pct, 'fees': t.fees,
             'duration_hours': (t.exit_time - t.entry_time).total_seconds() / 3600
         } for t in self.metrics.trades])
+
+    def get_rejected_trades_log(self):
+        """Get log of all rejected trades with reasons"""
+        if not self.metrics.rejected_trades:
+            return pd.DataFrame()
+        return pd.DataFrame([{
+            'timestamp': r.timestamp,
+            'symbol': r.symbol,
+            'side': r.side,
+            'amount': r.amount,
+            'price': r.price,
+            'rejection_reasons': '; '.join(r.rejection_reasons)
+        } for r in self.metrics.rejected_trades])
