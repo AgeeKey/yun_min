@@ -1,0 +1,52 @@
+# Parameter Optimization Configuration - Quick Example
+# This is a minimal configuration for fast testing
+
+# Data configuration
+data:
+  source: synthetic  # Use synthetic data for quick testing
+  data_path: data/historical/btc_usdt_5m_2025.csv
+  symbol: BTC/USDT
+  timeframe: 5m
+  start_date: null
+  end_date: null
+
+# Optimization settings
+optimization:
+  method: grid_search  # 'grid_search' or 'random_search'
+  n_random_samples: 20  # Only for random_search
+  metric: sharpe_ratio
+  initial_capital: 10000.0
+  commission: 0.001
+  slippage: 0.0005
+
+# Walk-forward validation settings
+walk_forward:
+  enabled: true
+  n_splits: 2
+  train_ratio: 0.7
+
+# Minimal parameter grid for quick testing
+parameters:
+  # RSI thresholds
+  rsi_oversold: [30, 35]
+  rsi_overbought: [65, 70]
+  
+  # EMA periods
+  fast_period: [9, 12]
+  slow_period: [21, 26]
+  
+  # Additional parameters (first value used as default)
+  volume_multiplier: [1.2]
+  min_ema_distance: [0.003]
+  confidence_threshold: [0.6]
+  position_size: [0.02]
+  stop_loss_pct: [0.02]
+
+# Output settings
+output:
+  results_dir: results
+  save_json: true
+  save_csv: true
+  generate_report: true
+  generate_heatmaps: false
+  top_n: 5

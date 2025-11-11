@@ -265,10 +265,14 @@ class StrategyOptimizer:
         
         logger.success(f"Grid search complete. Best {opt_config['metric']}: {best_score:.4f}")
         
+        # Handle case where no valid combinations were found
+        if best_params is None:
+            best_params = {}
+        
         return {
             'method': 'grid_search',
             'metric': opt_config['metric'],
-            'best_params': {**best_params, **additional_params},
+            'best_params': {**best_params, **additional_params} if best_params else additional_params,
             'best_score': float(best_score),
             'total_combinations': len(results),
             'all_results': results,
@@ -456,11 +460,12 @@ class StrategyOptimizer:
             
             validation_results.append(split_result)
             
+            sharpe_value = result.sharpe_ratio if result.sharpe_ratio else 0.0
             logger.info(
                 f"Split {i+1}/{n_splits}: "
                 f"Profit=${result.total_profit:.2f}, "
                 f"Win Rate={result.win_rate*100:.1f}%, "
-                f"Sharpe={result.sharpe_ratio:.2f if result.sharpe_ratio else 0:.2f}"
+                f"Sharpe={sharpe_value:.2f}"
             )
         
         # Calculate stability metrics
