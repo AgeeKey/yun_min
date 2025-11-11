@@ -8,10 +8,9 @@ version = "0.1.0"
 description = "AI-powered cryptocurrency trading bot"
 readme = "README.md"
 requires-python = ">=3.11"
-license = {text = "MIT"}
 keywords = ["trading", "cryptocurrency", "bot", "ai"]
 authors = [
-    {name = "AgeeKey"},
+    { name = "AgeeKey" },
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -127,6 +126,19 @@ skips = ["B101", "B601"]
 [tool.ruff]
 line-length = 100
 target-version = "py311"
+exclude = [
+    ".git",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".venv",
+    "venv",
+    "__pycache__",
+    "build",
+    "dist",
+]
+
+[tool.ruff.lint]
 select = [
     "E",  # pycodestyle errors
     "W",  # pycodestyle warnings
@@ -141,17 +153,6 @@ ignore = [
     "C901",  # too complex
     "E203",  # whitespace before ':'
 ]
-exclude = [
-    ".git",
-    ".mypy_cache",
-    ".pytest_cache",
-    ".ruff_cache",
-    ".venv",
-    "venv",
-    "__pycache__",
-    "build",
-    "dist",
-]
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"]

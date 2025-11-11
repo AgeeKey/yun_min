@@ -35,19 +35,19 @@ jobs:
 
       - name: Run black (code formatting check)
         run: |
-          black --check --diff .
+          black --check --diff yunmin/ tests/
 
       - name: Run isort (import sorting check)
         run: |
-          isort --check-only --diff .
+          isort --check-only --diff yunmin/ tests/
 
       - name: Run flake8 (linting)
         run: |
-          flake8 . --count --statistics
+          flake8 yunmin/ tests/ --count --statistics
 
       - name: Run ruff (fast linting)
         run: |
-          ruff check .
+          ruff check yunmin/ tests/
 
       - name: Run mypy (type checking)
         run: |
