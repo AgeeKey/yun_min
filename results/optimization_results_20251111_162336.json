@@ -1,0 +1,531 @@
+{
+  "timestamp": "2025-11-11T16:23:36.651758",
+  "config": {
+    "data": {
+      "source": "synthetic",
+      "data_path": "data/historical/btc_usdt_5m_2025.csv",
+      "symbol": "BTC/USDT",
+      "timeframe": "5m",
+      "start_date": null,
+      "end_date": null
+    },
+    "optimization": {
+      "method": "grid_search",
+      "n_random_samples": 20,
+      "metric": "sharpe_ratio",
+      "initial_capital": 10000.0,
+      "commission": 0.001,
+      "slippage": 0.0005
+    },
+    "walk_forward": {
+      "enabled": true,
+      "n_splits": 2,
+      "train_ratio": 0.7
+    },
+    "parameters": {
+      "rsi_oversold": [
+        30,
+        35
+      ],
+      "rsi_overbought": [
+        65,
+        70
+      ],
+      "fast_period": [
+        9,
+        12
+      ],
+      "slow_period": [
+        21,
+        26
+      ],
+      "volume_multiplier": [
+        1.2
+      ],
+      "min_ema_distance": [
+        0.003
+      ],
+      "confidence_threshold": [
+        0.6
+      ],
+      "position_size": [
+        0.02
+      ],
+      "stop_loss_pct": [
+        0.02
+      ]
+    },
+    "output": {
+      "results_dir": "results",
+      "save_json": true,
+      "save_csv": true,
+      "generate_report": true,
+      "generate_heatmaps": false,
+      "top_n": 5
+    }
+  },
+  "optimization": {
+    "method": "grid_search",
+    "metric": "sharpe_ratio",
+    "best_params": {
+      "rsi_oversold": 35,
+      "rsi_overbought": 65,
+      "fast_period": 12,
+      "slow_period": 21,
+      "volume_multiplier": 1.2,
+      "min_ema_distance": 0.003,
+      "confidence_threshold": 0.6,
+      "position_size": 0.02,
+      "stop_loss_pct": 0.02
+    },
+    "best_score": 7.571651130020614,
+    "total_combinations": 16,
+    "all_results": [
+      {
+        "params": {
+          "rsi_oversold": 30,
+          "rsi_overbought": 65,
+          "fast_period": 9,
+          "slow_period": 21,
+          "volume_multiplier": 1.2,
+          "min_ema_distance": 0.003,
+          "confidence_threshold": 0.6,
+          "position_size": 0.02,
+          "stop_loss_pct": 0.02
+        },
+        "score": -1.9974590070808043,
+        "metric": "sharpe_ratio",
+        "total_profit": -863.6340741424383,
+        "win_rate": 0.48484848484848486,
+        "max_drawdown": 0.23377415686652708,
+        "sharpe_ratio": -1.9974590070808043,
+        "sortino_ratio": -0.5736668224973664,
+        "total_trades": 66,
+        "winning_trades": 32,
+        "losing_trades": 34,
+        "profit_factor": 0.8753547033562765,
+        "expectancy": -13.085364759733878
+      },
+      {
+        "params": {
+          "rsi_oversold": 30,
+          "rsi_overbought": 65,
+          "fast_period": 9,
+          "slow_period": 26,
+          "volume_multiplier": 1.2,
+          "min_ema_distance": 0.003,
+          "confidence_threshold": 0.6,
+          "position_size": 0.02,
+          "stop_loss_pct": 0.02
+        },
+        "score": -1.9930283676422003,
+        "metric": "sharpe_ratio",
+        "total_profit": -893.6124904781599,
+        "win_rate": 0.5178571428571429,
+        "max_drawdown": 0.17317908299644505,
+        "sharpe_ratio": -1.9930283676422003,
+        "sortino_ratio": -0.5607577430666628,
+        "total_trades": 56,
+        "winning_trades": 29,
+        "losing_trades": 27,
+        "profit_factor": 0.8462366510040069,
+        "expectancy": -15.957365901395676
+      },
+      {
+        "params": {
+          "rsi_oversold": 30,
+          "rsi_overbought": 65,
+          "fast_period": 12,
+          "slow_period": 21,
+          "volume_multiplier": 1.2,
+          "min_ema_distance": 0.003,
+          "confidence_threshold": 0.6,
+          "position_size": 0.02,
+          "stop_loss_pct": 0.02
+        },
+        "score": 5.17610507250669,
+        "metric": "sharpe_ratio",
+        "total_profit": 1615.8731211547681,
+        "win_rate": 0.46938775510204084,
+        "max_drawdown": 0.15885215975968672,
+        "sharpe_ratio": 5.17610507250669,
+        "sortino_ratio": 1.8888705285850342,
+        "total_trades": 49,
+        "winning_trades": 23,
+        "losing_trades": 26,
+        "profit_factor": 1.3174667208666924,
+        "expectancy": 32.97700247254626
+      },
+      {
+        "params": {
+          "rsi_oversold": 30,
+          "rsi_overbought": 65,
+          "fast_period": 12,
+          "slow_period": 26,
+          "volume_multiplier": 1.2,
+          "min_ema_distance": 0.003,
+          "confidence_threshold": 0.6,
+          "position_size": 0.02,
+          "stop_loss_pct": 0.02
+        },
+        "score": -10.358970588881048,
+        "metric": "sharpe_ratio",
+        "total_profit": -2029.1007796901413,
+        "win_rate": 0.4583333333333333,
+        "max_drawdown": 0.2029100779690145,
+        "sharpe_ratio": -10.358970588881048,
+        "sortino_ratio": -2.2275969271995066,
+        "total_trades": 48,
+        "winning_trades": 22,
+        "losing_trades": 26,
+        "profit_factor": 0.5686999996739702,
+        "expectancy": -42.27293291021129
+      },
+      {
+        "params": {
+          "rsi_oversold": 30,
+          "rsi_overbought": 70,
+          "fast_period": 9,
+          "slow_period": 21,
+          "volume_multiplier": 1.2,
+          "min_ema_distance": 0.003,
+          "confidence_threshold": 0.6,
+          "position_size": 0.02,
+          "stop_loss_pct": 0.02
+        },
+        "score": -5.699999335052144,
+        "metric": "sharpe_ratio",
+        "total_profit": -1684.6535081190113,
+        "win_rate": 0.4852941176470588,
+        "max_drawdown": 0.28272802218095566,
+        "sharpe_ratio": -5.699999335052144,
+        "sortino_ratio": -1.4857661375517484,
+        "total_trades": 68,
+        "winning_trades": 33,
+        "losing_trades": 35,
+        "profit_factor": 0.7498498965127237,
+        "expectancy": -24.77431629586782
+      },
+      {
+        "params": {
+          "rsi_oversold": 30,
+          "rsi_overbought": 70,
+          "fast_period": 9,
+          "slow_period": 26,
+          "volume_multiplier": 1.2,
+          "min_ema_distance": 0.003,
+          "confidence_threshold": 0.6,
+          "position_size": 0.02,
+          "stop_loss_pct": 0.02
+        },
+        "score": -6.5103495927309325,
+        "metric": "sharpe_ratio",
+        "total_profit": -1614.1244574928376,
+        "win_rate": 0.5245901639344263,
+        "max_drawdown": 0.23528643118009743,
+        "sharpe_ratio": -6.5103495927309325,
+        "sortino_ratio": -1.3626214882792909,
+        "total_trades": 61,
+        "winning_trades": 32,
+        "losing_trades": 29,
+        "profit_factor": 0.7143963935627352,
+        "expectancy": -26.46105668021046
+      },
+      {
+        "params": {
+          "rsi_oversold": 30,
+          "rsi_overbought": 70,
+          "fast_period": 12,
+          "slow_period": 21,
+          "volume_multiplier": 1.2,
+          "min_ema_distance": 0.003,
+          "confidence_threshold": 0.6,
+          "position_size": 0.02,
+          "stop_loss_pct": 0.02
+        },
+        "score": -0.7542117792909149,
+        "metric": "sharpe_ratio",
+        "total_profit": -295.66391014975517,
+        "win_rate": 0.4909090909090909,
+        "max_drawdown": 0.22470803468902867,
+        "sharpe_ratio": -0.7542117792909149,
+        "sortino_ratio": -0.18051063135813128,
+        "total_trades": 55,
+        "winning_trades": 27,
+        "losing_trades": 28,
+        "profit_factor": 0.9373573803855332,
+        "expectancy": -5.375707457268277
+      },
+      {
+        "params": {
+          "rsi_oversold": 30,
+          "rsi_overbought": 70,
+          "fast_period": 12,
+          "slow_period": 26,
+          "volume_multiplier": 1.2,
+          "min_ema_distance": 0.003,
+          "confidence_threshold": 0.6,
+          "position_size": 0.02,
+          "stop_loss_pct": 0.02
+        },
+        "score": -1.5444055024468735,
+        "metric": "sharpe_ratio",
+        "total_profit": -561.2854731460087,
+        "win_rate": 0.5094339622641509,
+        "max_drawdown": 0.16108608119626122,
+        "sharpe_ratio": -1.5444055024468735,
+        "sortino_ratio": -0.4452662707661249,
+        "total_trades": 53,
+        "winning_trades": 27,
+        "losing_trades": 26,
+        "profit_factor": 0.8914360471632068,
+        "expectancy": -10.590291946151126
+      },
+      {
+        "params": {
+          "rsi_oversold": 35,
+          "rsi_overbought": 65,
+          "fast_period": 9,
+          "slow_period": 21,
+          "volume_multiplier": 1.2,
+          "min_ema_distance": 0.003,
+          "confidence_threshold": 0.6,
+          "position_size": 0.02,
+          "stop_loss_pct": 0.02
+        },
+        "score": -4.714225060786321,
+        "metric": "sharpe_ratio",
+        "total_profit": -1540.2242758546067,
+        "win_rate": 0.48333333333333334,
+        "max_drawdown": 0.22846788137250681,
+        "sharpe_ratio": -4.714225060786321,
+        "sortino_ratio": -1.1662077141284792,
+        "total_trades": 60,
+        "winning_trades": 29,
+        "losing_trades": 31,
+        "profit_factor": 0.7609676291986527,
+        "expectancy": -25.67040459757679
+      },
+      {
+        "params": {
+          "rsi_oversold": 35,
+          "rsi_overbought": 65,
+          "fast_period": 9,
+          "slow_period": 26,
+          "volume_multiplier": 1.2,
+          "min_ema_distance": 0.003,
+          "confidence_threshold": 0.6,
+          "position_size": 0.02,
+          "stop_loss_pct": 0.02
+        },
+        "score": -1.3854397216694152,
+        "metric": "sharpe_ratio",
+        "total_profit": -647.7225627734108,
+        "win_rate": 0.5306122448979592,
+        "max_drawdown": 0.19954872821901617,
+        "sharpe_ratio": -1.3854397216694152,
+        "sortino_ratio": -0.3621636342884657,
+        "total_trades": 49,
+        "winning_trades": 26,
+        "losing_trades": 23,
+        "profit_factor": 0.8660839655862269,
+        "expectancy": -13.218827811702255
+      },
+      {
+        "params": {
+          "rsi_oversold": 35,
+          "rsi_overbought": 65,
+          "fast_period": 12,
+          "slow_period": 21,
+          "volume_multiplier": 1.2,
+          "min_ema_distance": 0.003,
+          "confidence_threshold": 0.6,
+          "position_size": 0.02,
+          "stop_loss_pct": 0.02
+        },
+        "score": 7.571651130020614,
+        "metric": "sharpe_ratio",
+        "total_profit": 2557.1621225232543,
+        "win_rate": 0.5,
+        "max_drawdown": 0.1343531569580388,
+        "sharpe_ratio": 7.571651130020614,
+        "sortino_ratio": 2.8081668866031095,
+        "total_trades": 44,
+        "winning_trades": 22,
+        "losing_trades": 22,
+        "profit_factor": 1.6127754628426685,
+        "expectancy": 58.11732096643762
+      },
+      {
+        "params": {
+          "rsi_oversold": 35,
+          "rsi_overbought": 65,
+          "fast_period": 12,
+          "slow_period": 26,
+          "volume_multiplier": 1.2,
+          "min_ema_distance": 0.003,
+          "confidence_threshold": 0.6,
+          "position_size": 0.02,
+          "stop_loss_pct": 0.02
+        },
+        "score": -7.906551538040997,
+        "metric": "sharpe_ratio",
+        "total_profit": -1273.5242015553856,
+        "win_rate": 0.46511627906976744,
+        "max_drawdown": 0.15214875058843227,
+        "sharpe_ratio": -7.906551538040997,
+        "sortino_ratio": -1.9068634178734503,
+        "total_trades": 43,
+        "winning_trades": 20,
+        "losing_trades": 23,
+        "profit_factor": 0.6381354961697125,
+        "expectancy": -29.616841896636892
+      },
+      {
+        "params": {
+          "rsi_oversold": 35,
+          "rsi_overbought": 70,
+          "fast_period": 9,
+          "slow_period": 21,
+          "volume_multiplier": 1.2,
+          "min_ema_distance": 0.003,
+          "confidence_threshold": 0.6,
+          "position_size": 0.02,
+          "stop_loss_pct": 0.02
+        },
+        "score": -9.034452454049589,
+        "metric": "sharpe_ratio",
+        "total_profit": -2300.443419108185,
+        "win_rate": 0.4838709677419355,
+        "max_drawdown": 0.2732258786258243,
+        "sharpe_ratio": -9.034452454049589,
+        "sortino_ratio": -2.004155279595463,
+        "total_trades": 62,
+        "winning_trades": 30,
+        "losing_trades": 32,
+        "profit_factor": 0.6319301987673072,
+        "expectancy": -37.10392611464813
+      },
+      {
+        "params": {
+          "rsi_oversold": 35,
+          "rsi_overbought": 70,
+          "fast_period": 9,
+          "slow_period": 26,
+          "volume_multiplier": 1.2,
+          "min_ema_distance": 0.003,
+          "confidence_threshold": 0.6,
+          "position_size": 0.02,
+          "stop_loss_pct": 0.02
+        },
+        "score": -6.329001948707094,
+        "metric": "sharpe_ratio",
+        "total_profit": -1387.689734752122,
+        "win_rate": 0.5370370370370371,
+        "max_drawdown": 0.2230077727183672,
+        "sharpe_ratio": -6.329001948707094,
+        "sortino_ratio": -1.163749993180929,
+        "total_trades": 54,
+        "winning_trades": 29,
+        "losing_trades": 25,
+        "profit_factor": 0.7036265818204683,
+        "expectancy": -25.697958050965205
+      },
+      {
+        "params": {
+          "rsi_oversold": 35,
+          "rsi_overbought": 70,
+          "fast_period": 12,
+          "slow_period": 21,
+          "volume_multiplier": 1.2,
+          "min_ema_distance": 0.003,
+          "confidence_threshold": 0.6,
+          "position_size": 0.02,
+          "stop_loss_pct": 0.02
+        },
+        "score": 2.8324902659397035,
+        "metric": "sharpe_ratio",
+        "total_profit": 490.72422715896306,
+        "win_rate": 0.52,
+        "max_drawdown": 0.1788665496933008,
+        "sharpe_ratio": 2.8324902659397035,
+        "sortino_ratio": 0.6657934231935363,
+        "total_trades": 50,
+        "winning_trades": 26,
+        "losing_trades": 24,
+        "profit_factor": 1.1273806630903214,
+        "expectancy": 9.814484543179276
+      },
+      {
+        "params": {
+          "rsi_oversold": 35,
+          "rsi_overbought": 70,
+          "fast_period": 12,
+          "slow_period": 26,
+          "volume_multiplier": 1.2,
+          "min_ema_distance": 0.003,
+          "confidence_threshold": 0.6,
+          "position_size": 0.02,
+          "stop_loss_pct": 0.02
+        },
+        "score": 2.022548897743449,
+        "metric": "sharpe_ratio",
+        "total_profit": 333.42808765521767,
+        "win_rate": 0.5208333333333334,
+        "max_drawdown": 0.1029968901525822,
+        "sharpe_ratio": 2.022548897743449,
+        "sortino_ratio": 0.8186456307065911,
+        "total_trades": 48,
+        "winning_trades": 25,
+        "losing_trades": 23,
+        "profit_factor": 1.0882953949698406,
+        "expectancy": 6.946418492817045
+      }
+    ],
+    "additional_params": {
+      "volume_multiplier": 1.2,
+      "min_ema_distance": 0.003,
+      "confidence_threshold": 0.6,
+      "position_size": 0.02,
+      "stop_loss_pct": 0.02
+    }
+  },
+  "walk_forward": {
+    "enabled": true,
+    "n_splits": 2,
+    "train_ratio": 0.7,
+    "splits": [
+      {
+        "split": 1,
+        "total_bars": 1000,
+        "train_bars": 700,
+        "test_bars": 300,
+        "total_profit": 288.96696647955935,
+        "win_rate": 1.0,
+        "sharpe_ratio": 22.735327923845563,
+        "max_drawdown": 0.0,
+        "total_trades": 2
+      },
+      {
+        "split": 2,
+        "total_bars": 1000,
+        "train_bars": 700,
+        "test_bars": 300,
+        "total_profit": -325.4252183304331,
+        "win_rate": 0.0,
+        "sharpe_ratio": -31.825174444646613,
+        "max_drawdown": 0.03254252183304343,
+        "total_trades": 4
+      }
+    ],
+    "stability": {
+      "profit_mean": -18.229125925436875,
+      "profit_std": 307.1960924049962,
+      "profit_cv": -16.851937589412092,
+      "sharpe_mean": -4.544923260400525,
+      "sharpe_std": 27.28025118424609,
+      "win_rate_mean": 0.5,
+      "win_rate_std": 0.5
+    }
+  }
+}
