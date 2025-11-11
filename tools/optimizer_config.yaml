@@ -1,0 +1,81 @@
+# Parameter Optimization Configuration
+# This file defines the parameter grid for optimization
+
+# Data configuration
+data:
+  # Source: 'historical' or 'synthetic'
+  source: historical
+  # Path to historical data (if source is historical)
+  data_path: data/historical/btc_usdt_5m_2025.csv
+  # Symbol to optimize
+  symbol: BTC/USDT
+  # Timeframe
+  timeframe: 5m
+  # Filter data by date range (optional)
+  start_date: null  # e.g., "2025-10-01"
+  end_date: null    # e.g., "2025-10-31"
+
+# Optimization settings
+optimization:
+  # Method: 'grid_search' or 'random_search'
+  method: grid_search
+  # Number of random samples (for random_search only)
+  n_random_samples: 100
+  # Metric to optimize: 'sharpe_ratio', 'total_profit', 'win_rate', 'sortino_ratio', 'calmar_ratio'
+  metric: sharpe_ratio
+  # Initial capital for backtesting
+  initial_capital: 10000.0
+  # Commission rate (0.001 = 0.1%)
+  commission: 0.001
+  # Slippage rate (0.0005 = 0.05%)
+  slippage: 0.0005
+
+# Walk-forward validation settings
+walk_forward:
+  # Enable walk-forward validation
+  enabled: true
+  # Number of splits/windows
+  n_splits: 3
+  # Train ratio (0.7 = 70% train, 30% test)
+  train_ratio: 0.7
+
+# Parameter grid for optimization
+# Each parameter can have multiple values to test
+parameters:
+  # RSI thresholds
+  rsi_oversold: [25, 30, 35, 40]
+  rsi_overbought: [60, 65, 70, 75]
+  
+  # EMA periods
+  fast_period: [9, 12, 15, 20]
+  slow_period: [21, 26, 30, 50]
+  
+  # Volume multiplier (minimum volume threshold)
+  volume_multiplier: [1.0, 1.2, 1.5, 2.0]
+  
+  # Minimum EMA distance (as percentage)
+  min_ema_distance: [0.001, 0.003, 0.005, 0.01]
+  
+  # Confidence threshold for signals
+  confidence_threshold: [0.5, 0.6, 0.7, 0.8]
+  
+  # Position size (as fraction of capital)
+  position_size: [0.02, 0.05, 0.08, 0.10]
+  
+  # Stop loss percentage
+  stop_loss_pct: [0.01, 0.02, 0.03, 0.05]
+
+# Output settings
+output:
+  # Directory for results
+  results_dir: results
+  # Save detailed results to JSON
+  save_json: true
+  # Save summary to CSV
+  save_csv: true
+  # Generate markdown report
+  generate_report: true
+  # Generate visualization heatmaps
+  generate_heatmaps: true
+  # Number of top configurations to report
+  top_n: 10
