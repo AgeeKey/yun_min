@@ -112,6 +112,30 @@ backtest:
   confirmation_bars: 2  # Bars to confirm signal
   min_holding_bars: 10  # Minimum bars to hold position
 
+# Optimizer Configuration (Issue #40)
+optimizer:
+  # Grid search parameters
+  grid_search:
+    max_combinations: 100  # Limit grid search combinations
+  
+  # Random search parameters  
+  random_search:
+    n_iterations: 50  # Number of random samples
+  
+  # Walk-forward validation parameters
+  walk_forward:
+    train_size: 1000  # Training window size (bars)
+    test_size: 200  # Testing window size (bars)
+    n_splits: 5  # Number of walk-forward splits
+  
+  # Optimization metrics
+  metrics:
+    primary: sharpe_ratio  # Primary optimization metric
+    secondary:
+      - total_pnl
+      - win_rate
+      - max_drawdown
+
 # LLM Integration - OPENAI GPT-4O-MINI (OPTIMAL FREE MODEL)
 llm:
   enabled: true
