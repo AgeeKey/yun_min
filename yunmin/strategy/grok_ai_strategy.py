@@ -36,7 +36,8 @@ class GrokAIStrategy(BaseStrategy):
     - HOLD: ждать
     """
     
-    def __init__(self, grok_analyzer=None, use_advanced_indicators=True, hybrid_mode=True):
+    def __init__(self, grok_analyzer=None, use_advanced_indicators=True, hybrid_mode=True,
+                 confirmation_bars=0):
         """
         Initialize AI trading strategy.
         
@@ -45,6 +46,7 @@ class GrokAIStrategy(BaseStrategy):
                           Compatible interface: analyze_market(), analyze_text()
             use_advanced_indicators: Enable MACD, Bollinger Bands, ATR, OBV, Ichimoku (Phase 2.3)
             hybrid_mode: Use classical analysis + AI confirmation (Phase 2.2)
+            confirmation_bars: Require N consecutive bars with same signal before entry (0 = disabled)
         """
         super().__init__("AI")
         self.grok = grok_analyzer  # Generic LLM analyzer
@@ -54,13 +56,18 @@ class GrokAIStrategy(BaseStrategy):
         self.hybrid_mode = hybrid_mode
         self.indicators = TechnicalIndicators()
         
+        # Trade frequency controls
+        self.confirmation_bars = confirmation_bars
+        self.signal_history = []  # Track recent signals for confirmation
+        
         if not self.grok or not self.grok.enabled:
             logger.warning("⚠️  LLM AI not available - strategy will use fallback logic")
         else:
             analyzer_type = self.grok.__class__.__name__
             mode_str = "Hybrid" if hybrid_mode else "AI-only"
             indicators_str = "Advanced" if use_advanced_indicators else "Basic"
-            logger.info(f"🤖 AI Strategy initialized: {analyzer_type}, Mode={mode_str}, Indicators={indicators_str}")
+            logger.info(f"🤖 AI Strategy initialized: {analyzer_type}, Mode={mode_str}, "
+                       f"Indicators={indicators_str}, Confirmation={confirmation_bars} bars")
         
         # Параметры для fallback (если LLM недоступен)
         # PHASE 2.1: Relaxed thresholds for increased trading frequency (4% → 15-20%)
@@ -389,6 +396,56 @@ class GrokAIStrategy(BaseStrategy):
                 reason=f"AI stronger: {ai.reason[:80]}"
             )
         
+    def _check_confirmation(self, signal: Signal) -> Signal:
+        """
+        Check if signal has required confirmation bars.
+        
+        Requires N consecutive bars with the same signal type (BUY/SELL) before
+        allowing the signal to pass through. HOLD signals are always allowed.
+        
+        Args:
+            signal: Current signal
+            
+        Returns:
+            Signal (may be converted to HOLD if confirmation not met)
+        """
+        if self.confirmation_bars <= 0:
+            return signal
+            
+        # HOLD signals don't need confirmation
+        if signal.type == SignalType.HOLD:
+            return signal
+            
+        # Add current signal to history
+        self.signal_history.append(signal.type)
+        
+        # Keep only recent history (last confirmation_bars + 1)
+        max_history = self.confirmation_bars + 1
+        if len(self.signal_history) > max_history:
+            self.signal_history = self.signal_history[-max_history:]
+        
+        # Check if we have enough history
+        if len(self.signal_history) < self.confirmation_bars:
+            logger.debug(f"Confirmation: {len(self.signal_history)}/{self.confirmation_bars} bars - waiting")
+            return Signal(
+                type=SignalType.HOLD,
+                confidence=0.5,
+                reason=f"Awaiting confirmation: {len(self.signal_history)}/{self.confirmation_bars} bars"
+            )
+        
+        # Check if last N signals are the same as current
+        recent_signals = self.signal_history[-self.confirmation_bars:]
+        if all(s == signal.type for s in recent_signals):
+            logger.info(f"✅ Confirmation met: {self.confirmation_bars} consecutive {signal.type.value.upper()} signals")
+            return signal
+        else:
+            logger.debug(f"Confirmation not met: mixed signals in last {self.confirmation_bars} bars")
+            return Signal(
+                type=SignalType.HOLD,
+                confidence=0.5,
+                reason=f"Confirmation not met: inconsistent signals"
+            )
+    
     def analyze(self, df: pd.DataFrame) -> Signal:
         """
         Analyze market data using enhanced strategy.
@@ -422,7 +479,8 @@ class GrokAIStrategy(BaseStrategy):
             # Step 2: If classical is high confidence, use it directly
             if classical_signal.confidence >= 0.70:
                 logger.info(f"🎯 High-confidence classical signal, skipping AI: {classical_signal.type.value.upper()}")
-                return classical_signal
+                # Apply confirmation check
+                return self._check_confirmation(classical_signal)
             
             # Step 3: Otherwise, get AI opinion and merge
             if self.grok and self.grok.enabled:
@@ -434,13 +492,16 @@ class GrokAIStrategy(BaseStrategy):
                 # Merge signals
                 merged_signal = self._merge_signals(classical_signal, ai_signal)
                 logger.info(f"🔀 Hybrid decision: {merged_signal.type.value.upper()} (confidence={merged_signal.confidence:.0%})")
-                return merged_signal
+                # Apply confirmation check
+                return self._check_confirmation(merged_signal)
             else:
                 # No AI available, use classical
-                return classical_signal
+                return self._check_confirmation(classical_signal)
         
         # Non-hybrid mode: original AI-first approach with filters
-        return self._analyze_original_mode(df_with_indicators)
+        result = self._analyze_original_mode(df_with_indicators)
+        # Apply confirmation check
+        return self._check_confirmation(result)
     
     def _prepare_enhanced_data(self, df_with_indicators: pd.DataFrame) -> Dict[str, Any]:
         """
