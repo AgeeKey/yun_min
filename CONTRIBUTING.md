@@ -46,14 +46,104 @@ cd yun_min
 
 # Create virtual environment
 python -m venv venv
-source venv/bin/activate
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
-pip install -e .
 
 # Install development dependencies
-pip install pytest pytest-cov black flake8 mypy
+pip install -r requirements-dev.txt
+
+# Install pre-commit hooks (recommended)
+pre-commit install
+
+# Install package in editable mode
+pip install -e .
+
+# Run tests
+pytest tests/
+```
+
+## Code Quality Tools
+
+We use several tools to maintain code quality:
+
+### Formatting
+- **Black**: Code formatter with line length 100
+  ```bash
+  black yunmin/ tests/
+  ```
+
+- **isort**: Import statement sorter
+  ```bash
+  isort yunmin/ tests/
+  ```
+
+### Linting
+- **flake8**: Style guide enforcement
+  ```bash
+  flake8 yunmin/ tests/
+  ```
+
+- **ruff**: Fast Python linter
+  ```bash
+  ruff check yunmin/ tests/
+  ```
+
+### Type Checking
+- **mypy**: Static type checker
+  ```bash
+  mypy yunmin/
+  ```
+
+### Security
+- **bandit**: Security issue scanner
+  ```bash
+  bandit -r yunmin/ -c pyproject.toml
+  ```
+
+### Pre-commit Hooks
+Pre-commit hooks automatically run checks before each commit:
+```bash
+# Install hooks (one-time setup)
+pre-commit install
+
+# Run manually on all files
+pre-commit run --all-files
+
+# Update hooks to latest versions
+pre-commit autoupdate
+```
+
+The hooks include:
+- black (formatting)
+- isort (import sorting)
+- flake8 (linting)
+- mypy (type checking)
+- prettier (YAML formatting)
+- trailing whitespace removal
+- end-of-file fixer
+- YAML validation
+- large file check
+- merge conflict check
+- private key detection
+- bandit (security)
+
+### Running All Checks
+```bash
+# Format code
+black yunmin/ tests/
+isort yunmin/ tests/
+
+# Run linters
+flake8 yunmin/ tests/
+ruff check yunmin/ tests/
+
+# Type check
+mypy yunmin/
+
+# Security scan
+bandit -r yunmin/ -c pyproject.toml
 
 # Run tests
 pytest tests/
@@ -64,8 +154,9 @@ pytest tests/
 - Follow PEP 8 guidelines
 - Use meaningful variable and function names
 - Add docstrings to all functions and classes
-- Format code with black: `black yunmin/`
-- Check with flake8: `flake8 yunmin/`
+- Line length: 100 characters (configured in pyproject.toml)
+- All code should pass pre-commit hooks before committing
+- Use type hints where appropriate
 
 ## Testing
 

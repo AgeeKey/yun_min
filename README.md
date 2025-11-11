@@ -7,6 +7,8 @@
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Grok AI](https://img.shields.io/badge/Powered%20by-Grok%20AI-00ADD8.svg)](https://x.ai)
+[![CI](https://img.shields.io/github/actions/workflow/status/AgeeKey/yun_min/ci.yml?branch=main&label=CI)](https://github.com/AgeeKey/yun_min/actions)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 📊 **[V3 Test Results](docs/reports/v3-final-report.md)** | 📚 **[Architecture](ARCHITECTURE.md)** | 🚀 **[Quick Start](QUICKSTART.md)**
 
@@ -166,14 +168,14 @@ strategy = GrokAIStrategy()
 while True:
     # 1. Получить данные
     market_data = connector.get_market_data('BTCUSDT', '5m')
-    
+
     # 2. Спросить Grok AI
     decision = strategy.analyze(market_data)
-    
+
     # 3. Выполнить решение
     if decision.action in ['LONG', 'SHORT']:
         connector.open_position(decision)
-    
+
     time.sleep(300)  # 5 минут
 ```
 
@@ -188,7 +190,7 @@ conn = sqlite3.connect('yunmin.db')
 
 # Статистика по сторонам
 df = pd.read_sql("""
-    SELECT side, 
+    SELECT side,
            COUNT(*) as total,
            SUM(CASE WHEN status='CLOSED' THEN 1 ELSE 0 END) as closed,
            AVG(realized_pnl) as avg_pnl
@@ -271,8 +273,8 @@ python stress_test.py --crash-scenario --volatility extreme
 | Max Drawdown | < 15% | ⏳ Testing |
 | Profit Factor | > 1.5 | ⏳ Testing |
 
-📚 **Full Testing Guide:** [PHASE_1_4_TESTING_GUIDE.md](./PHASE_1_4_TESTING_GUIDE.md)  
-📊 **Test Results:** [TEST_RESULTS_NOV2025.md](./TEST_RESULTS_NOV2025.md)  
+📚 **Full Testing Guide:** [PHASE_1_4_TESTING_GUIDE.md](./PHASE_1_4_TESTING_GUIDE.md)
+📊 **Test Results:** [TEST_RESULTS_NOV2025.md](./TEST_RESULTS_NOV2025.md)
 🔍 **Critical Analysis:** [CRITICAL_ANALYSIS_REPORT.md](./CRITICAL_ANALYSIS_REPORT.md)
 
 ## 🎯 Roadmap
@@ -368,6 +370,42 @@ Key metrics tracked:
 - 📊 [Monitoring Dashboard](docs/deployment/monitoring-dashboard.md) - Monitoring setup
 - 📈 [Scaling Roadmap](docs/deployment/scaling.md) - Scaling roadmap
 - 📜 [Attribution](docs/reports/attribution.md) - License attribution
+
+## 👨‍💻 Development
+
+### Code Quality & CI
+
+This project uses automated code quality checks and continuous integration:
+
+**Tools:**
+- ✨ **Black** & **isort** - Code formatting
+- 🔍 **flake8** & **ruff** - Linting
+- 🔒 **mypy** - Type checking
+- 🛡️ **bandit** - Security scanning
+- ✅ **pytest** - Testing framework
+- 🪝 **pre-commit** - Git hooks
+
+**Quick Start:**
+```bash
+# Install development dependencies
+pip install -r requirements-dev.txt
+
+# Install pre-commit hooks
+pre-commit install
+
+# Run all checks
+black yunmin/ tests/
+isort yunmin/ tests/
+flake8 yunmin/ tests/
+ruff check yunmin/ tests/
+mypy yunmin/
+pytest tests/
+```
+
+**CI/CD:**
+- All pull requests automatically run linting, type checking, and tests
+- Pre-commit hooks ensure code quality before commits
+- See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines
 
 ## ⚠️ Disclaimer
 
