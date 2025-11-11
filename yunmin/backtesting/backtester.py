@@ -12,7 +12,9 @@ class Backtester:
                  maker_fee: float = 0.0002, taker_fee: float = 0.0004,
                  slippage_rate: float = 0.0002, use_risk_manager: bool = True,
                  position_size_pct: float = 0.01, leverage: float = 1.0,
-                 stop_loss_pct: float = 0.02, take_profit_pct: float = 0.05):
+                 stop_loss_pct: float = 0.02, take_profit_pct: float = 0.05,
+                 cooldown_bars: int = 0, confirmation_bars: int = 0, 
+                 min_holding_bars: int = 0):
         """
         Initialize backtester with realistic execution model.
         
@@ -27,6 +29,9 @@ class Backtester:
             leverage: Leverage to use (default 1.0x)
             stop_loss_pct: Stop loss percentage (default 2%)
             take_profit_pct: Take profit percentage (default 5%)
+            cooldown_bars: Minimum bars between trades (default 0)
+            confirmation_bars: Bars to confirm signal before entry (default 0)
+            min_holding_bars: Minimum bars to hold position (default 0)
         """
         self.strategy = strategy
         self.initial_capital = initial_capital
@@ -43,6 +48,13 @@ class Backtester:
         self.trade_log: List[Dict[str, Any]] = []
         self.rejected_trades: List[Dict[str, Any]] = []
         
+        # Trade frequency controls (Issue #39)
+        self.cooldown_bars = cooldown_bars
+        self.confirmation_bars = confirmation_bars
+        self.min_holding_bars = min_holding_bars
+        self.last_exit_bar: Optional[int] = None
+        self.signal_confirmation: Optional[Dict[str, Any]] = None
+        
         if use_risk_manager:
             from yunmin.core.config import RiskConfig
             self.risk_manager = RiskManager(RiskConfig())
@@ -50,7 +62,8 @@ class Backtester:
             self.risk_manager = None
         logger.info(f"Backtester initialized - Capital: ${initial_capital:,.0f}, "
                    f"Position: {position_size_pct*100:.1f}%, Leverage: {leverage}x, "
-                   f"Fees: Maker={maker_fee*100:.3f}% Taker={taker_fee*100:.3f}%")
+                   f"Fees: Maker={maker_fee*100:.3f}% Taker={taker_fee*100:.3f}%, "
+                   f"Frequency: cooldown={cooldown_bars}, confirm={confirmation_bars}, min_hold={min_holding_bars}")
 
     def run(self, data: pd.DataFrame, symbol: str = 'BTC/USDT') -> Dict[str, Any]:
         """
@@ -69,6 +82,8 @@ class Backtester:
         self.metrics = PerformanceMetrics()
         self.trade_log = []
         self.rejected_trades = []
+        self.last_exit_bar = None
+        self.signal_confirmation = None
         
         for idx in range(len(data)):
             if idx < 50:
@@ -76,7 +91,19 @@ class Backtester:
             historical_df = data.iloc[:idx+1]
             signal = self.strategy.analyze(historical_df)
             
+            # Check if we can trade (cooldown period)
+            if self.last_exit_bar is not None and self.cooldown_bars > 0:
+                bars_since_exit = idx - self.last_exit_bar
+                if bars_since_exit < self.cooldown_bars:
+                    # Still in cooldown period
+                    if self.current_position:
+                        self._check_sl_tp(data.iloc[idx]['close'], data.iloc[idx]['timestamp'], idx)
+                    continue
+            
             if signal is None or signal.type == SignalType.HOLD:
+                # Clear signal confirmation if signal changes
+                if self.signal_confirmation is not None:
+                    self.signal_confirmation = None
                 if self.current_position:
                     self._check_sl_tp(data.iloc[idx]['close'], data.iloc[idx]['timestamp'], idx)
                 continue
@@ -84,11 +111,51 @@ class Backtester:
             price = data.iloc[idx]['close']
             ts = data.iloc[idx]['timestamp']
             
-            if signal.type == SignalType.BUY and not self.current_position:
-                self._open_long(price, ts, symbol, idx)
-            elif signal.type == SignalType.SELL and not self.current_position:
-                self._open_short(price, ts, symbol, idx)
+            # Handle signal confirmation
+            if signal.type in [SignalType.BUY, SignalType.SELL] and not self.current_position:
+                if self.confirmation_bars > 0:
+                    # Check if we're confirming an existing signal
+                    if self.signal_confirmation is None:
+                        # New signal - start confirmation
+                        self.signal_confirmation = {
+                            'signal_type': signal.type,
+                            'first_bar': idx,
+                            'count': 1
+                        }
+                        continue
+                    elif self.signal_confirmation['signal_type'] == signal.type:
+                        # Same signal - increment confirmation
+                        self.signal_confirmation['count'] += 1
+                        if self.signal_confirmation['count'] >= self.confirmation_bars:
+                            # Signal confirmed - proceed to open position
+                            self.signal_confirmation = None
+                        else:
+                            # Still confirming
+                            continue
+                    else:
+                        # Signal changed - reset confirmation
+                        self.signal_confirmation = {
+                            'signal_type': signal.type,
+                            'first_bar': idx,
+                            'count': 1
+                        }
+                        continue
+                
+                # Open position (confirmation passed or not required)
+                if signal.type == SignalType.BUY:
+                    self._open_long(price, ts, symbol, idx)
+                elif signal.type == SignalType.SELL:
+                    self._open_short(price, ts, symbol, idx)
+                    
             elif signal.type == SignalType.CLOSE and self.current_position:
+                # Check minimum holding period
+                if self.min_holding_bars > 0:
+                    bars_held = idx - self.current_position['entry_bar']
+                    if bars_held < self.min_holding_bars:
+                        # Haven't held long enough - skip close signal
+                        self._check_sl_tp(price, ts, idx)
+                        continue
+                
                 self._close_pos(price, ts, 'Signal', idx)
             
             if self.current_position:
@@ -255,6 +322,9 @@ class Backtester:
             'symbol': pos['symbol'],
             'capital_after': self.capital
         })
+        
+        # Track last exit bar for cooldown period
+        self.last_exit_bar = bar_index
         
         logger.debug(f"Closed {pos['side']} at {exe_price:.2f}, P&L: ${pnl-exit_fee:.2f} ({pnl_pct:.2f}%), Reason: {reason}")
         self.current_position = None
