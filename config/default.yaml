@@ -136,16 +136,24 @@ optimizer:
       - win_rate
       - max_drawdown
 
-# LLM Integration - OPENAI GPT-4O-MINI (OPTIMAL FREE MODEL)
+# LLM Integration - OPENAI GPT-4O-MINI (RECOMMENDED)
 llm:
   enabled: true
-  provider: openai  # openai | grok
-  model: gpt-4o-mini  # BEST FREE: 2.5M tokens/day, fast, smart
-  # api_key loaded from environment: OPENAI_API_KEY
+  provider: openai  # openai | groq | grok
+  model: gpt-4o-mini  # OpenAI: gpt-4o-mini (recommended), gpt-4o, gpt-4-turbo
+                      # Groq: llama-3.3-70b-versatile, mixtral-8x7b-32768
+  # API key loaded from environment variable:
+  # - OPENAI_API_KEY for OpenAI models
+  # - GROK_API_KEY or GROQ_API_KEY for Groq/Grok models
   fallback_model: gpt-4o  # Fallback to paid model if needed
-  max_daily_tokens_gpt5: 250000  # 250k tokens/day FREE
-  max_daily_tokens_mini: 2500000  # 2.5M tokens/day FREE
+  max_daily_tokens_gpt5: 250000  # 250k tokens/day FREE (GPT-4o)
+  max_daily_tokens_mini: 2500000  # 2.5M tokens/day FREE (GPT-4o-mini)
   explain_trades: true
+  
+  # Provider-specific notes:
+  # OpenAI: Best quality, free tier available, fast responses
+  # Groq: Fast inference, free tier, good for high-frequency analysis
+  # Note: Groq and Grok refer to the same provider (xAI/Groq)
 
 # Database
 database:
