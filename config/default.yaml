@@ -88,6 +88,12 @@ strategy:
   ichimoku_tenkan: 9
   ichimoku_kijun: 26
   ichimoku_senkou_b: 52
+  
+  # Trade Frequency Controls (to reduce churning)
+  # These parameters help prevent excessive trading and improve signal quality
+  cooldown_bars: 0  # Minimum number of bars to wait between closing and opening new position (0 = disabled)
+  confirmation_bars: 0  # Number of consecutive bars with same signal required before entry (0 = disabled, 1 = immediate)
+  min_holding_bars: 0  # Minimum number of bars to hold a position before allowing exit (0 = disabled)
 
 # Machine Learning
 ml:
