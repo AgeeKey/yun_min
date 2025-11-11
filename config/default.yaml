@@ -96,12 +96,25 @@ ml:
   retrain_interval: 86400  # 24 hours
   feature_lookback: 100
 
-# LLM Integration - OPENAI GPT-4O-MINI (OPTIMAL FREE MODEL)
+# LLM Integration - OpenAI (Primary) / Groq (Alternative)
+# OPENAI CONFIGURATION (Recommended):
+# 1. Get API key from: https://platform.openai.com/api-keys
+# 2. Set environment variable: OPENAI_API_KEY=sk-...
+# 3. Set budget limits in OpenAI dashboard to protect costs
+# 4. Recommended models:
+#    - gpt-4o-mini: Fast, economical (2.5M tokens/day free tier)
+#    - gpt-4o: More powerful, accurate decisions
+#    - gpt-5: Experimental, advanced capabilities
+#
+# GROQ CONFIGURATION (Alternative):
+# 1. Get API key from: https://console.groq.com/keys
+# 2. Set environment variable: GROK_API_KEY=gsk_...
+# 3. Model: llama-3.3-70b-versatile
 llm:
   enabled: true
-  provider: openai  # openai | grok
+  provider: openai  # openai (primary) | grok (alternative)
   model: gpt-4o-mini  # BEST FREE: 2.5M tokens/day, fast, smart
-  # api_key loaded from environment: OPENAI_API_KEY
+  # api_key loaded from environment: OPENAI_API_KEY (for openai) or GROK_API_KEY (for grok)
   fallback_model: gpt-4o  # Fallback to paid model if needed
   max_daily_tokens_gpt5: 250000  # 250k tokens/day FREE
   max_daily_tokens_mini: 2500000  # 2.5M tokens/day FREE

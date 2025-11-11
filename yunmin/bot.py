@@ -14,7 +14,7 @@ from loguru import logger
 from yunmin.core.config import YunMinConfig, load_config
 from yunmin.data_ingest.exchange_adapter import ExchangeAdapter
 from yunmin.strategy.ema_crossover import EMACrossoverStrategy
-from yunmin.strategy.grok_ai_strategy import GrokAIStrategy
+from yunmin.strategy.grok_ai_strategy import LLMAIStrategy, GrokAIStrategy
 from yunmin.strategy.base import SignalType
 from yunmin.risk.manager import RiskManager
 from yunmin.risk.policies import OrderRequest, PositionInfo
@@ -96,7 +96,7 @@ class YunMinBot:
         # Strategy - выбираем на основе LLM
         if self.llm_analyzer and self.llm_analyzer.enabled:
             # 🤖 AI-DRIVEN TRADING: LLM принимает решения!
-            self.strategy = GrokAIStrategy(grok_analyzer=self.llm_analyzer)
+            self.strategy = LLMAIStrategy(llm_analyzer=self.llm_analyzer)
             logger.info(f"🤖 Using AI STRATEGY with {config.llm.provider.upper()}")
         else:
             # Fallback: традиционная стратегия

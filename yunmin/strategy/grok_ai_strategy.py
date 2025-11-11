@@ -1,7 +1,10 @@
 """
 AI Trading Strategy - Multi-Provider LLM Support
 
-Использует LLM (OpenAI, Groq, etc.) для принятия торговых решений на основе:
+Primary Provider: OpenAI (GPT-4O-MINI, GPT-4O, GPT-5)
+Alternative: Groq (Llama 3.3 70B)
+
+Использует LLM для принятия торговых решений на основе:
 - Технического анализа
 - Рыночных условий
 - Исторической статистики
@@ -21,14 +24,16 @@ from yunmin.strategy.base import BaseStrategy, Signal, SignalType
 from yunmin.strategy.indicators import TechnicalIndicators, calculate_all_indicators
 
 
-class GrokAIStrategy(BaseStrategy):
+class LLMAIStrategy(BaseStrategy):
     """
-    AI-driven trading strategy with multi-provider support.
+    AI-driven trading strategy with multi-provider LLM support.
     
-    Works with:
-    - OpenAI (GPT-5, GPT-4O-MINI, GPT-4O)
-    - Groq (Llama 3.3 70B, Mixtral)
-    - Any LLM analyzer with compatible interface
+    Primary Provider: OpenAI (GPT-4O-MINI, GPT-4O, GPT-5)
+    Alternative: Groq (Llama 3.3 70B, Mixtral)
+    
+    Compatible with any LLM analyzer that implements:
+    - analyze_market(market_data: dict) -> dict
+    - enabled: bool property
     
     AI анализирует рынок и принимает решения:
     - BUY: открыть LONG позицию
@@ -36,28 +41,31 @@ class GrokAIStrategy(BaseStrategy):
     - HOLD: ждать
     """
     
-    def __init__(self, grok_analyzer=None, use_advanced_indicators=True, hybrid_mode=True):
+    def __init__(self, llm_analyzer=None, grok_analyzer=None, use_advanced_indicators=True, hybrid_mode=True):
         """
         Initialize AI trading strategy.
         
         Args:
-            grok_analyzer: Any LLM analyzer (OpenAIAnalyzer, GrokAnalyzer, etc.)
-                          Compatible interface: analyze_market(), analyze_text()
+            llm_analyzer: LLM analyzer (OpenAIAnalyzer, GrokAnalyzer, etc.)
+                         Compatible interface: analyze_market(), analyze_text()
+            grok_analyzer: DEPRECATED - Use llm_analyzer instead (kept for backward compatibility)
             use_advanced_indicators: Enable MACD, Bollinger Bands, ATR, OBV, Ichimoku (Phase 2.3)
             hybrid_mode: Use classical analysis + AI confirmation (Phase 2.2)
         """
         super().__init__("AI")
-        self.grok = grok_analyzer  # Generic LLM analyzer
+        # Support both new and old parameter names for backward compatibility
+        self.llm = llm_analyzer if llm_analyzer is not None else grok_analyzer
+        self.grok = self.llm  # Alias for backward compatibility
         
         # PHASE 2 Configuration
         self.use_advanced_indicators = use_advanced_indicators
         self.hybrid_mode = hybrid_mode
         self.indicators = TechnicalIndicators()
         
-        if not self.grok or not self.grok.enabled:
+        if not self.llm or not self.llm.enabled:
             logger.warning("⚠️  LLM AI not available - strategy will use fallback logic")
         else:
-            analyzer_type = self.grok.__class__.__name__
+            analyzer_type = self.llm.__class__.__name__
             mode_str = "Hybrid" if hybrid_mode else "AI-only"
             indicators_str = "Advanced" if use_advanced_indicators else "Basic"
             logger.info(f"🤖 AI Strategy initialized: {analyzer_type}, Mode={mode_str}, Indicators={indicators_str}")
@@ -425,11 +433,11 @@ class GrokAIStrategy(BaseStrategy):
                 return classical_signal
             
             # Step 3: Otherwise, get AI opinion and merge
-            if self.grok and self.grok.enabled:
+            if self.llm and self.llm.enabled:
                 logger.info(f"🤔 Classical confidence low ({classical_signal.confidence:.0%}), consulting AI...")
                 # Use the existing AI analysis path
                 enhanced_data = self._prepare_enhanced_data(df_with_indicators)
-                ai_signal = self._get_grok_decision_with_filters(enhanced_data, df_with_indicators)
+                ai_signal = self._get_llm_decision_with_filters(enhanced_data, df_with_indicators)
                 
                 # Merge signals
                 merged_signal = self._merge_signals(classical_signal, ai_signal)
@@ -516,19 +524,19 @@ class GrokAIStrategy(BaseStrategy):
                     f"ema_dist={enhanced_data['ema_distance_ok']}")
         
         # If AI available, use it with filters
-        if self.grok and self.grok.enabled:
-            return self._get_grok_decision_with_filters(enhanced_data, df_with_indicators)
+        if self.llm and self.llm.enabled:
+            return self._get_llm_decision_with_filters(enhanced_data, df_with_indicators)
         else:
             # Fallback: enhanced logic with filters
             return self._fallback_logic_with_filters(enhanced_data, df_with_indicators)
     
-    def _get_grok_decision_with_filters(
+    def _get_llm_decision_with_filters(
         self, 
         enhanced_data: Dict[str, Any],
         df: pd.DataFrame
     ) -> Signal:
         """
-        Получить торговое решение от LLM (OpenAI/Grok) с дополнительными фильтрами.
+        Получить торговое решение от LLM (OpenAI/Groq) с дополнительными фильтрами.
         
         UPDATED (Nov 2025): AI решение проверяется через фильтры для предотвращения
         ложных сигналов (Problem #4 fix).
@@ -554,13 +562,13 @@ class GrokAIStrategy(BaseStrategy):
             }
             
             # Определить тип анализатора для логирования
-            analyzer_type = self.grok.__class__.__name__
+            analyzer_type = self.llm.__class__.__name__
             analyzer_name = "OpenAI" if "OpenAI" in analyzer_type else "Groq"
             
             logger.info(f"🤖 Asking {analyzer_name} for trading decision...")
             
             # Вызвать универсальный метод analyze_market()
-            result = self.grok.analyze_market(market_data)
+            result = self.llm.analyze_market(market_data)
             
             # Обработать результат
             signal_str = result.get('signal', 'HOLD').upper()
@@ -723,3 +731,39 @@ class GrokAIStrategy(BaseStrategy):
                 confidence=0.5,
                 reason="Fallback: No clear signal"
             )
+
+
+# Backward compatibility: Keep GrokAIStrategy as an alias
+class GrokAIStrategy(LLMAIStrategy):
+    """
+    DEPRECATED: Use LLMAIStrategy instead.
+    
+    Kept for backward compatibility with existing code.
+    This alias will be removed in a future version.
+    """
+    
+    def __init__(self, grok_analyzer=None, llm_analyzer=None, use_advanced_indicators=True, hybrid_mode=True):
+        """
+        Initialize AI trading strategy (backward compatible).
+        
+        Args:
+            grok_analyzer: DEPRECATED - Use llm_analyzer parameter instead
+            llm_analyzer: LLM analyzer (OpenAIAnalyzer, GrokAnalyzer, etc.)
+            use_advanced_indicators: Enable advanced indicators
+            hybrid_mode: Use hybrid classical + AI mode
+        """
+        # Log deprecation warning
+        if grok_analyzer is not None:
+            logger.warning(
+                "⚠️  'grok_analyzer' parameter is deprecated. "
+                "Use 'llm_analyzer' instead. "
+                "GrokAIStrategy class is also deprecated, use LLMAIStrategy."
+            )
+        
+        # Call parent with proper parameter handling
+        super().__init__(
+            llm_analyzer=llm_analyzer if llm_analyzer is not None else grok_analyzer,
+            grok_analyzer=None,  # Don't pass to parent to avoid confusion
+            use_advanced_indicators=use_advanced_indicators,
+            hybrid_mode=hybrid_mode
+        )
