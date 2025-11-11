@@ -246,14 +246,16 @@ def test_backtester_initialization():
     backtester = Backtester(
         strategy=strategy,
         initial_capital=50000,
-        commission_rate=0.001,
+        maker_fee=0.0002,
+        taker_fee=0.001,
         slippage_rate=0.0005,
         use_risk_manager=False
     )
     
     assert backtester.initial_capital == 50000
     assert backtester.capital == 50000
-    assert backtester.commission_rate == 0.001
+    assert backtester.maker_fee == 0.0002
+    assert backtester.taker_fee == 0.001
     assert backtester.slippage_rate == 0.0005
     assert backtester.current_position is None
 
@@ -273,10 +275,11 @@ def test_backtester_run_simple():
     backtester = Backtester(
         strategy=strategy,
         initial_capital=100000,
+        position_size_pct=0.1,
         use_risk_manager=False
     )
     
-    results = backtester.run(data, symbol="BTC/USDT", position_size_pct=0.1)
+    results = backtester.run(data, symbol="BTC/USDT")
     
     assert 'total_trades' in results
     assert 'total_pnl' in results
