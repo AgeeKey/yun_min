@@ -52,6 +52,18 @@ class ReportGenerator:
         report.append(f"Avg Duration:        {results.get('avg_duration_hours', 0.0):>11.1f}h")
         report.append("")
         
+        # Risk Management Statistics
+        rejected = results.get('rejected_trades', 0)
+        if rejected > 0:
+            report.append("RISK MANAGEMENT")
+            report.append("-" * 80)
+            report.append(f"Rejected Trades:     {rejected:>12}")
+            total_signals = results.get('total_trades', 0) + rejected
+            if total_signals > 0:
+                approval_rate = (results.get('total_trades', 0) / total_signals) * 100
+                report.append(f"Approval Rate:       {approval_rate:>11.2f}%")
+            report.append("")
+        
         # Risk Metrics
         report.append("RISK METRICS")
         report.append("-" * 80)

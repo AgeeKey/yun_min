@@ -23,6 +23,17 @@ class TradeResult:
     fees: float
 
 
+@dataclass
+class RejectedTrade:
+    """Rejected trade due to risk policy"""
+    timestamp: datetime
+    symbol: str
+    side: str
+    amount: float
+    price: float
+    rejection_reasons: List[str]
+
+
 class PerformanceMetrics:
     """
     Расчёт метрик производительности стратегии.
@@ -39,6 +50,7 @@ class PerformanceMetrics:
     
     def __init__(self, initial_capital: float = 100000.0):
         self.trades: List[TradeResult] = []
+        self.rejected_trades: List[RejectedTrade] = []
         self.equity_curve: List[float] = [initial_capital]
         self.initial_capital = initial_capital
         self.current_equity = initial_capital
@@ -49,6 +61,10 @@ class PerformanceMetrics:
         # Update equity curve immediately
         self.current_equity += (trade.pnl - trade.fees)
         self.equity_curve.append(self.current_equity)
+    
+    def add_rejected_trade(self, rejected_trade: RejectedTrade):
+        """Add rejected trade to tracking"""
+        self.rejected_trades.append(rejected_trade)
     
     def calculate_metrics(
         self,
@@ -64,7 +80,10 @@ class PerformanceMetrics:
             Dictionary с метриками
         """
         if not self.trades:
-            return self._empty_metrics()
+            metrics = self._empty_metrics()
+            # Even with no executed trades, we may have rejected trades
+            metrics['rejected_trades'] = len(self.rejected_trades)
+            return metrics
         
         # Базовые метрики
         total_pnl = sum(t.pnl for t in self.trades)
@@ -151,6 +170,9 @@ class PerformanceMetrics:
             # Trading
             'avg_trade': avg_trade,
             'avg_duration_hours': avg_duration,
+            
+            # Rejected trades
+            'rejected_trades': len(self.rejected_trades),
             
             # Final
             'final_equity': equity_curve[-1] if equity_curve else initial_capital
@@ -299,6 +321,7 @@ class PerformanceMetrics:
             'recovery_factor': 0.0,
             'avg_trade': 0.0,
             'avg_duration_hours': 0.0,
+            'rejected_trades': 0,
             'final_equity': 0.0
         }
     
