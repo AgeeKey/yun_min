@@ -377,3 +377,91 @@ class Backtester:
         if not self.rejected_trades:
             return pd.DataFrame()
         return pd.DataFrame(self.rejected_trades)
+    
+    def save_artifacts(self, output_dir: str = 'artifacts', run_name: Optional[str] = None):
+        """
+        Save all backtest artifacts to directory.
+        
+        Saves:
+        - trades.csv: Detailed trade log
+        - equity_curve.csv: Equity progression over time
+        - summary.json: Backtest summary and metrics
+        - rejected_trades.csv: Log of rejected trades
+        
+        Args:
+            output_dir: Directory to save artifacts
+            run_name: Optional run name for file naming (defaults to timestamp)
+        """
+        from pathlib import Path
+        import json
+        from datetime import datetime
+        
+        # Create output directory
+        output_path = Path(output_dir)
+        output_path.mkdir(parents=True, exist_ok=True)
+        
+        # Generate run name if not provided
+        if run_name is None:
+            run_name = datetime.now().strftime("%Y%m%d_%H%M%S")
+        
+        # Save trade log
+        trade_log = self.get_trade_log()
+        if not trade_log.empty:
+            trades_file = output_path / f"{run_name}_trades.csv"
+            trade_log.to_csv(trades_file, index=False)
+            logger.info(f"Saved trade log to {trades_file}")
+        
+        # Save equity curve
+        equity_df = self.get_equity_curve()
+        if not equity_df.empty:
+            equity_file = output_path / f"{run_name}_equity_curve.csv"
+            equity_df.to_csv(equity_file, index=False)
+            logger.info(f"Saved equity curve to {equity_file}")
+        
+        # Save summary
+        results = self.metrics.calculate_metrics(self.initial_capital)
+        summary = {
+            'run_name': run_name,
+            'timestamp': datetime.now().isoformat(),
+            'config': {
+                'initial_capital': self.initial_capital,
+                'position_size_pct': self.position_size_pct,
+                'leverage': self.leverage,
+                'maker_fee': self.maker_fee,
+                'taker_fee': self.taker_fee,
+                'slippage_rate': self.slippage_rate,
+                'stop_loss_pct': self.stop_loss_pct,
+                'take_profit_pct': self.take_profit_pct,
+                'cooldown_bars': self.cooldown_bars,
+                'confirmation_bars': self.confirmation_bars,
+                'min_holding_bars': self.min_holding_bars,
+            },
+            'metrics': results,
+            'trade_count': len(self.trade_log),
+            'rejected_count': len(self.rejected_trades)
+        }
+        
+        summary_file = output_path / f"{run_name}_summary.json"
+        with open(summary_file, 'w') as f:
+            json.dump(summary, f, indent=2, default=str)
+        logger.info(f"Saved summary to {summary_file}")
+        
+        # Save rejected trades if any
+        rejected_df = self.get_rejected_trades()
+        if not rejected_df.empty:
+            rejected_file = output_path / f"{run_name}_rejected_trades.csv"
+            rejected_df.to_csv(rejected_file, index=False)
+            logger.info(f"Saved rejected trades to {rejected_file}")
+        
+        logger.info(f"All artifacts saved to {output_path}")
+        
+        return {
+            'output_dir': str(output_path),
+            'run_name': run_name,
+            'files': {
+                'trades': f"{run_name}_trades.csv",
+                'equity_curve': f"{run_name}_equity_curve.csv",
+                'summary': f"{run_name}_summary.json",
+                'rejected_trades': f"{run_name}_rejected_trades.csv" if not rejected_df.empty else None
+            }
+        }
