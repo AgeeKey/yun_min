@@ -82,3 +82,4 @@ htmlcov/
 
 # MkDocs documentation
 site/
+artifacts/

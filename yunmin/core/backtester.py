@@ -8,6 +8,7 @@ Features:
 - Parametric optimization (grid search, genetic algorithms)
 - Comprehensive performance metrics
 - HTML report generation
+- Telemetry (artifact saving)
 """
 
 from typing import Dict, List, Optional, Tuple, Any, Callable
@@ -19,6 +20,7 @@ import numpy as np
 from datetime import datetime
 import itertools
 import json
+from pathlib import Path
 
 from yunmin.strategy.base import SignalType
 
@@ -101,11 +103,19 @@ class AdvancedBacktester:
         )
     """
     
-    def __init__(self, symbol: str = "BTC/USDT", timeframe: str = "5m"):
+    def __init__(self, symbol: str = "BTC/USDT", timeframe: str = "5m", 
+                 save_artifacts: bool = True, artifacts_dir: str = "artifacts"):
         """Initialize advanced backtester."""
         self.symbol = symbol
         self.timeframe = timeframe
         self.trades: List[Dict] = []
+        self.save_artifacts = save_artifacts
+        self.artifacts_dir = artifacts_dir
+        if save_artifacts:
+            from yunmin.backtesting.telemetry import BacktestTelemetry
+            self.telemetry = BacktestTelemetry(output_dir=artifacts_dir)
+        else:
+            self.telemetry = None
         
     def run(
         self,
@@ -186,7 +196,13 @@ class AdvancedBacktester:
             equity_curve.append(capital)
         
         # Calculate metrics
-        return self._calculate_metrics(trades, equity_curve, initial_capital)
+        result = self._calculate_metrics(trades, equity_curve, initial_capital)
+        
+        # Save artifacts if enabled
+        if self.save_artifacts and self.telemetry:
+            self._save_artifacts(result)
+        
+        return result
     
     def _calculate_metrics(
         self, 
@@ -623,6 +639,36 @@ class AdvancedBacktester:
         
         logger.info(f"HTML report generated: {output_path}")
         return output_path
+    
+    def _save_artifacts(self, result: BacktestResult) -> None:
+        """Save backtest artifacts to disk."""
+        try:
+            # Convert BacktestResult to summary dict
+            summary = {
+                'total_profit': result.total_profit,
+                'total_trades': result.total_trades,
+                'winning_trades': result.winning_trades,
+                'losing_trades': result.losing_trades,
+                'win_rate': result.win_rate,
+                'avg_win': result.avg_win,
+                'avg_loss': result.avg_loss,
+                'profit_factor': result.profit_factor,
+                'expectancy': result.expectancy,
+                'max_drawdown': result.max_drawdown,
+                'sharpe_ratio': result.sharpe_ratio,
+                'sortino_ratio': result.sortino_ratio,
+                'calmar_ratio': result.calmar_ratio,
+                'recovery_factor': result.recovery_factor
+            }
+            
+            # Save all artifacts
+            self.telemetry.save_all(
+                trades=result.trades,
+                equity_curve=result.equity_curve,
+                summary=summary
+            )
+        except Exception as e:
+            logger.error(f"Failed to save artifacts: {e}")
 
 
 # Keep original Backtester for backward compatibility
