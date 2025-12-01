@@ -1,10 +1,11 @@
 """
 OpenAI Model Configuration for YunMin Trading Bot
 
-Поддерживаемые модели:
-- GPT-5.1, GPT-5, GPT-4.1, GPT-4o: 250k tokens/day
-- O1, O3: Reasoning models (250k tokens/day)
-- GPT-4o-mini, O1-mini, O3-mini: 2.5M tokens/day
+🎉 ВСЕ МОДЕЛИ БЕСПЛАТНЫ! 🎉
+
+Лимиты токенов в день:
+- Standard: 250k tokens/day (GPT-5.1, GPT-5, GPT-4.1, GPT-4o, O1, O3)
+- High Volume: 2.5M tokens/day (все mini/nano модели)
 """
 
 from enum import Enum
@@ -14,56 +15,48 @@ from typing import Optional
 
 class ModelTier(Enum):
     """Тиры моделей по лимитам токенов."""
-    STANDARD = "standard"      # 250k tokens/day
-    HIGH_VOLUME = "high_volume"  # 2.5M tokens/day
-    REASONING = "reasoning"     # O1/O3 reasoning models
+    STANDARD = "standard"      # 250k tokens/day - БЕСПЛАТНО
+    HIGH_VOLUME = "high_volume"  # 2.5M tokens/day - БЕСПЛАТНО
+    REASONING = "reasoning"     # O1/O3 reasoning models - БЕСПЛАТНО
 
 
 @dataclass
 class ModelConfig:
-    """Конфигурация модели OpenAI."""
+    """Конфигурация модели OpenAI (все модели бесплатны!)."""
     name: str
     tier: ModelTier
     max_tokens_per_day: int
     recommended_request_tokens: int
     description: str
     best_for: list[str]
-    cost_per_1m_input: float  # USD
-    cost_per_1m_output: float  # USD
 
 
-# Каталог доступных моделей
+# Каталог БЕСПЛАТНЫХ моделей
 AVAILABLE_MODELS = {
-    # === GPT-5.1 Series ===
+    # === GPT-5.1 Series (250k/day FREE) ===
     "gpt-5.1": ModelConfig(
         name="gpt-5.1",
         tier=ModelTier.STANDARD,
         max_tokens_per_day=250_000,
         recommended_request_tokens=2048,
-        description="Latest GPT-5.1 flagship model",
-        best_for=["complex reasoning", "advanced trading strategies", "market analysis"],
-        cost_per_1m_input=5.00,
-        cost_per_1m_output=15.00
+        description="Latest GPT-5.1 flagship - FREE 250k/day",
+        best_for=["complex reasoning", "advanced trading strategies", "market analysis"]
     ),
     "gpt-5.1-codex": ModelConfig(
         name="gpt-5.1-codex",
         tier=ModelTier.STANDARD,
         max_tokens_per_day=250_000,
         recommended_request_tokens=2048,
-        description="GPT-5.1 optimized for code",
-        best_for=["strategy generation", "technical analysis code", "backtest creation"],
-        cost_per_1m_input=5.00,
-        cost_per_1m_output=15.00
+        description="GPT-5.1 code optimized - FREE 250k/day",
+        best_for=["strategy generation", "technical analysis code", "backtest creation"]
     ),
     "gpt-5.1-codex-mini": ModelConfig(
         name="gpt-5.1-codex-mini",
         tier=ModelTier.HIGH_VOLUME,
         max_tokens_per_day=2_500_000,
         recommended_request_tokens=1024,
-        description="Compact GPT-5.1 codex for high volume",
-        best_for=["frequent trading decisions", "rapid backtesting", "24/7 trading"],
-        cost_per_1m_input=0.20,
-        cost_per_1m_output=0.60
+        description="GPT-5.1 codex mini - FREE 2.5M/day! 🚀",
+        best_for=["24/7 trading", "rapid backtesting", "high frequency"]
     ),
     
     # === GPT-5 Series ===
@@ -72,30 +65,24 @@ AVAILABLE_MODELS = {
         tier=ModelTier.STANDARD,
         max_tokens_per_day=250_000,
         recommended_request_tokens=2048,
-        description="GPT-5 standard model",
-        best_for=["general trading analysis", "market sentiment", "strategy planning"],
-        cost_per_1m_input=4.00,
-        cost_per_1m_output=12.00
+        description="GPT-5 standard - FREE 250k/day",
+        best_for=["general trading analysis", "market sentiment", "strategy planning"]
     ),
     "gpt-5-mini": ModelConfig(
         name="gpt-5-mini",
         tier=ModelTier.HIGH_VOLUME,
         max_tokens_per_day=2_500_000,
         recommended_request_tokens=1024,
-        description="Compact GPT-5 for high volume",
-        best_for=["frequent signals", "real-time decisions", "cost-effective 24/7"],
-        cost_per_1m_input=0.15,
-        cost_per_1m_output=0.50
+        description="GPT-5 mini - FREE 2.5M/day! Perfect for 24/7",
+        best_for=["frequent signals", "real-time decisions", "unlimited trading"]
     ),
     "gpt-5-nano": ModelConfig(
         name="gpt-5-nano",
         tier=ModelTier.HIGH_VOLUME,
         max_tokens_per_day=2_500_000,
         recommended_request_tokens=512,
-        description="Ultra-compact GPT-5",
-        best_for=["ultra-high frequency", "simple signals", "minimal cost"],
-        cost_per_1m_input=0.10,
-        cost_per_1m_output=0.30
+        description="GPT-5 nano - FREE 2.5M/day! Ultra-fast",
+        best_for=["ultra-high frequency", "simple signals", "maximum speed"]
     ),
     
     # === GPT-4.1 Series ===
@@ -104,30 +91,24 @@ AVAILABLE_MODELS = {
         tier=ModelTier.STANDARD,
         max_tokens_per_day=250_000,
         recommended_request_tokens=2048,
-        description="Latest GPT-4.1 flagship",
-        best_for=["proven reliability", "stable trading", "conservative approach"],
-        cost_per_1m_input=3.00,
-        cost_per_1m_output=10.00
+        description="GPT-4.1 flagship - FREE 250k/day",
+        best_for=["proven reliability", "stable trading", "conservative approach"]
     ),
     "gpt-4.1-mini": ModelConfig(
         name="gpt-4.1-mini",
         tier=ModelTier.HIGH_VOLUME,
         max_tokens_per_day=2_500_000,
         recommended_request_tokens=1024,
-        description="Compact GPT-4.1",
-        best_for=["balanced performance/cost", "medium frequency trading"],
-        cost_per_1m_input=0.15,
-        cost_per_1m_output=0.50
+        description="GPT-4.1 mini - FREE 2.5M/day!",
+        best_for=["balanced performance", "medium frequency trading", "24/7"]
     ),
     "gpt-4.1-nano": ModelConfig(
         name="gpt-4.1-nano",
         tier=ModelTier.HIGH_VOLUME,
         max_tokens_per_day=2_500_000,
         recommended_request_tokens=512,
-        description="Ultra-compact GPT-4.1",
-        best_for=["high frequency", "low cost", "simple strategies"],
-        cost_per_1m_input=0.10,
-        cost_per_1m_output=0.30
+        description="GPT-4.1 nano - FREE 2.5M/day!",
+        best_for=["high frequency", "simple strategies", "maximum decisions"]
     ),
     
     # === GPT-4o Series ===
@@ -136,20 +117,16 @@ AVAILABLE_MODELS = {
         tier=ModelTier.STANDARD,
         max_tokens_per_day=250_000,
         recommended_request_tokens=2048,
-        description="GPT-4 optimized",
-        best_for=["multimodal analysis", "chart pattern recognition"],
-        cost_per_1m_input=2.50,
-        cost_per_1m_output=8.00
+        description="GPT-4o optimized - FREE 250k/day",
+        best_for=["multimodal analysis", "chart pattern recognition", "proven quality"]
     ),
     "gpt-4o-mini": ModelConfig(
         name="gpt-4o-mini",
         tier=ModelTier.HIGH_VOLUME,
         max_tokens_per_day=2_500_000,
         recommended_request_tokens=1024,
-        description="Compact GPT-4o - RECOMMENDED FOR TRADING",
-        best_for=["real-time trading", "cost-effective 24/7", "proven performance"],
-        cost_per_1m_input=0.15,
-        cost_per_1m_output=0.60
+        description="GPT-4o mini - FREE 2.5M/day! ⭐ RECOMMENDED",
+        best_for=["real-time trading", "24/7 unlimited", "proven + high volume"]
     ),
     
     # === O-Series (Reasoning Models) ===
@@ -158,20 +135,16 @@ AVAILABLE_MODELS = {
         tier=ModelTier.REASONING,
         max_tokens_per_day=250_000,
         recommended_request_tokens=4096,
-        description="O1 reasoning model - deep analysis",
-        best_for=["complex market analysis", "strategy development", "risk assessment"],
-        cost_per_1m_input=15.00,
-        cost_per_1m_output=60.00
+        description="O1 reasoning - FREE 250k/day",
+        best_for=["complex market analysis", "strategy development", "risk assessment"]
     ),
     "o1-mini": ModelConfig(
         name="o1-mini",
         tier=ModelTier.HIGH_VOLUME,
         max_tokens_per_day=2_500_000,
         recommended_request_tokens=2048,
-        description="O1-mini reasoning for high volume",
-        best_for=["frequent analysis", "real-time reasoning", "cost-effective"],
-        cost_per_1m_input=1.00,
-        cost_per_1m_output=4.00
+        description="O1-mini reasoning - FREE 2.5M/day! 🧠",
+        best_for=["frequent analysis", "real-time reasoning", "deep thinking + volume"]
     ),
     
     "o3": ModelConfig(
@@ -179,20 +152,16 @@ AVAILABLE_MODELS = {
         tier=ModelTier.REASONING,
         max_tokens_per_day=250_000,
         recommended_request_tokens=4096,
-        description="O3 advanced reasoning",
-        best_for=["cutting-edge analysis", "complex strategies", "research"],
-        cost_per_1m_input=20.00,
-        cost_per_1m_output=80.00
+        description="O3 advanced reasoning - FREE 250k/day",
+        best_for=["cutting-edge analysis", "complex strategies", "research"]
     ),
     "o3-mini": ModelConfig(
         name="o3-mini",
         tier=ModelTier.HIGH_VOLUME,
         max_tokens_per_day=2_500_000,
         recommended_request_tokens=2048,
-        description="O3-mini reasoning for high volume",
-        best_for=["frequent reasoning", "real-time insights", "balanced cost"],
-        cost_per_1m_input=1.50,
-        cost_per_1m_output=6.00
+        description="O3-mini reasoning - FREE 2.5M/day! 🧠⚡",
+        best_for=["frequent reasoning", "real-time insights", "advanced + volume"]
     ),
     
     "o4-mini": ModelConfig(
@@ -200,10 +169,8 @@ AVAILABLE_MODELS = {
         tier=ModelTier.HIGH_VOLUME,
         max_tokens_per_day=2_500_000,
         recommended_request_tokens=2048,
-        description="O4-mini next-gen reasoning",
-        best_for=["future-proof", "experimental strategies", "innovation"],
-        cost_per_1m_input=2.00,
-        cost_per_1m_output=8.00
+        description="O4-mini next-gen - FREE 2.5M/day! 🚀",
+        best_for=["future-proof", "experimental strategies", "cutting edge"]
     ),
 }
 
@@ -218,7 +185,7 @@ def get_recommended_model_for_trading() -> str:
     Получить рекомендуемую модель для торговли.
     
     Returns:
-        gpt-4o-mini - лучший баланс цена/качество для 24/7 торговли
+        gpt-4o-mini - лучший баланс для 24/7 торговли (2.5M tokens/day FREE!)
     """
     return "gpt-4o-mini"
 
@@ -232,28 +199,32 @@ def get_models_by_tier(tier: ModelTier) -> dict[str, ModelConfig]:
     }
 
 
-def calculate_daily_cost(
+def calculate_daily_usage(
     model_name: str,
     decisions_per_day: int = 288,  # 5-min candles = 288/day
     avg_input_tokens: int = 800,
     avg_output_tokens: int = 200
 ) -> dict:
     """
-    Рассчитать дневную стоимость использования модели.
+    Рассчитать дневное использование модели.
+    
+    🎉 ВСЕ МОДЕЛИ БЕСПЛАТНЫ! Нет стоимости, только лимиты токенов.
     
     Args:
         model_name: Название модели
-        decisions_per_day: Количество решений в день (default: 288 для 5m)
+        decisions_per_day: Количество решений в день (default: 288 для 5m свечей)
         avg_input_tokens: Средний размер промпта
         avg_output_tokens: Средний размер ответа
     
     Returns:
         {
-            'daily_cost_usd': float,
-            'monthly_cost_usd': float,
+            'model': str,
             'tokens_per_day': int,
+            'max_tokens_per_day': int,
             'within_limits': bool,
-            'safety_margin': str
+            'safety_margin_pct': float,
+            'is_free': True,
+            'decisions_per_day': int
         }
     """
     config = get_model_config(model_name)
@@ -267,30 +238,24 @@ def calculate_daily_cost(
     
     # Проверить лимит
     within_limits = total_tokens <= config.max_tokens_per_day
-    safety_margin = f"{(config.max_tokens_per_day - total_tokens) / config.max_tokens_per_day * 100:.1f}%"
-    
-    # Посчитать стоимость
-    input_cost = (total_input_tokens / 1_000_000) * config.cost_per_1m_input
-    output_cost = (total_output_tokens / 1_000_000) * config.cost_per_1m_output
-    daily_cost = input_cost + output_cost
-    monthly_cost = daily_cost * 30
+    safety_margin_pct = ((config.max_tokens_per_day - total_tokens) / config.max_tokens_per_day * 100) if within_limits else 0
     
     return {
         'model': model_name,
-        'daily_cost_usd': round(daily_cost, 2),
-        'monthly_cost_usd': round(monthly_cost, 2),
         'tokens_per_day': total_tokens,
         'max_tokens_per_day': config.max_tokens_per_day,
         'within_limits': within_limits,
-        'safety_margin': safety_margin,
-        'decisions_per_day': decisions_per_day
+        'safety_margin_pct': round(safety_margin_pct, 1),
+        'is_free': True,  # 🎉 ВСЁ БЕСПЛАТНО!
+        'decisions_per_day': decisions_per_day,
+        'tier': config.tier.value
     }
 
 
 def print_model_comparison():
-    """Вывести сравнительную таблицу моделей."""
+    """Вывести сравнительную таблицу БЕСПЛАТНЫХ моделей."""
     print("\n" + "="*100)
-    print("OpenAI Models for Trading - Cost & Performance Comparison")
+    print("🎉 OpenAI Models for Trading - ALL FREE! 🎉")
     print("="*100)
     
     for tier in ModelTier:
@@ -298,17 +263,45 @@ def print_model_comparison():
         if not models:
             continue
         
-        print(f"\n{tier.value.upper()} TIER ({list(models.values())[0].max_tokens_per_day:,} tokens/day):")
+        print(f"\n{tier.value.upper()} TIER ({list(models.values())[0].max_tokens_per_day:,} tokens/day - FREE!):")
         print("-" * 100)
         
         for name, config in models.items():
-            cost_info = calculate_daily_cost(name)
-            print(f"\n{name:20} | ${cost_info['monthly_cost_usd']:>6.2f}/mo | {config.description}")
+            usage_info = calculate_daily_usage(name)
+            status = "✅ OK" if usage_info['within_limits'] else "⚠️  OVER LIMIT"
+            margin = usage_info['safety_margin_pct']
+            
+            print(f"\n{name:20} | {status} | {margin:>5.1f}% margin | {config.description}")
             print(f"{'':20} | Best for: {', '.join(config.best_for[:2])}")
+            print(f"{'':20} | Usage: {usage_info['tokens_per_day']:,} / {usage_info['max_tokens_per_day']:,} tokens/day")
     
     print("\n" + "="*100)
-    print("RECOMMENDATION: gpt-4o-mini - Best balance for 24/7 trading (~$3.60/month)")
+    print("💡 ALL MODELS ARE FREE! Just respect daily token limits.")
+    print("⭐ RECOMMENDATION: gpt-4o-mini (2.5M/day) or gpt-5.1-codex-mini (2.5M/day) for 24/7 trading")
     print("="*100 + "\n")
+
+
+def suggest_best_model(decisions_per_day: int) -> str:
+    """
+    Предложить лучшую модель для заданного количества решений.
+    
+    Args:
+        decisions_per_day: Сколько решений нужно принимать в день
+    
+    Returns:
+        Название рекомендуемой модели
+    """
+    tokens_per_day = decisions_per_day * 1000  # ~1000 tokens per decision
+    
+    if tokens_per_day <= 250_000:
+        # Можно использовать Standard модели
+        return "gpt-5.1"  # Лучшая стандартная модель
+    else:
+        # Нужна High Volume модель
+        if tokens_per_day <= 2_500_000:
+            return "gpt-4o-mini"  # Проверенная и надёжная
+        else:
+            return "Contact support - need more than 2.5M tokens/day"
 
 
 if __name__ == "__main__":
@@ -317,10 +310,10 @@ if __name__ == "__main__":
     
     # Показать рекомендацию
     recommended = get_recommended_model_for_trading()
-    print(f"\n🎯 Recommended for trading: {recommended}")
+    print(f"\n🎯 Recommended for 24/7 trading: {recommended}")
     
-    cost = calculate_daily_cost(recommended)
-    print(f"   Daily cost: ${cost['daily_cost_usd']:.2f}")
-    print(f"   Monthly cost: ${cost['monthly_cost_usd']:.2f}")
-    print(f"   Tokens/day: {cost['tokens_per_day']:,} / {cost['max_tokens_per_day']:,}")
-    print(f"   Safety margin: {cost['safety_margin']}")
+    usage = calculate_daily_usage(recommended)
+    print(f"   Tokens/day: {usage['tokens_per_day']:,} / {usage['max_tokens_per_day']:,}")
+    print(f"   Safety margin: {usage['safety_margin_pct']:.1f}%")
+    print(f"   Is FREE: {usage['is_free']} 🎉")
+    print(f"   Can make {usage['decisions_per_day']} decisions per day!")
