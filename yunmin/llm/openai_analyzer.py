@@ -1,7 +1,11 @@
 """
 OpenAI Analyzer - Professional Trading AI Integration
 
-Supports GPT-5, GPT-4O, GPT-4O-MINI and other OpenAI models.
+Supports all latest OpenAI models:
+- GPT-5.1, GPT-5, GPT-4.1, GPT-4o series
+- O1, O3, O4 reasoning models
+- Mini/Nano variants for high-volume trading
+
 Budget protection via OpenAI dashboard settings.
 """
 import os
@@ -17,19 +21,26 @@ class OpenAIAnalyzer:
     OpenAI LLM analyzer for cryptocurrency trading decisions.
     
     Features:
-    - Direct OpenAI API integration
+    - Supports all latest models (GPT-5.1, O3, etc.)
     - Budget protected via OpenAI dashboard
-    - Model flexibility (GPT-5, GPT-4O-MINI, etc.)
-    - Compatible interface with GrokAnalyzer
+    - Model flexibility with automatic fallback
+    - High-volume support (2.5M tokens/day with mini models)
+    - Reasoning models for complex analysis
+    
+    Recommended models:
+    - gpt-4o-mini: Best for 24/7 trading (2.5M tokens/day, low cost)
+    - o1-mini: Reasoning + high volume (2.5M tokens/day)
+    - gpt-5.1-codex-mini: Latest tech + high volume
     """
     
-    def __init__(self, api_key: str = None, model: str = "gpt-4o-mini"):
+    def __init__(self, api_key: str = None, model: str = None):
         """
         Initialize OpenAI analyzer.
         
         Args:
             api_key: OpenAI API key (or from env OPENAI_API_KEY)
-            model: Model name (gpt-4o-mini, gpt-4o, etc.)
+            model: Model name (gpt-4o-mini, gpt-5.1, o1-mini, etc.)
+                   If None, reads from env YUNMIN_LLM_MODEL or defaults to gpt-4o-mini
         """
         self.api_key = api_key or os.getenv("OPENAI_API_KEY")
         if not self.api_key:
@@ -37,14 +48,45 @@ class OpenAIAnalyzer:
             self.enabled = False
             return
         
+        # Определить модель
+        if model is None:
+            model = os.getenv("YUNMIN_LLM_MODEL", "gpt-4o-mini")
+        
         try:
             self.client = OpenAI(api_key=self.api_key)
             self.model = model
             self.enabled = True
-            logger.info(f"✅ OpenAI analyzer initialized with model: {model}")
+            
+            # Вывести информацию о модели
+            self._log_model_info()
+            
         except Exception as e:
             logger.error(f"❌ Failed to initialize OpenAI client: {e}")
             self.enabled = False
+    
+    def _log_model_info(self):
+        """Вывести информацию о выбранной модели."""
+        model_info = {
+            'gpt-5.1': '🚀 GPT-5.1 flagship (250k tokens/day)',
+            'gpt-5.1-codex': '💻 GPT-5.1 codex (250k tokens/day)',
+            'gpt-5.1-codex-mini': '⚡ GPT-5.1 codex mini (2.5M tokens/day)',
+            'gpt-5': '🎯 GPT-5 standard (250k tokens/day)',
+            'gpt-5-mini': '⚡ GPT-5 mini (2.5M tokens/day)',
+            'gpt-5-nano': '💨 GPT-5 nano (2.5M tokens/day, ultra-fast)',
+            'gpt-4.1': '✅ GPT-4.1 proven (250k tokens/day)',
+            'gpt-4.1-mini': '⚡ GPT-4.1 mini (2.5M tokens/day)',
+            'gpt-4.1-nano': '💨 GPT-4.1 nano (2.5M tokens/day)',
+            'gpt-4o': '🎨 GPT-4o multimodal (250k tokens/day)',
+            'gpt-4o-mini': '⭐ GPT-4o mini RECOMMENDED (2.5M tokens/day)',
+            'o1': '🧠 O1 reasoning (250k tokens/day)',
+            'o1-mini': '🧠⚡ O1-mini reasoning (2.5M tokens/day)',
+            'o3': '🧠🚀 O3 advanced reasoning (250k tokens/day)',
+            'o3-mini': '🧠⚡ O3-mini reasoning (2.5M tokens/day)',
+            'o4-mini': '🧠🚀⚡ O4-mini next-gen (2.5M tokens/day)',
+        }
+        
+        info = model_info.get(self.model, f'📡 {self.model} (custom)')
+        logger.info(f"✅ OpenAI analyzer: {info}")
     
     def analyze_market(self, market_data: dict) -> dict:
         """
