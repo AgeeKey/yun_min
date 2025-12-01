@@ -3,12 +3,12 @@ API KEY EXISTS: True
 ENABLED: True
 PROMPT:
 BTC Market Analysis:
-Price: $106224.5
-RSI: 45.13718923096752
-EMA Fast: 106272.54165339962
-EMA Slow: 106268.10169024524
-Trend: bullish (neutral)
-Volume: 3.15
+Price: $49430.05
+RSI: 50
+EMA Fast: 0
+EMA Slow: 0
+Trend: 🔴 Downtrend (neutral)
+Volume: {'current': 183, 'average': 289, 'ratio': np.float64(0.63), 'activity': 'Low'}
 
 TRADING RULES:
 1. BUY Signals:
