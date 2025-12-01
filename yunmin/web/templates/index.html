@@ -9,22 +9,42 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <link rel="stylesheet" href="/static/css/dashboard.css">
 </head>
-<body class="bg-gray-900 text-white">
+<body class="bg-gray-900 text-white min-h-screen">
     <!-- Header -->
     <header class="bg-gray-800 p-4 border-b border-gray-700">
-        <div class="flex justify-between items-center">
-            <h1 class="text-2xl font-bold">🤖 YunMin Trading Bot</h1>
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-2">
+            <h1 class="text-2xl font-bold">🤖 YunMin AI Trading Bot</h1>
             <div class="flex items-center gap-4">
-                <span class="flex items-center">
-                    <span class="w-3 h-3 bg-green-500 rounded-full mr-2 animate-pulse"></span>
-                    <span class="text-sm">Live</span>
-                </span>
-                <span class="text-xl font-mono" id="total-value">$10,000.00</span>
+                <div id="system-status-badge" class="flex items-center">
+                    <span class="w-3 h-3 bg-green-500 rounded-full mr-2 animate-pulse" id="status-indicator"></span>
+                    <span class="text-sm" id="bot-state">RUNNING</span>
+                </div>
+                <span class="text-xl font-mono font-bold" id="total-value">$10,000.00</span>
             </div>
         </div>
     </header>
     
     <div class="container mx-auto p-4">
+        <!-- Top Stats Row -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+            <div class="bg-gray-800 rounded-lg p-3 text-center">
+                <div class="text-xs text-gray-400 uppercase">24h P&L</div>
+                <div class="text-lg font-bold font-mono text-green-400" id="daily-pnl">+$0.00</div>
+            </div>
+            <div class="bg-gray-800 rounded-lg p-3 text-center">
+                <div class="text-xs text-gray-400 uppercase">Win Rate</div>
+                <div class="text-lg font-bold font-mono" id="win-rate-top">0%</div>
+            </div>
+            <div class="bg-gray-800 rounded-lg p-3 text-center">
+                <div class="text-xs text-gray-400 uppercase">Max Drawdown</div>
+                <div class="text-lg font-bold font-mono text-red-400" id="max-drawdown">0%</div>
+            </div>
+            <div class="bg-gray-800 rounded-lg p-3 text-center">
+                <div class="text-xs text-gray-400 uppercase">Uptime</div>
+                <div class="text-lg font-bold font-mono" id="uptime">0h 0m</div>
+            </div>
+        </div>
+
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
             <!-- Main Chart (3 columns on large screens) -->
             <div class="lg:col-span-3 bg-gray-800 rounded-lg p-4">
@@ -37,12 +57,12 @@
                     <div class="text-right">
                         <div class="text-2xl font-mono" id="current-price">$0.00</div>
                         <div class="text-sm text-gray-400">
-                            <span class="hidden sm:inline">RSI: <span id="rsi">--</span> | </span>
-                            <span class="hidden sm:inline">EMA: <span id="ema">--</span></span>
+                            <span class="hidden sm:inline">24h High: <span id="price-high" class="text-green-400">--</span> | </span>
+                            <span class="hidden sm:inline">Low: <span id="price-low" class="text-red-400">--</span></span>
                         </div>
                     </div>
                 </div>
-                <div id="chart-container" class="w-full" style="height: 500px;"></div>
+                <div id="chart-container" class="w-full" style="height: 450px;"></div>
             </div>
             
             <!-- Sidebar (1 column) -->
@@ -56,7 +76,7 @@
                             <span class="font-mono" id="initial-capital">$10,000</span>
                         </div>
                         <div class="flex justify-between">
-                            <span>P&L:</span>
+                            <span>Total P&L:</span>
                             <span class="font-mono text-green-400" id="pnl">+$0</span>
                         </div>
                         <div class="flex justify-between">
@@ -67,25 +87,150 @@
                             <span>Trades:</span>
                             <span class="font-mono" id="trade-count">0</span>
                         </div>
+                        <div class="flex justify-between">
+                            <span>ROI:</span>
+                            <span class="font-mono text-green-400" id="roi">0%</span>
+                        </div>
                     </div>
                 </div>
                 
                 <!-- Open Positions -->
                 <div class="bg-gray-800 rounded-lg p-4">
                     <h3 class="text-lg font-bold mb-3">💹 Positions</h3>
-                    <div id="positions-list" class="text-sm space-y-2 max-h-64 overflow-y-auto">
+                    <div id="positions-list" class="text-sm space-y-2 max-h-40 overflow-y-auto">
                         <p class="text-gray-400 text-center">No open positions</p>
+                    </div>
+                </div>
+
+                <!-- System Status -->
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <h3 class="text-lg font-bold mb-3">⚙️ System</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between items-center">
+                            <span>Binance:</span>
+                            <span id="binance-status" class="flex items-center">
+                                <span class="w-2 h-2 bg-green-500 rounded-full mr-1"></span>
+                                <span class="text-green-400 text-xs">Connected</span>
+                            </span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span>OpenAI:</span>
+                            <span id="openai-status" class="flex items-center">
+                                <span class="w-2 h-2 bg-green-500 rounded-full mr-1"></span>
+                                <span class="text-green-400 text-xs">Connected</span>
+                            </span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Version:</span>
+                            <span class="font-mono text-gray-400" id="version">1.0.0</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         
-        <!-- Bottom Section: Equity Curve & Trades -->
+        <!-- AI Decision Monitor Section -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
+            <!-- Strategic Brain -->
+            <div class="bg-gray-800 rounded-lg p-4">
+                <h3 class="text-lg font-bold mb-3">🧠 Strategic Brain</h3>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-400">Market Regime:</span>
+                        <span id="strategic-regime" class="badge badge-success">BULL</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-400">Scenario:</span>
+                        <span id="strategic-scenario" class="text-sm">Uptrend with consolidation</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-400">Decision:</span>
+                        <span id="strategic-decision" class="text-lg font-bold text-yellow-400">HOLD</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-400">Confidence:</span>
+                        <div class="w-32 bg-gray-700 rounded-full h-2">
+                            <div id="strategic-confidence-bar" class="bg-blue-500 h-2 rounded-full" style="width: 75%"></div>
+                        </div>
+                        <span id="strategic-confidence" class="font-mono text-sm">75%</span>
+                    </div>
+                    <div class="text-xs text-gray-500 pt-2 border-t border-gray-700">
+                        Last update: <span id="strategic-update">--</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tactical Brain -->
+            <div class="bg-gray-800 rounded-lg p-4">
+                <h3 class="text-lg font-bold mb-3">⚡ Tactical Brain</h3>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-400">Market Regime:</span>
+                        <span id="tactical-regime" class="badge badge-success">BULL</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-400">Scenario:</span>
+                        <span id="tactical-scenario" class="text-sm">Breakout potential</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-400">Decision:</span>
+                        <span id="tactical-decision" class="text-lg font-bold text-green-400">BUY</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-400">Confidence:</span>
+                        <div class="w-32 bg-gray-700 rounded-full h-2">
+                            <div id="tactical-confidence-bar" class="bg-green-500 h-2 rounded-full" style="width: 82%"></div>
+                        </div>
+                        <span id="tactical-confidence" class="font-mono text-sm">82%</span>
+                    </div>
+                    <div class="text-xs text-gray-500 pt-2 border-t border-gray-700">
+                        Last update: <span id="tactical-update">--</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Section: Equity Curve, Token Usage & Trades -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-4">
             <!-- Equity Curve -->
             <div class="bg-gray-800 rounded-lg p-4">
                 <h3 class="text-lg font-bold mb-3">📈 Equity Curve</h3>
-                <canvas id="equity-chart" height="200"></canvas>
+                <canvas id="equity-chart" height="180"></canvas>
+            </div>
+            
+            <!-- Token Usage Tracker -->
+            <div class="bg-gray-800 rounded-lg p-4">
+                <h3 class="text-lg font-bold mb-3">🔑 Token Usage</h3>
+                <div class="space-y-3 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">Today:</span>
+                        <span class="font-mono"><span id="tokens-today">0</span> tokens (<span id="cost-today">$0.00</span>)</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">This Week:</span>
+                        <span class="font-mono"><span id="tokens-week">0</span> tokens (<span id="cost-week">$0.00</span>)</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">This Month:</span>
+                        <span class="font-mono"><span id="tokens-month">0</span> tokens (<span id="cost-month">$0.00</span>)</span>
+                    </div>
+                    <div class="pt-2 border-t border-gray-700">
+                        <div class="text-xs text-gray-400 mb-2">Model Breakdown:</div>
+                        <div id="model-breakdown" class="space-y-1">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-purple-400">o3-mini:</span>
+                                <span class="font-mono">0 tokens</span>
+                            </div>
+                            <div class="flex justify-between text-xs">
+                                <span class="text-blue-400">gpt-5-mini:</span>
+                                <span class="font-mono">0 tokens</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-xs text-gray-500">
+                        Last request: <span id="last-request-time">--</span> (<span id="last-request-tokens">0</span> tokens)
+                    </div>
+                </div>
             </div>
             
             <!-- Recent Trades -->
@@ -96,7 +241,25 @@
                 </div>
             </div>
         </div>
+
+        <!-- AI Decision History Timeline -->
+        <div class="bg-gray-800 rounded-lg p-4 mt-4">
+            <h3 class="text-lg font-bold mb-3">📋 AI Decision History</h3>
+            <div id="decision-timeline" class="overflow-x-auto">
+                <div class="flex gap-3 pb-2" id="decision-timeline-items">
+                    <p class="text-gray-400 text-center w-full">Loading decision history...</p>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 p-3 mt-4 border-t border-gray-700">
+        <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center text-xs text-gray-400">
+            <span>YunMin AI Trading Bot v<span id="footer-version">1.0.0</span></span>
+            <span>Last heartbeat: <span id="last-heartbeat">--</span></span>
+        </div>
+    </footer>
     
     <script type="module" src="/static/js/dashboard.js"></script>
 </body>

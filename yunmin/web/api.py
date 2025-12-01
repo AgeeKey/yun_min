@@ -82,6 +82,50 @@ class AlertInfo(BaseModel):
     timestamp: datetime
 
 
+class AIBrainStatus(BaseModel):
+    """AI Brain status information"""
+    brain_type: str  # strategic / tactical
+    last_update: datetime
+    regime: str  # bull / bear / sideways
+    scenario: str  # current market scenario
+    confidence: float  # 0-100
+    decision: str  # BUY / SELL / HOLD
+    reasoning: Optional[str] = None
+
+
+class AIDecisionHistory(BaseModel):
+    """Historical AI decision"""
+    timestamp: datetime
+    brain_type: str
+    decision: str
+    confidence: float
+    regime: str
+    executed: bool
+
+
+class TokenUsageInfo(BaseModel):
+    """Token usage information"""
+    total_tokens_today: int
+    total_tokens_week: int
+    total_tokens_month: int
+    cost_today: float
+    cost_week: float
+    cost_month: float
+    model_breakdown: Dict[str, int]  # model_name -> token_count
+    last_request_tokens: int
+    last_request_time: Optional[datetime] = None
+
+
+class SystemStatus(BaseModel):
+    """System status information"""
+    bot_state: str  # RUNNING / STOPPED / PAUSED
+    uptime_seconds: int
+    binance_connected: bool
+    openai_connected: bool
+    last_heartbeat: datetime
+    version: str
+
+
 # ===== WebSocket Connection Manager =====
 
 class ConnectionManager:
@@ -245,6 +289,99 @@ class DashboardDataProvider:
                 "equity": equity
             })
         return data
+    
+    def get_ai_brain_status(self) -> Dict[str, AIBrainStatus]:
+        """Get AI brain status for strategic and tactical brains"""
+        now = datetime.now(UTC)
+        
+        # Mock data - replace with actual AI brain integration
+        strategic = AIBrainStatus(
+            brain_type="strategic",
+            last_update=now - timedelta(minutes=15),
+            regime="bull",
+            scenario="Uptrend with consolidation",
+            confidence=75.5,
+            decision="HOLD",
+            reasoning="Market showing strong support at current levels"
+        )
+        
+        tactical = AIBrainStatus(
+            brain_type="tactical",
+            last_update=now - timedelta(seconds=30),
+            regime="bull",
+            scenario="Breakout potential",
+            confidence=82.3,
+            decision="BUY",
+            reasoning="RSI oversold, MACD bullish crossover forming"
+        )
+        
+        return {
+            "strategic": strategic,
+            "tactical": tactical
+        }
+    
+    def get_ai_decision_history(self, limit: int = 20) -> List[AIDecisionHistory]:
+        """Get recent AI decisions"""
+        now = datetime.now(UTC)
+        history = []
+        
+        # Mock data - replace with actual decision history
+        decisions = [
+            ("BUY", 82.3, True),
+            ("HOLD", 65.0, True),
+            ("SELL", 78.5, True),
+            ("HOLD", 55.2, True),
+            ("BUY", 88.1, True),
+        ]
+        
+        for i, (decision, confidence, executed) in enumerate(decisions[:limit]):
+            history.append(AIDecisionHistory(
+                timestamp=now - timedelta(minutes=i * 30),
+                brain_type="tactical" if i % 2 == 0 else "strategic",
+                decision=decision,
+                confidence=confidence,
+                regime="bull" if i < 3 else "sideways",
+                executed=executed
+            ))
+        
+        return history
+    
+    def get_token_usage(self) -> TokenUsageInfo:
+        """Get OpenAI token usage statistics"""
+        now = datetime.now(UTC)
+        
+        # Mock data - replace with actual token tracking
+        return TokenUsageInfo(
+            total_tokens_today=15420,
+            total_tokens_week=89500,
+            total_tokens_month=342100,
+            cost_today=0.23,
+            cost_week=1.34,
+            cost_month=5.13,
+            model_breakdown={
+                "o3-mini": 12500,
+                "gpt-5-mini": 2920
+            },
+            last_request_tokens=156,
+            last_request_time=now - timedelta(seconds=30)
+        )
+    
+    def get_system_status(self) -> SystemStatus:
+        """Get system status information"""
+        now = datetime.now(UTC)
+        
+        # Mock data - replace with actual system status
+        # Calculate uptime from app start
+        uptime_seconds = 3600 * 2 + 1234  # Mock: 2 hours + some seconds
+        
+        return SystemStatus(
+            bot_state="RUNNING",
+            uptime_seconds=uptime_seconds,
+            binance_connected=True,
+            openai_connected=True,
+            last_heartbeat=now,
+            version="1.0.0"
+        )
 
 
 # ===== FastAPI Application =====
@@ -351,6 +488,73 @@ async def get_alerts(limit: int = 20):
         return JSONResponse(content=[a.model_dump(mode='json') for a in alerts])
     except Exception as e:
         logger.error(f"Error getting alerts: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/ai-status")
+async def get_ai_status():
+    """Get AI brain status (strategic and tactical)"""
+    try:
+        status = data_provider.get_ai_brain_status()
+        return JSONResponse(content={
+            "strategic": status["strategic"].model_dump(mode='json'),
+            "tactical": status["tactical"].model_dump(mode='json')
+        })
+    except Exception as e:
+        logger.error(f"Error getting AI status: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/ai-decisions")
+async def get_ai_decisions(limit: int = 20):
+    """Get AI decision history"""
+    try:
+        decisions = data_provider.get_ai_decision_history(limit=limit)
+        return JSONResponse(content=[d.model_dump(mode='json') for d in decisions])
+    except Exception as e:
+        logger.error(f"Error getting AI decisions: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/token-usage")
+async def get_token_usage():
+    """Get OpenAI token usage statistics"""
+    try:
+        usage = data_provider.get_token_usage()
+        return JSONResponse(content=usage.model_dump(mode='json'))
+    except Exception as e:
+        logger.error(f"Error getting token usage: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/status")
+async def get_system_status():
+    """Get system status"""
+    try:
+        status = data_provider.get_system_status()
+        return JSONResponse(content=status.model_dump(mode='json'))
+    except Exception as e:
+        logger.error(f"Error getting system status: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/metrics")
+async def get_all_metrics():
+    """Get all dashboard metrics in a single call"""
+    try:
+        return JSONResponse(content={
+            "portfolio": data_provider.get_portfolio_metrics().model_dump(mode='json'),
+            "performance": data_provider.get_performance_metrics().model_dump(mode='json'),
+            "ai_status": {
+                k: v.model_dump(mode='json') 
+                for k, v in data_provider.get_ai_brain_status().items()
+            },
+            "token_usage": data_provider.get_token_usage().model_dump(mode='json'),
+            "system_status": data_provider.get_system_status().model_dump(mode='json'),
+            "positions": [p.model_dump(mode='json') for p in data_provider.get_open_positions()],
+        })
+    except Exception as e:
+        logger.error(f"Error getting metrics: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
