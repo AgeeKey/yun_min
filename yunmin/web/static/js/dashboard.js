@@ -602,8 +602,8 @@ class Dashboard {
         const highEl = document.getElementById('price-high');
         const lowEl = document.getElementById('price-low');
         
-        if (highEl) highEl.textContent = `$${high.toLocaleString('en-US', { maximumFractionDigits: 2 })}`;
-        if (lowEl) lowEl.textContent = `$${low.toLocaleString('en-US', { maximumFractionDigits: 2 })}`;
+        if (highEl) highEl.textContent = `$${high.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        if (lowEl) lowEl.textContent = `$${low.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     }
     
     // Helper methods
