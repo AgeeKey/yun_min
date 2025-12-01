@@ -61,8 +61,8 @@ strategy:
   fast_ema: 12  # Optimized for 5m timeframe
   slow_ema: 26  # Better signal quality
   rsi_period: 14
-  rsi_overbought: 65.0  # PHASE 2.1: Relaxed from 70 to 65 (more lenient)
-  rsi_oversold: 35.0    # PHASE 2.1: Relaxed from 30 to 35 (more lenient)
+  rsi_overbought: 70.0  # OPTIMIZED: Grid search best result (was 65)
+  rsi_oversold: 30.0    # OPTIMIZED: Grid search best result (was 35)
   
   # Additional filters for entry confirmation
   # PHASE 2.1: Relaxed filters for increased trading frequency

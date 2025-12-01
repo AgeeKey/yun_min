@@ -28,8 +28,8 @@ class EMACrossoverStrategy(BaseStrategy):
     
     def __init__(
         self,
-        fast_period: int = 9,
-        slow_period: int = 21,
+        fast_period: int = 12,  # OPTIMIZED: Grid search best result (was 9)
+        slow_period: int = 26,  # OPTIMIZED: Grid search best result (was 21)
         rsi_period: int = 14,
         rsi_overbought: float = 70.0,
         rsi_oversold: float = 30.0
