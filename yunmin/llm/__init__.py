@@ -1,5 +1,5 @@
 """LLM module - Language model integration for analysis."""
 
-from yunmin.llm.grok_analyzer import GrokAnalyzer
+from yunmin.llm.openai_analyzer import OpenAIAnalyzer
 
-__all__ = ["GrokAnalyzer"]
+__all__ = ["OpenAIAnalyzer"]
