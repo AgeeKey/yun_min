@@ -1,0 +1,35 @@
+MODEL: gpt-5-mini
+API KEY EXISTS: True
+ENABLED: True
+PROMPT:
+BTC Market Analysis:
+Price: $97495.8
+RSI: 50
+EMA Fast: 0
+EMA Slow: 0
+Trend: unknown (neutral)
+Volume: N/A
+
+TRADING RULES:
+1. BUY Signals:
+   - RSI < 35 (oversold) in any trend
+   - RSI 35-50 in moderate/strong uptrend
+   - Price near EMA Fast support in uptrend
+
+2. SELL Signals:
+   - RSI > 70 (overbought) in any trend
+   - RSI 60-70 in moderate/strong downtrend
+   - Price at resistance in downtrend
+
+3. HOLD Signals:
+   - Unclear signals or conflicting indicators
+   - RSI 45-60 in neutral/sideways market
+   - Waiting for better entry/exit
+
+4. Trend Considerations:
+   - In strong uptrend (>2% above slow EMA): Favor BUY on dips
+   - In strong downtrend (<-2% below slow EMA): Favor SELL on rallies
+   - In neutral: Use RSI primarily
+
+Analyze and decide: BUY/SELL/HOLD?
+============================================================
